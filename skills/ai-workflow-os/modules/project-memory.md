@@ -1,4 +1,4 @@
-# Project Memory / 项目记忆工作流
+﻿# Project Memory / 项目记忆工作流
 
 ## Role / 角色
 
@@ -6,9 +6,9 @@ This module preserves project context so the user or another AI can resume work 
 
 本模块保存项目上下文，让用户或下一任 AI 可以准确恢复工作。
 
-When `agent-loop-os` is actively controlling a coding loop, defer loop-specific writes to it. This module may read and summarize `STATUS.md`, `PENDING.md`, `NEXT_ACTIONS.md`, `ACCEPTANCE.md`, `EVALUATION.md`, and `LOOP_RUNS.jsonl`, but it must not overwrite acceptance evidence, latest verification, stop-gate decisions, or loop run records. Use Daily Workflow only for explicit checkpoint, wrap-up, or handoff requests.
+When `agent-loop-engineering` is actively controlling a coding loop, defer loop-specific writes to it. This module may read and summarize `STATUS.md`, `PENDING.md`, `NEXT_ACTIONS.md`, `ACCEPTANCE.md`, `EVALUATION.md`, and `LOOP_RUNS.jsonl`, but it must not overwrite acceptance evidence, latest verification, stop-gate decisions, or loop run records. Use Daily Workflow only for explicit checkpoint, wrap-up, or handoff requests.
 
-当 `agent-loop-os` 正在控制编码循环时，本模块不抢写 loop 专用状态。可以读取和总结 `STATUS.md`、`PENDING.md`、`NEXT_ACTIONS.md`、`ACCEPTANCE.md`、`EVALUATION.md` 和 `LOOP_RUNS.jsonl`，但不得覆盖验收证据、最近验证、停止门禁决策或循环记录。只有用户明确要求 checkpoint、收工或交接时，才交给 Daily Workflow。
+当 `agent-loop-engineering` 正在控制编码循环时，本模块不抢写 loop 专用状态。可以读取和总结 `STATUS.md`、`PENDING.md`、`NEXT_ACTIONS.md`、`ACCEPTANCE.md`、`EVALUATION.md` 和 `LOOP_RUNS.jsonl`，但不得覆盖验收证据、最近验证、停止门禁决策或循环记录。只有用户明确要求 checkpoint、收工或交接时，才交给 Daily Workflow。
 
 ## Core Files / 核心文件
 

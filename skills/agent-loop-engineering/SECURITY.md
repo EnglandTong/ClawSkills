@@ -1,6 +1,6 @@
-# Security Policy
+﻿# Security Policy
 
-Agent Loop OS is an instruction-only skill for AI coding agents. Its main security boundary is the stop gate: when work requires secrets, production data, privileged system access, irreversible changes, or unclear human approval, the agent must stop and ask.
+Agent Loop Engineering is an instruction-only skill for AI coding agents. Its main security boundary is the stop gate: when work requires secrets, production data, privileged system access, irreversible changes, or unclear human approval, the agent must stop and ask.
 
 ## Secrets and Credentials
 

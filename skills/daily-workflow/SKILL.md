@@ -1,4 +1,4 @@
----
+﻿---
 name: daily-workflow
 description: "Bilingual EN/ZH project memory workflow for start work, checkpoint, wrap-up, and handoff. Maintains project-local Docs/ notes with target, metadata, status, compressed context, completed work, pending work, next actions, archives, and legacy migration from older Daily Workflow file names."
 ---
@@ -42,9 +42,9 @@ Create `Docs/` if missing. Maintain these files:
 - `Docs/NEXT_ACTIONS.md`: immediate continuation plan and handoff plan. Overwrite each checkpoint/wrap-up with the latest actionable plan.
 - `Docs/CONFIG.md`: optional trigger and language preferences.
 
-## Agent Loop OS Compatibility
+## Agent Loop Engineering Compatibility
 
-When a coding loop is active, `agent-loop-os` is authoritative for loop-specific state: latest verification, acceptance evidence, loop evaluation, stop gates, and `LOOP_RUNS.jsonl`.
+When a coding loop is active, `agent-loop-engineering` is authoritative for loop-specific state: latest verification, acceptance evidence, loop evaluation, stop gates, and `LOOP_RUNS.jsonl`.
 
 Checkpoint, wrap-up, and handoff must preserve these fields instead of replacing them:
 
@@ -54,7 +54,7 @@ Checkpoint, wrap-up, and handoff must preserve these fields instead of replacing
 - `Docs/EVALUATION.md`
 - `Docs/LOOP_RUNS.jsonl`
 
-Daily Workflow may add checkpoint summaries, completed work, pending work, and handoff text, but it must not erase Agent Loop OS evidence. If both workflows are active, write canonical files only: `TARGET.md`, `STATUS.md`, `COMPLETED.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `HANDOFF.md`.
+Daily Workflow may add checkpoint summaries, completed work, pending work, and handoff text, but it must not erase Agent Loop Engineering evidence. If both workflows are active, write canonical files only: `TARGET.md`, `STATUS.md`, `COMPLETED.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `HANDOFF.md`.
 
 Compatibility alias:
 
@@ -345,7 +345,7 @@ Keep `STATUS.md` readable.
 - Use absolute paths when reporting file locations to the user.
 - Append to `COMPLETED.md`; do not overwrite it.
 - Preserve `STATUS.md` update history unless archiving older entries.
-- Preserve Agent Loop OS fields when present: `Latest Verification`, `Compressed Context`, `ACCEPTANCE.md` current evidence, `EVALUATION.md`, and `LOOP_RUNS.jsonl`.
+- Preserve Agent Loop Engineering fields when present: `Latest Verification`, `Compressed Context`, `ACCEPTANCE.md` current evidence, `EVALUATION.md`, and `LOOP_RUNS.jsonl`.
 - Preserve unresolved blockers when rewriting `PENDING.md`.
 - Overwrite `NEXT_ACTIONS.md` at each checkpoint or wrap-up so the next AI has a single current plan.
 - Never delete managed or legacy files automatically.

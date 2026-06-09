@@ -1,4 +1,4 @@
-# Runner Adapters
+﻿# Runner Adapters
 
 Runner adapters explain how different AI coding agents can run the same loop. They must not replace the shared `Docs/` state protocol.
 
@@ -15,7 +15,7 @@ Every runner must:
 Minimum external loop contract:
 
 ```text
-input: workspace path + prompt that says "run one Agent Loop OS loop"
+input: workspace path + prompt that says "run one Agent Loop Engineering loop"
 must read: Docs/LOOP_CONFIG.md, TARGET.md, ACCEPTANCE.md, STATUS.md, PENDING.md, NEXT_ACTIONS.md
 must write: EVALUATION.md, STATUS.md, ACCEPTANCE.md, PENDING.md, NEXT_ACTIONS.md, LOOP_RUNS.jsonl
 must write when applicable: COMPLETED.md for completed acceptance items or user-visible deliverables; HANDOFF.md for standalone handoff triggers
@@ -41,7 +41,7 @@ Do not run multiple writers concurrently against the same `Docs/` state. Use seq
 Use heartbeat or automation when available. Each wakeup should instruct Codex to:
 
 ```text
-Use $agent-loop-os in this workspace. Read Docs/LOOP_CONFIG.md and Docs/NEXT_ACTIONS.md, run one bounded loop, then write evaluation and stop/continue status.
+Use $agent-loop-engineering in this workspace. Read Docs/LOOP_CONFIG.md and Docs/NEXT_ACTIONS.md, run one bounded loop, then write evaluation and stop/continue status.
 ```
 
 Blocked example: if a command needs GitHub login, write `Blocked` with needed login scope, update `PENDING.md`, and stop.
@@ -51,7 +51,7 @@ Blocked example: if a command needs GitHub login, write `Blocked` with needed lo
 Use scheduled prompts or loop workflows. Keep Claude-specific commands outside project state. The prompt should ask Claude to read `Docs/` first, run one loop, and stop on hard gates.
 
 ```text
-Use the local Agent Loop OS protocol. Read only the minimum Docs/ files, run one bounded loop, update EVALUATION/PENDING/NEXT_ACTIONS/LOOP_RUNS, and stop on hard or budget gates.
+Use the local Agent Loop Engineering protocol. Read only the minimum Docs/ files, run one bounded loop, update EVALUATION/PENDING/NEXT_ACTIONS/LOOP_RUNS, and stop on hard or budget gates.
 ```
 
 ## OpenCode
@@ -100,7 +100,7 @@ Resume from Docs/STATUS.md and Docs/NEXT_ACTIONS.md. Keep the work inside Docs/T
 Use workspace tasks and check commands. Trae should run one bounded implementation/verification loop and write the same shared state files.
 
 ```text
-Read the Agent Loop OS Docs/ files, execute the immediate next action, run discovered verification commands, and stop if any hard gate is triggered.
+Read the Agent Loop Engineering Docs/ files, execute the immediate next action, run discovered verification commands, and stop if any hard gate is triggered.
 ```
 
 ## Gemini CLI and Aider

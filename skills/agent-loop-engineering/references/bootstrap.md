@@ -1,4 +1,4 @@
-# Bootstrap Protocol
+﻿# Bootstrap Protocol
 
 Use this when a project has no usable `Docs/` loop state.
 
@@ -108,7 +108,7 @@ Use this when creating the first `Docs/NEXT_ACTIONS.md`:
 
 ## Stop/Resume Notes
 - Stop state: Continue
-- Resume command or entry point: Use Agent Loop OS from Docs/NEXT_ACTIONS.md
+- Resume command or entry point: Use Agent Loop Engineering from Docs/NEXT_ACTIONS.md
 - Needed human input: None unless a hard stop appears
 ```
 

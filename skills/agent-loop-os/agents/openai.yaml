@@ -1,6 +1,0 @@
-interface:
-  display_name: "Agent Loop OS"
-  short_description: "Control AI coding loops with persistent state and stop gates."
-  default_prompt: "Use $agent-loop-os to run this coding task through a bounded loop with persistent Docs/ state, verification gates, and safe stop rules."
-policy:
-  allow_implicit_invocation: true

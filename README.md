@@ -1,4 +1,4 @@
-# Clawhub Skills
+﻿# Clawhub Skills
 
 This repository contains public AI workflow skills by England Tong, including skills originally published on Clawhub.
 
@@ -6,7 +6,7 @@ This repository contains public AI workflow skills by England Tong, including sk
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `agent-loop-os` | 1.0.0 | Top-level loop controller for long-running AI coding work with persistent `Docs/` state, stop gates, completion gates, runner adapters, and context budgeting. |
+| `agent-loop-engineering` | 1.0.0 | Top-level loop controller for long-running AI coding work with persistent `Docs/` state, stop gates, completion gates, runner adapters, and context budgeting. |
 | `web-search-rules` | 3.0.0 | Rules and operating guidance for evidence-backed web search workflows. |
 | `ai-workflow-os` | 1.0.0 | A workflow operating system for AI-assisted projects, research, and handoffs. |
 | `project-lifecycle-navigator` | 1.0.0 | Project lifecycle prompts and guidance for intake, realignment, and code-review upgrades. |
@@ -14,23 +14,23 @@ This repository contains public AI workflow skills by England Tong, including sk
 
 ## Recommended Entry
 
-Use `agent-loop-os` as the entry skill for AI coding work. Use `ai-workflow-os` for non-coding research, source governance, and workflow coordination. `agent-loop-os` routes to the other skills only when needed:
+Use `agent-loop-engineering` as the entry skill for AI coding work. Use `ai-workflow-os` for non-coding research, source governance, and workflow coordination. `agent-loop-engineering` routes to the other skills only when needed:
 
 ```text
-agent-loop-os
+agent-loop-engineering
   -> project-lifecycle-navigator
   -> ai-workflow-os
   -> daily-workflow
   -> web-search-rules
 ```
 
-Do not load every skill on every loop. `agent-loop-os` uses progressive reading and project-local `Docs/` files to keep context small and resumable.
+Do not load every skill on every loop. `agent-loop-engineering` uses progressive reading and project-local `Docs/` files to keep context small and resumable.
 
 ## Repository Layout
 
 ```text
 skills/
-  agent-loop-os/
+  agent-loop-engineering/
   ai-workflow-os/
   daily-workflow/
   project-lifecycle-navigator/
