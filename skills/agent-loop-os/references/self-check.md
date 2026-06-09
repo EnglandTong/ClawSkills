@@ -16,6 +16,7 @@ Run this checklist before ending each loop.
 - Did I append evidence-backed completed work to `Docs/COMPLETED.md` when applicable?
 - Did I update `Docs/EVALUATION.md`, `Docs/PENDING.md`, `Docs/NEXT_ACTIONS.md`, and `Docs/LOOP_RUNS.jsonl`?
 - If the project has no runnable artifact, did I record that reason and use structural review/documentation evidence?
+- If I assumed there is no runnable artifact, is that confirmed by project files or the user rather than convenience?
 - If I stopped, did I name the exact stop rule and human decision needed?
 - If I claimed `Done`, do I have dual evidence?
 

@@ -77,6 +77,12 @@ Recommended repository policy:
 - Store only command name, result, key error summary, and log path in `Docs/`.
 - Redact secrets, tokens, private URLs, customer data, and machine-specific paths before writing any persistent state.
 
+## Archive Triggers
+
+When any active `Docs/` state file grows beyond 200 lines, evaluate whether it should be archived. Move older material to `Docs/archive/<FILENAME>_YYYY-MM.md` or `.jsonl` for JSONL logs, then keep only the latest useful content plus an archive index entry in the original file.
+
+Do not archive unresolved blockers, current acceptance evidence, current target, or the immediate next action.
+
 ## File Budget Enforcement
 
 When a loop would exceed `max_context_files_per_loop`:

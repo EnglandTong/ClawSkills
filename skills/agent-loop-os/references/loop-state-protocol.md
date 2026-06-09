@@ -72,6 +72,18 @@ Store the executable completion contract. `ACCEPTANCE.md` is the source of truth
   Reason:
 ```
 
+Use this evidence format when possible:
+
+```text
+Current evidence: [type] command/scenario -> result; evidence path or short snippet; timestamp
+```
+
+Examples:
+
+- `Current evidence: [automatic] npm test -> passed; .agent/logs/test-2026-06-09.log; 2026-06-09T10:20:00Z`
+- `Current evidence: [functional] POST /api/login invalid password -> 401 with error code AUTH_INVALID; .agent/logs/api-login.json; 2026-06-09T10:25:00Z`
+- `Current evidence: [review] SKILL.md frontmatter has only name + description; manual structural review; 2026-06-09T10:30:00Z`
+
 ### `Docs/STATUS.md`
 
 Keep only the latest working state and recent update history. This schema is compatible with daily workflow checkpoints as long as the compressed context remains present:
@@ -187,9 +199,23 @@ allow_destructive_changes: false
 
 `progress_signals` define what counts as measurable progress. If no signal appears and the core verification still fails, increment `max_consecutive_failures`.
 
+Default signal thresholds:
+
+- `new passing verification`: at least one verification command that failed or was unavailable in the previous loop now passes.
+- `narrower failing scope`: failing test/check count decreases by at least 1 and no new failure category appears.
+- `changed root cause with evidence`: error type, file path, line number, stack frame, or failing scenario changes with a recorded command/log/evidence path.
+- `implemented accepted next action`: the exact `Docs/NEXT_ACTIONS.md` immediate action was completed and verified, even if a later core check still fails.
+
+Progress examples:
+
+- Positive `narrower failing scope`: unit tests drop from 10 failing tests in 3 modules to 3 failing tests in 1 module, with no new failure type.
+- Negative `narrower failing scope`: failures drop from 10 to 8 but add a new build failure category.
+- Positive `changed root cause`: failure changes from `auth token missing` to `session fixture expired`, with a log path or stack trace summary.
+- Negative `changed root cause`: the error wording changes but points to the same file, line, and failing assertion.
+
 `allow_*` fields may make defaults stricter, but they must not loosen the hard stop rules in `environment-escalation.md` unless the user explicitly approves that run and the approval is recorded in `Docs/STOP_RULES.md` under `Overrides`.
 
-`max_consecutive_failures` counts consecutive loops where core verification fails or no measurable progress is made. It does not require the exact same command to fail each time.
+`max_consecutive_failures` counts consecutive loops where `core_verification` fails and no measurable progress signal is present. Non-core verification failures are recorded in `EVALUATION.md` but do not consume this budget unless the project defines a stricter rule.
 
 ### `Docs/STOP_RULES.md`
 
@@ -252,11 +278,32 @@ Append one JSON object per loop. Keep it concise:
 {"run_id":"2026-06-09T17:30:00+08:00","state":"continue","goal_snapshot":"...","action":"...","verification":["typecheck passed"],"risks":[],"next_action":"..."}
 ```
 
+Required fields: `run_id`, `state`, `action`.
+
+Optional fields: `timestamp`, `goal_snapshot`, `verification`, `risks`, `files_touched`, `next_action`, `progress_signal`, `core_verification`, `failure_count`.
+
+Use ISO 8601 timestamps with timezone. Prefer UTC (`Z`) unless the project config requires a local timezone.
+
+Examples:
+
+```json
+{"run_id":"2026-06-09T10:30:00Z","timestamp":"2026-06-09T10:30:00Z","state":"continue","action":"fixed login validation branch","verification":["test failed: 2 auth tests remain"],"progress_signal":"narrower failing scope","core_verification":"test","failure_count":0,"files_touched":["src/auth/login.ts"],"next_action":"fix remaining expired-session test"}
+```
+
+```json
+{"run_id":"2026-06-09T11:00:00Z","timestamp":"2026-06-09T11:00:00Z","state":"blocked","action":"attempted API verification","verification":["requires production API key"],"risks":["secret required"],"core_verification":"functional","failure_count":1,"next_action":"human provides approved staging credential flow"}
+```
+
 Archive older records when record count exceeds `max_recent_loop_records` plus the number needed for the current investigation. Move older records to `Docs/archive/LOOP_RUNS_YYYY-MM.jsonl`.
 
 ### `Docs/HANDOFF.md`
 
-Create only when a standalone handoff is needed:
+Create `HANDOFF.md` when any of these is true:
+
+- The agent session is ending while state is `Continue`.
+- The user requests a checkpoint, wrap-up, or handoff.
+- Context is about to reset or cannot be safely kept in the active loop.
+- State is `Done`, `Done with Risk`, or `Blocked` and the next reader needs a standalone summary.
 
 ```markdown
 # Handoff
@@ -303,6 +350,14 @@ If `TARGET.md` and `ACCEPTANCE.md` disagree, stop before coding and reconcile th
 - Never store secrets, full private documents, large logs, or full chat transcripts.
 - Prefer writing state files in this order at loop end: `EVALUATION.md`, `STATUS.md`, `ACCEPTANCE.md`, `COMPLETED.md`, `PENDING.md`, `NEXT_ACTIONS.md`, `LOOP_RUNS.jsonl`.
 - If a previous write was interrupted, recover by reading `TARGET.md` and `ACCEPTANCE.md` first, then reconciling lower-priority files.
+- If `EVALUATION.md` has a partial final entry, `NEXT_ACTIONS.md` is empty, or `LOOP_RUNS.jsonl` has invalid JSON on the last line, treat the previous write as interrupted. Re-read `TARGET.md` and `ACCEPTANCE.md`, then reconcile `STATUS.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `LOOP_RUNS.jsonl` from the highest-priority complete evidence. Record the recovery in `EVALUATION.md`.
+
+## Git and Persistence Policy
+
+- Version `Docs/TARGET.md`, `Docs/ACCEPTANCE.md`, `Docs/STATUS.md`, `Docs/PENDING.md`, `Docs/NEXT_ACTIONS.md`, `Docs/STOP_RULES.md`, `Docs/COMPLETED.md`, and `Docs/HANDOFF.md` when they are part of project coordination.
+- Version `Docs/EVALUATION.md` and `Docs/LOOP_RUNS.jsonl` only when the project wants loop audit history in Git; otherwise archive or ignore them by project policy.
+- Always ignore `.agent/logs/` unless sanitized logs are intentionally published.
+- Do not delete legacy alias files automatically after migration. Mark them as migrated or leave them read-only unless the user approves removal.
 
 ## Verification Command Discovery
 
@@ -310,8 +365,12 @@ Discover commands in this order:
 
 1. Read project manifests such as `package.json`, `pyproject.toml`, `Makefile`, `Cargo.toml`, `go.mod`, `pom.xml`, or repository docs.
 2. Map conventional script names to `verification_commands`: `test`, `typecheck`, `build`, `lint`, `check`, `validate`, `acceptance`.
-3. If no runnable artifact exists, set `core_verification: review` and record the reason in `Docs/EVALUATION.md`.
-4. If no command can be discovered, add `Manual Confirmation Needed` to `Docs/ACCEPTANCE.md` and stop before claiming `Done`.
+3. If multiple commands exist for one type, choose the narrowest fast command for `core_verification` first, such as unit tests before e2e tests. Record broader commands as non-core verification.
+4. Smoke-check a discovered command once when safe, using `--help`, `--dry-run`, a list mode, or the normal command if no dry-run exists.
+5. If the command itself is unavailable or misconfigured, record the reason in `Docs/EVALUATION.md` and fall back to the next verification layer.
+6. If a command requires secrets, production data, or privileged environment variables, stop under the hard-stop rules.
+7. If no runnable artifact exists, set `core_verification: review` and record the reason in `Docs/EVALUATION.md`.
+8. If no command can be discovered, add `Manual Confirmation Needed` to `Docs/ACCEPTANCE.md` and stop before claiming `Done`.
 
 ## Protocol Versioning
 

@@ -151,4 +151,11 @@ Actions should normally report, open an issue, or prepare a reviewed PR. They sh
 
 ## Adapter Selection
 
-Choose the runner by environment availability. If no runner can safely continue, write `Blocked` and tell the user what setup is needed.
+Choose the runner in this order:
+
+1. Runner explicitly configured in `Docs/LOOP_CONFIG.md`.
+2. Runner explicitly requested by the user.
+3. Runner already active in the current workspace/session.
+4. Lowest-privilege runner that can read the needed files, make project-local edits, and run verification.
+
+If no runner can safely continue, write `Blocked` and tell the user what setup is needed.

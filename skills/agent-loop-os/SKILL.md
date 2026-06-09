@@ -120,9 +120,15 @@ progress_signals:
   - changed root cause with evidence
   - implemented accepted next action
 allow_parallel_tasks: false
+allow_project_dependency_install: true
+allow_project_config_changes: true
+allow_system_install: false
+allow_secret_access: false
+allow_production_data_access: false
+allow_destructive_changes: false
 ```
 
-`max_consecutive_failures` means consecutive loops whose core verification still fails or makes no measurable progress. It counts across verification types unless `Docs/LOOP_CONFIG.md` defines a stricter project-specific rule.
+`max_consecutive_failures` counts only consecutive failures of `core_verification`. If core verification fails but a configured progress signal is present, do not increment the consecutive failure count for that loop. Other verification failures must be recorded in `Docs/EVALUATION.md`, but they do not consume this budget unless `Docs/LOOP_CONFIG.md` defines a stricter project-specific rule.
 
 For simple bug fixes, use 3-5 loops. For multi-file features, 8-10 loops may be reasonable. Keep `max_loops` below 20 unless the user explicitly approves a longer run.
 
@@ -150,7 +156,12 @@ Loop-end write contract:
 
 `daily-workflow` may create broader checkpoint or handoff summaries when explicitly triggered by the user, but it should not replace the loop-end write contract above.
 
-If the user explicitly changes direction, update `Docs/TARGET.md`, regenerate affected acceptance criteria in `Docs/ACCEPTANCE.md`, append a `target_revision` entry to `Docs/EVALUATION.md`, and continue only after the new target is unambiguous. If the direction change is ambiguous, stop and ask.
+If the user changes direction, classify it before editing:
+
+- `scope_expansion`: affects no more than 2 `Must Pass` items and does not change `Non-Goals`. Add or adjust affected `Docs/ACCEPTANCE.md` items and record the expansion in `Docs/EVALUATION.md`.
+- `target_revision`: changes the user goal, changes any `Non-Goals`, replaces the verification strategy, or affects more than 2 `Must Pass` items. Update `Docs/TARGET.md`, regenerate affected acceptance criteria, append a `target_revision` entry to `Docs/EVALUATION.md`, and continue only after the new target is unambiguous.
+
+If the classification is ambiguous, stop and ask.
 
 ## Context Budget
 
@@ -177,6 +188,8 @@ Stop immediately and report `Blocked` when the loop needs:
 - A direction change that conflicts with `Docs/TARGET.md`.
 
 The built-in hard stops in this section and `references/environment-escalation.md` are authoritative. `Docs/STOP_RULES.md` may add stricter project rules. It may not loosen hard stops unless a human approval is recorded under `Docs/STOP_RULES.md` -> `Overrides` with scope and expiration, and that override still cannot permit secret exposure, production data access, or irreversible action without explicit human confirmation for that run.
+
+The `allow_*` flags in `Docs/LOOP_CONFIG.md` cannot override hard stops. They only control whether otherwise safe, project-local whitelist actions are allowed by default.
 
 Stop on budget when:
 

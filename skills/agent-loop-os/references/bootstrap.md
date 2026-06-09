@@ -17,7 +17,7 @@ The agent may create provisional files without a separate confirmation only when
 - The user goal can be restated as one sentence.
 - A runnable verification command or documentation-only verification method is discoverable.
 - No hard-stop risk is present.
-- The user's original request includes acceptance criteria, evidence expectations, or an explicit failure example.
+- The user's original request includes explicit acceptance criteria, evidence expectations, a failure example, or an implied completion condition that is safe to infer, such as "fix bug X" meaning "X no longer reproduces."
 
 If any item is missing, mark bootstrap as `needs confirmation` and ask the user before implementation. Provisional targets must start with:
 
@@ -58,11 +58,13 @@ Create files in this order:
 9. `Docs/LOOP_RUNS.jsonl`
 10. `Docs/COMPLETED.md`
 
+Minimum first-loop files are `TARGET.md`, `ACCEPTANCE.md`, `LOOP_CONFIG.md`, `STATUS.md`, `PENDING.md`, and `NEXT_ACTIONS.md`. `STOP_RULES.md`, `EVALUATION.md`, `LOOP_RUNS.jsonl`, and `COMPLETED.md` should still be created before the first loop ends.
+
 Create `Docs/HANDOFF.md` only when a standalone handoff is needed.
 
 ## Bootstrap Questions
 
-Ask only what is needed to write `TARGET.md` and `ACCEPTANCE.md`:
+Ask only what is needed to write `TARGET.md` and `ACCEPTANCE.md`, in this order:
 
 ```text
 - What is the user goal?
@@ -71,6 +73,13 @@ Ask only what is needed to write `TARGET.md` and `ACCEPTANCE.md`:
 - What evidence should prove completion?
 - What would count as failure?
 ```
+
+Minimum ask rule:
+
+- If the goal cannot be restated in one sentence, ask for the goal.
+- If no explicit or safely implied completion condition exists, ask what must be true for completion.
+- If the request could affect data, permissions, external accounts, or existing behavior, ask for non-goals or boundaries.
+- If failure would be ambiguous, ask for one failure example.
 
 ## Bootstrap Output
 
@@ -104,3 +113,9 @@ Use this when creating the first `Docs/NEXT_ACTIONS.md`:
 ```
 
 For documentation-only or skill-only projects, replace "run the core verification command" with "run structural validation and review the changed documentation paths."
+
+Examples:
+
+- Bug fix: `Reproduce bug X with the smallest command or flow, inspect the failing path, make the minimal fix, then run the core verification and the reproduction scenario.`
+- New feature: `Identify the narrowest acceptance item, implement only that slice, then run automatic verification plus one functional scenario.`
+- Documentation or skill-only: `Validate required files and schema, review the changed references for consistency, and record review evidence in ACCEPTANCE.md.`

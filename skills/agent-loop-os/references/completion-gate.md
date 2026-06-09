@@ -64,22 +64,40 @@ Use `Docs/LOOP_CONFIG.md` -> `core_verification` when present. If it is missing:
 
 Core verification failure counts toward `max_consecutive_failures` unless the loop produced a configured progress signal.
 
+Only `core_verification` failures consume `max_consecutive_failures`. Non-core failures, such as lint failing while tests pass, must be recorded as risks or missing evidence but do not consume this specific budget unless the project config says so.
+
+## Conflicting Evidence
+
+When automatic verification and functional verification disagree:
+
+- Functional verification failure blocks `Done`, even if all automatic checks pass.
+- Automatic verification failure blocks `Done`, even if a manual flow appears to work.
+- If the next fix is clear and budget remains, use `Continue`.
+- If the core goal appears satisfied but the failing evidence is outside the current target or requires manual confirmation, use `Done with Risk`.
+- If the conflict prevents judging completion, use `Blocked`.
+
+Record the conflict in `Docs/EVALUATION.md` with the command or scenario, observed result, and affected acceptance item.
+
 ## Functional Verification By Project Type
 
 | Project type | Functional evidence |
 | --- | --- |
-| Frontend app | Render the changed page or component, exercise the main interaction, and capture screenshot, DOM assertion, or browser evidence when possible. |
-| API service | Run a request against the changed endpoint, a curl/httpie sample, or a representative integration test with response snippet. |
-| CLI | Run `--help` plus one core command with sample input and expected output. |
+| Frontend app | Render the changed page or component, exercise the main interaction, and capture screenshot, DOM assertion, or browser evidence when possible. Minimum: route/component, action, assertion/result. |
+| API service | Run a request against the changed endpoint, a curl/httpie sample, or a representative integration test with response snippet. Minimum: method/path, request class, status/result snippet, assertion. |
+| CLI | Run `--help` plus one core command with sample input and expected output. Minimum: command, input, exit status, expected output snippet. |
 | Library or SDK | Import the package and call the changed public function in a test or small sample. |
 | Data pipeline | Run a dry-run, sample transform, fixture-based job, or query preview. |
 | Infrastructure/config | Run plan, validate, dry-run, or static policy check. |
 | Documentation-only or skill-only project | Run structural validation and review the rendered or linked documentation paths. |
 | Headless runner with no UI access | Use test-id assertions, DOM snapshots, API samples, fixture runs, or mark `Done with Risk` with manual confirmation listed. |
 
+For feature work, prefer at least one positive scenario and one negative or boundary scenario when that can be done without exceeding scope. If only one scenario is practical, record why.
+
 ## No Runnable Artifact
 
 A project has no runnable artifact only when it is purely documentation, prompt/skill text, policy, configuration guidance, or static reference material. Record this in `Docs/EVALUATION.md` and replace functional verification with review/documentation evidence.
+
+For this case, `review` means structural validation plus documented review evidence, such as required files present, schema/frontmatter valid, internal links or references checked, examples aligned with the protocol, and no sensitive content detected.
 
 ## Evaluation Template
 
