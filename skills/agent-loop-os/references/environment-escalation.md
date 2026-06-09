@@ -15,6 +15,8 @@ The agent may proceed without asking when the change is project-local, reversibl
 - Regenerate project-local generated files when the repository already uses that generator.
 - Fix regressions introduced by the current loop.
 
+`Docs/LOOP_CONFIG.md` may disable any of these actions for a project. It cannot enable actions listed in Must Ask A Human unless the user explicitly approves that specific run.
+
 ## Must Ask A Human
 
 Stop and ask before:

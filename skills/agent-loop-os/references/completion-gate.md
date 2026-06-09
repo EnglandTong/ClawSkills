@@ -52,6 +52,20 @@ Prefer at least two evidence classes for `Done`:
 
 `Done` requires automatic verification plus functional verification unless the project explicitly has no runnable artifact. If no runnable artifact exists, record why and use review/documentation evidence instead.
 
+## Functional Verification By Project Type
+
+- Frontend app: render the changed page or component, exercise the main interaction, and capture screenshot or browser evidence when possible.
+- API service: run a request against the changed endpoint or a representative integration test.
+- CLI: run `--help` plus one core command with sample input.
+- Library or SDK: import the package and call the changed public function in a test or small sample.
+- Data pipeline: run a dry-run, sample transform, fixture-based job, or query preview.
+- Infrastructure/config: run plan, validate, dry-run, or static policy check.
+- Documentation-only or skill-only project: run structural validation and review the rendered or linked documentation paths.
+
+## No Runnable Artifact
+
+A project has no runnable artifact only when it is purely documentation, prompt/skill text, policy, configuration guidance, or static reference material. Record this in `Docs/EVALUATION.md` and replace functional verification with review/documentation evidence.
+
 ## Evaluation Template
 
 ```markdown

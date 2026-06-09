@@ -59,3 +59,25 @@ Expected behavior:
 3. Require automatic verification and functional verification.
 4. Use `Done`, `Done with Risk`, or `Blocked`.
 5. Write evaluation and next action.
+
+## Multi-Loop Bug Fix
+
+Loop 1:
+
+```json
+{"run_id":"loop-1","state":"continue","action":"reproduced failing login test","verification":["npm test failed: login redirects incorrectly"],"next_action":"inspect auth redirect handler"}
+```
+
+Loop 2:
+
+```json
+{"run_id":"loop-2","state":"continue","action":"patched redirect handler","verification":["typecheck passed","login test still failed"],"risks":["second consecutive verification failure would trigger budget stop"],"next_action":"inspect session state fixture"}
+```
+
+Loop 3:
+
+```json
+{"run_id":"loop-3","state":"done","action":"fixed session fixture and redirect handler","verification":["typecheck passed","login test passed","manual login fixture passed"],"next_action":"none"}
+```
+
+If Loop 3 failed without measurable progress, classify as `Blocked` because `max_consecutive_failures: 2` would be reached.

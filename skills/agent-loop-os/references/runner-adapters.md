@@ -24,29 +24,57 @@ Use $agent-loop-os in this workspace. Read Docs/LOOP_CONFIG.md and Docs/NEXT_ACT
 
 Use scheduled prompts or loop workflows. Keep Claude-specific commands outside project state. The prompt should ask Claude to read `Docs/` first, run one loop, and stop on hard gates.
 
+```text
+Use the local Agent Loop OS protocol. Read only the minimum Docs/ files, run one bounded loop, update EVALUATION/PENDING/NEXT_ACTIONS/LOOP_RUNS, and stop on hard or budget gates.
+```
+
 ## OpenCode
 
 Use an external scheduler or command loop. The wrapper should call OpenCode with a prompt pointing to `Docs/NEXT_ACTIONS.md` and a maximum loop budget.
+
+```text
+Continue the project from Docs/NEXT_ACTIONS.md. Do one bounded implementation and verification loop. Do not continue after a hard stop; write Blocked state to Docs/.
+```
 
 ## Cline
 
 Use the VS Code workspace as the execution surface. Cline should treat `Docs/NEXT_ACTIONS.md` as the current task and `Docs/EVALUATION.md` as the stop report.
 
+```text
+Read Docs/TARGET.md, Docs/ACCEPTANCE.md, and Docs/NEXT_ACTIONS.md. Execute the next action in this workspace, then update the loop state files before ending.
+```
+
 ## Qoder
 
 Use project documents as persistent context. Ask Qoder to read only the minimum `Docs/` set and to update loop state before ending the task.
+
+```text
+Use project Docs/ as persistent state. Do not rely on prior chat memory. Run one loop, verify, and classify the result as Continue, Done, Done with Risk, or Blocked.
+```
 
 ## CodeBuddy
 
 Use task decomposition plus project state files. CodeBuddy should not continue from chat memory alone; it should resume from `Docs/STATUS.md` and `Docs/NEXT_ACTIONS.md`.
 
+```text
+Resume from Docs/STATUS.md and Docs/NEXT_ACTIONS.md. Keep the work inside Docs/TARGET.md and update EVALUATION.md with evidence before stopping.
+```
+
 ## Trae
 
 Use workspace tasks and check commands. Trae should run one bounded implementation/verification loop and write the same shared state files.
 
+```text
+Read the Agent Loop OS Docs/ files, execute the immediate next action, run discovered verification commands, and stop if any hard gate is triggered.
+```
+
 ## Gemini CLI and Aider
 
 Use an outer script, manual command, or scheduler. Limit each run by time and failure count. Keep all durable state in `Docs/`, not in CLI history.
+
+```text
+Run one bounded coding loop from Docs/NEXT_ACTIONS.md. Use Docs/LOOP_CONFIG.md budgets. Write all durable state back to Docs/ before exiting.
+```
 
 ## GitHub Actions
 

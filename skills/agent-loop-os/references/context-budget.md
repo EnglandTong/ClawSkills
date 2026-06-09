@@ -43,6 +43,30 @@ Remove:
 - Old failed attempts that no longer affect the next decision.
 - Duplicate summaries.
 
+## Compressed Context Template
+
+Use this format in `Docs/STATUS.md`:
+
+```markdown
+## Compressed Context
+- Target: one sentence
+- Target changed: yes/no
+- Decisions: max 5 bullets
+- Completed: max 5 bullets
+- Verification: command + status + evidence path
+- Pending: max 5 bullets
+- Blockers: max 5 bullets
+- Files touched: paths only
+- Logs/evidence paths: paths only
+- Immediate next action: exactly one action
+```
+
+Keep each bullet short. Store detailed logs under the configured `log_directory` such as `.agent/logs`, then reference the path.
+
+## Log Storage
+
+Do not put full logs in `Docs/`. Use `log_directory` from `Docs/LOOP_CONFIG.md`; default to `.agent/logs`. If the directory is ignored by Git, record enough summary in `STATUS.md` for the next agent to continue.
+
 ## Context Stop Gate
 
 Stop with `Blocked` when:

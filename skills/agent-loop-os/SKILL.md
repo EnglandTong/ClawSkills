@@ -26,14 +26,28 @@ State is stable. Runner is replaceable. Stop rules are universal.
 - Read only the minimum project state needed for the current loop.
 - Stop when a hard gate, budget gate, direction gate, or validation gate is triggered.
 - Mark completion only when evidence supports it.
+- Resolve state conflicts in this order: `TARGET.md` -> `ACCEPTANCE.md` -> `STATUS.md` -> `PENDING.md` -> `NEXT_ACTIONS.md`.
+
+## Flow
+
+```text
+Bootstrap if Docs/ is missing
+  -> Loop Start
+  -> Verify target and acceptance
+  -> Discover project verification commands
+  -> Execute one bounded implementation loop
+  -> Run automatic and functional verification
+  -> Completion or stop gate
+  -> Write state and user report
+```
 
 ## Related Skills
 
 Route to existing skills only when needed:
 
-1. Use `project-lifecycle-navigator` when the project stage, MVP boundary, goal, or review scope is unclear.
-2. Use `ai-workflow-os` when project governance, cross-source synthesis, or workflow coordination is needed.
-3. Use `daily-workflow` when creating checkpoints, handoff summaries, or compressed continuation context.
+1. Use `project-lifecycle-navigator` when `Docs/TARGET.md` is missing, the user cannot state the goal in one sentence, multiple goals conflict, or MVP boundaries are unclear.
+2. Use `ai-workflow-os` when project governance, cross-source synthesis, workflow coordination, or multi-source decision tracking is needed.
+3. Use `daily-workflow` when creating checkpoints, handoff summaries, compressed continuation context, or recovery after context loss.
 4. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling.
 
 Do not load every related skill every loop. Load the narrow skill or reference file that answers the current question.
@@ -58,28 +72,46 @@ Agent Loop OS files:
 - `Docs/STOP_RULES.md`
 - `Docs/LOOP_RUNS.jsonl`
 
+If `Docs/` does not exist or both `Docs/TARGET.md` and `Docs/ACCEPTANCE.md` are missing, follow `references/bootstrap.md` before coding.
+
 ## Loop Start
 
 At the start of each loop:
 
 1. Read `Docs/LOOP_CONFIG.md` if it exists; otherwise use the default budget below.
-2. Read `Docs/TARGET.md` and `Docs/ACCEPTANCE.md`.
-3. Read only the latest compressed context in `Docs/STATUS.md`.
-4. Read only Immediate and Blockers sections from `Docs/PENDING.md`.
-5. Read `Docs/NEXT_ACTIONS.md`.
-6. If the target or acceptance criteria are missing, create or propose them before coding.
-7. If the next action conflicts with the target, stop and ask for direction.
+2. Check file consistency using the priority order in Core Rule.
+3. Read `Docs/TARGET.md` and `Docs/ACCEPTANCE.md`.
+4. Read only the latest compressed context in `Docs/STATUS.md`.
+5. Read only Immediate and Blockers sections from `Docs/PENDING.md`.
+6. Read `Docs/NEXT_ACTIONS.md`.
+7. Read project manifests such as `package.json`, `pyproject.toml`, `Makefile`, `Cargo.toml`, `go.mod`, `pom.xml`, or repository docs to identify test, lint, build, typecheck, and functional verification commands. Record discovered commands in `Docs/LOOP_CONFIG.md`.
+8. If the target or acceptance criteria are missing, create or propose them before coding.
+9. If the next action conflicts with the target, stop and ask for direction unless the user explicitly requested a target revision.
 
 Default budget:
 
 ```yaml
+protocol_version: 1
+runner: generic
 max_loops: 5
 max_consecutive_failures: 2
 max_runtime_minutes: 60
 max_context_files_per_loop: 8
 max_recent_loop_records: 5
 require_double_evidence_for_done: true
+log_directory: .agent/logs
+verification_commands:
+  test: null
+  typecheck: null
+  build: null
+  lint: null
+  functional: null
+allow_parallel_tasks: false
 ```
+
+`max_consecutive_failures` means consecutive loops whose core verification still fails or makes no measurable progress. It counts across verification types unless `Docs/LOOP_CONFIG.md` defines a stricter project-specific rule.
+
+For simple bug fixes, use 3-5 loops. For multi-file features, 8-10 loops may be reasonable. Keep `max_loops` below 20 unless the user explicitly approves a longer run.
 
 ## Loop Execution
 
@@ -90,6 +122,8 @@ Select next action -> Implement minimal change -> Run verification -> Review res
 ```
 
 The agent may automatically handle project-local problems listed in `references/environment-escalation.md`. The agent must stop and ask a human for anything outside that whitelist.
+
+If the user explicitly changes direction, update `Docs/TARGET.md`, regenerate affected acceptance criteria in `Docs/ACCEPTANCE.md`, append a `target_revision` entry to `Docs/EVALUATION.md`, and continue only after the new target is unambiguous. If the direction change is ambiguous, stop and ask.
 
 ## Context Budget
 
@@ -135,6 +169,8 @@ Use only these states:
 
 Read `references/completion-gate.md` before declaring `Done` or `Done with Risk`.
 
+Before ending any loop, run the checklist in `references/self-check.md`.
+
 ## Runner Adapters
 
 This skill is runner-neutral. Use `references/runner-adapters.md` when adapting the loop to Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, GitHub Actions, or a local scheduler.
@@ -161,3 +197,5 @@ Loop status: Continue / Done / Done with Risk / Blocked
 ```
 
 Use the user's language by default.
+
+The chat report is for the user. Also append the decision and evidence to `Docs/EVALUATION.md`.
