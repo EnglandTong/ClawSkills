@@ -7,6 +7,8 @@ Slug / 包名: `ai-workflow-os`
 
 AI Workflow Operating System is a bilingual master skill that combines project lifecycle planning, project memory, task handoff, web and file intake, source filtering, knowledge-base governance, cross-source synthesis, and audit tracking into one unified AI workflow.
 
+Scope boundary: for coding-loop control, long-running implementation, environment stop gates, context-budgeted development loops, and Done / Done with Risk / Blocked completion gates, use `agent-loop-os`. This skill remains the workflow and knowledge-governance controller for project lifecycle planning, research intake, source governance, cross-source synthesis, project memory, and non-coding coordination. When both skills are present, `agent-loop-os` is authoritative for coding loop state and `ai-workflow-os` is authoritative for research or governance state.
+
 AI 工作流操作系统是一个中英双语总控 Skill，用于把项目生命周期规划、项目记忆、任务交接、网页与文件资料接入、来源筛选、知识库入库治理、多来源综合分析和审计追踪整合到一个统一工作流中。
 
 This skill is the unified upgrade of the previous Project Lifecycle Navigator, Daily Workflow, and Web Search Rules skills. The Web Search Rules workflow is upgraded into Knowledge Intake Governance, supporting web pages, files, documents, spreadsheets, slides, images, datasets, manual notes, and other research materials. Going forward, these workflows can be maintained together in this single bilingual package.

@@ -52,15 +52,30 @@ Prefer at least two evidence classes for `Done`:
 
 `Done` requires automatic verification plus functional verification unless the project explicitly has no runnable artifact. If no runnable artifact exists, record why and use review/documentation evidence instead.
 
+## Core Verification Selection
+
+Use `Docs/LOOP_CONFIG.md` -> `core_verification` when present. If it is missing:
+
+1. Use `verification_commands.test`.
+2. If no test command exists, use `typecheck`.
+3. If no typecheck command exists, use `build`.
+4. If no build command exists, use `lint`.
+5. If no runnable command exists, use `review` and record `No runnable artifact` in `Docs/EVALUATION.md`.
+
+Core verification failure counts toward `max_consecutive_failures` unless the loop produced a configured progress signal.
+
 ## Functional Verification By Project Type
 
-- Frontend app: render the changed page or component, exercise the main interaction, and capture screenshot or browser evidence when possible.
-- API service: run a request against the changed endpoint or a representative integration test.
-- CLI: run `--help` plus one core command with sample input.
-- Library or SDK: import the package and call the changed public function in a test or small sample.
-- Data pipeline: run a dry-run, sample transform, fixture-based job, or query preview.
-- Infrastructure/config: run plan, validate, dry-run, or static policy check.
-- Documentation-only or skill-only project: run structural validation and review the rendered or linked documentation paths.
+| Project type | Functional evidence |
+| --- | --- |
+| Frontend app | Render the changed page or component, exercise the main interaction, and capture screenshot, DOM assertion, or browser evidence when possible. |
+| API service | Run a request against the changed endpoint, a curl/httpie sample, or a representative integration test with response snippet. |
+| CLI | Run `--help` plus one core command with sample input and expected output. |
+| Library or SDK | Import the package and call the changed public function in a test or small sample. |
+| Data pipeline | Run a dry-run, sample transform, fixture-based job, or query preview. |
+| Infrastructure/config | Run plan, validate, dry-run, or static policy check. |
+| Documentation-only or skill-only project | Run structural validation and review the rendered or linked documentation paths. |
+| Headless runner with no UI access | Use test-id assertions, DOM snapshots, API samples, fixture runs, or mark `Done with Risk` with manual confirmation listed. |
 
 ## No Runnable Artifact
 
@@ -74,6 +89,7 @@ A project has no runnable artifact only when it is purely documentation, prompt/
 - State: Done / Done with Risk / Blocked / Continue
 - Target alignment:
 - Success criteria:
+- Acceptance evidence updated:
 - Non-goals preserved:
 - Automatic verification:
 - Functional verification:

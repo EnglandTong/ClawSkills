@@ -12,7 +12,36 @@ If `Docs/` is missing or both `Docs/TARGET.md` and `Docs/ACCEPTANCE.md` are miss
 4. Ask the user to confirm or correct the target when the goal is not already explicit.
 5. Create `Docs/` files only after the target is clear enough to avoid wasted work.
 
-If the user gave a precise, low-risk task with clear acceptance criteria, the agent may create provisional files without a separate confirmation. Mark them as `Provisional` and record the assumption in `Docs/EVALUATION.md`.
+The agent may create provisional files without a separate confirmation only when all items below are true:
+
+- The user goal can be restated as one sentence.
+- A runnable verification command or documentation-only verification method is discoverable.
+- No hard-stop risk is present.
+- The user's original request includes acceptance criteria, evidence expectations, or an explicit failure example.
+
+If any item is missing, mark bootstrap as `needs confirmation` and ask the user before implementation. Provisional targets must start with:
+
+```markdown
+Status: Provisional
+```
+
+Confirmed targets must start with:
+
+```markdown
+Status: Confirmed
+```
+
+Record provisional assumptions in `Docs/EVALUATION.md`.
+
+## Existing Docs Migration
+
+If the project already has `Docs/` from another workflow, do not rebuild it.
+
+1. If `Docs/TARGET.md` exists but `Docs/ACCEPTANCE.md` is missing, derive a first acceptance contract from `TARGET.md` and mark uncertain items under `Manual Confirmation Needed`.
+2. If legacy aliases exist, read them once and migrate to canonical names: `PROJECT_TARGET.md` -> `TARGET.md`, `PROJECT_STATUS.md` -> `STATUS.md`, `COMPLETED_JOBS.md` -> `COMPLETED.md`, `PENDING_JOBS.md` -> `PENDING.md`, `NEXT_STEPS.md` or `SCHEDULE.md` -> `NEXT_ACTIONS.md`.
+3. Preserve existing `Docs/COMPLETED.md` or migrated completed-work history.
+4. Create missing `LOOP_CONFIG.md`, `STOP_RULES.md`, `EVALUATION.md`, and `LOOP_RUNS.jsonl` with conservative defaults.
+5. Record the migration decision in `Docs/EVALUATION.md`.
 
 ## File Creation Order
 
@@ -27,6 +56,7 @@ Create files in this order:
 7. `Docs/NEXT_ACTIONS.md`
 8. `Docs/EVALUATION.md`
 9. `Docs/LOOP_RUNS.jsonl`
+10. `Docs/COMPLETED.md`
 
 Create `Docs/HANDOFF.md` only when a standalone handoff is needed.
 
@@ -56,3 +86,21 @@ Bootstrap complete / needs confirmation
 ```
 
 Do not proceed to implementation until `TARGET.md` and `ACCEPTANCE.md` are present and not contradictory.
+
+## First Loop Action Template
+
+Use this when creating the first `Docs/NEXT_ACTIONS.md`:
+
+```markdown
+# Next Actions
+
+## Immediate Next Action
+1. Reproduce or inspect the smallest path that proves the target, then make the minimal safe change and run the core verification command.
+
+## Stop/Resume Notes
+- Stop state: Continue
+- Resume command or entry point: Use Agent Loop OS from Docs/NEXT_ACTIONS.md
+- Needed human input: None unless a hard stop appears
+```
+
+For documentation-only or skill-only projects, replace "run the core verification command" with "run structural validation and review the changed documentation paths."

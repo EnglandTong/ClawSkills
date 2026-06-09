@@ -14,7 +14,7 @@ This repository contains public AI workflow skills by England Tong, including sk
 
 ## Recommended Entry
 
-Use `agent-loop-os` as the entry skill for AI coding work. It routes to the other skills only when needed:
+Use `agent-loop-os` as the entry skill for AI coding work. Use `ai-workflow-os` for non-coding research, source governance, and workflow coordination. `agent-loop-os` routes to the other skills only when needed:
 
 ```text
 agent-loop-os

@@ -15,6 +15,8 @@ At loop start, read only:
 
 If `LOOP_RUNS.jsonl` is needed, read only the latest 3-5 records.
 
+These six items count toward `max_context_files_per_loop`. Reading only a section of a file still counts as one context file. Project manifests used to discover verification commands also count. Files listed but not opened do not count.
+
 ## Conditional Reads
 
 - Read `completion-gate.md` only before declaring completion or risk.
@@ -34,6 +36,8 @@ At the end of each loop, keep:
 - Open blockers.
 - Files touched.
 - One immediate next action.
+
+Keep `Docs/STATUS.md` compressed context under `max_compressed_context_lines` from `Docs/LOOP_CONFIG.md`; default is 40 lines. If the summary needs more than the limit, keep only facts needed for the next loop and move supporting detail to logs or archive files.
 
 Remove:
 
@@ -66,6 +70,31 @@ Keep each bullet short. Store detailed logs under the configured `log_directory`
 ## Log Storage
 
 Do not put full logs in `Docs/`. Use `log_directory` from `Docs/LOOP_CONFIG.md`; default to `.agent/logs`. If the directory is ignored by Git, record enough summary in `STATUS.md` for the next agent to continue.
+
+Recommended repository policy:
+
+- Keep `.agent/logs/` out of public commits unless the project explicitly needs sanitized logs.
+- Store only command name, result, key error summary, and log path in `Docs/`.
+- Redact secrets, tokens, private URLs, customer data, and machine-specific paths before writing any persistent state.
+
+## File Budget Enforcement
+
+When a loop would exceed `max_context_files_per_loop`:
+
+1. Keep required state files and the core manifest first.
+2. Queue optional reads in `Docs/PENDING.md` instead of opening them.
+3. Summarize already-read material into `Docs/STATUS.md`.
+4. Continue only if the next action can be done safely from the remaining context.
+5. If the agent cannot judge the target, risk, or verification without more files, stop as `Blocked` with reason `context budget exceeded`.
+
+Default loop sizes:
+
+| Task type | Suggested `max_loops` |
+| --- | --- |
+| Small bug fix | 3-5 |
+| Multi-file feature | 8-10 |
+| Investigation-heavy repair | 10-15 |
+| More than 20 loops | Requires explicit user approval |
 
 ## Context Stop Gate
 

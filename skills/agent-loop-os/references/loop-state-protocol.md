@@ -4,11 +4,26 @@ Use project-local `Docs/` as the durable state source. Do not use global memory 
 
 ## Files
 
+Canonical files are written in the names below. Legacy aliases may be read for migration only.
+
+| Canonical file | Legacy aliases to read |
+| --- | --- |
+| `Docs/TARGET.md` | `Docs/PROJECT_TARGET.md` |
+| `Docs/STATUS.md` | `Docs/PROJECT_STATUS.md` |
+| `Docs/COMPLETED.md` | `Docs/COMPLETED_JOBS.md` |
+| `Docs/PENDING.md` | `Docs/PENDING_JOBS.md` |
+| `Docs/NEXT_ACTIONS.md` | `Docs/NEXT_STEPS.md`, `Docs/SCHEDULE.md` |
+| `Docs/HANDOFF.md` | none |
+
+If aliases are found, migrate once, record the mapping in `Docs/EVALUATION.md`, then write only canonical files.
+
 ### `Docs/TARGET.md`
 
 Store the stable goal contract. `TARGET.md` is the source of truth for what the project is trying to do and what is out of scope. Keep success criteria high-level here; put executable checks in `ACCEPTANCE.md`.
 
 ```markdown
+Status: Confirmed
+
 # Project Target
 
 ## User Goal
@@ -59,7 +74,7 @@ Store the executable completion contract. `ACCEPTANCE.md` is the source of truth
 
 ### `Docs/STATUS.md`
 
-Keep only the latest working state and recent update history:
+Keep only the latest working state and recent update history. This schema is compatible with daily workflow checkpoints as long as the compressed context remains present:
 
 ```markdown
 # Project Status
@@ -83,6 +98,20 @@ Keep only the latest working state and recent update history:
 - Commands/tests: command + result + short error summary
 - Evidence paths: log, screenshot, fixture, or report path
 - Immediate next action: exactly one action
+```
+
+### `Docs/COMPLETED.md`
+
+Append user-visible or verification-backed completed units. Keep entries concise; archive by month if the file becomes too large.
+
+```markdown
+# Completed Work
+
+## YYYY-MM-DD
+- Completed:
+  Evidence:
+  Related acceptance item:
+  Files:
 ```
 
 ### `Docs/PENDING.md`
@@ -131,8 +160,15 @@ max_runtime_minutes: 60
 max_context_files_per_loop: 8
 max_recent_loop_records: 5
 require_double_evidence_for_done: true
+core_verification: test
+max_compressed_context_lines: 40
 log_directory: .agent/logs
 allow_parallel_tasks: false
+progress_signals:
+  - new passing verification
+  - narrower failing scope
+  - changed root cause with evidence
+  - implemented accepted next action
 verification_commands:
   test: null
   typecheck: null
@@ -147,7 +183,11 @@ allow_production_data_access: false
 allow_destructive_changes: false
 ```
 
-`allow_*` fields may make defaults stricter, but they must not loosen the hard stop rules in `environment-escalation.md` unless the user explicitly approves that run.
+`core_verification` defaults to `test`. If no test command exists, use the first available command in this order: `typecheck`, `build`, `lint`, `functional`, `review`.
+
+`progress_signals` define what counts as measurable progress. If no signal appears and the core verification still fails, increment `max_consecutive_failures`.
+
+`allow_*` fields may make defaults stricter, but they must not loosen the hard stop rules in `environment-escalation.md` unless the user explicitly approves that run and the approval is recorded in `Docs/STOP_RULES.md` under `Overrides`.
 
 `max_consecutive_failures` counts consecutive loops where core verification fails or no measurable progress is made. It does not require the exact same command to fail each time.
 
@@ -176,8 +216,13 @@ Store project-specific stop rules and overrides. Project-specific rules may be s
 ## Overrides
 - Override:
   Approved by:
+  Approval source:
   Expiration:
+  Scope:
+  Cannot override:
 ```
+
+`STOP_RULES.md` can only add stricter project rules by default. Overrides must be narrow, time-limited, and cannot allow secret exposure, production data access, destructive Git operations, or irreversible changes without explicit human confirmation for that specific run.
 
 ### `Docs/EVALUATION.md`
 
@@ -193,8 +238,11 @@ Append each evaluation:
 - Functional verification:
 - Risks:
 - Stop rule triggered:
+- Acceptance evidence updated:
 - Next action:
 ```
+
+Archive older evaluation entries to `Docs/archive/EVALUATION_YYYY-MM.md` when the file grows beyond the latest 10 loop evaluations plus any active investigation entries. Keep a short index entry in `EVALUATION.md` with the archived date range.
 
 ### `Docs/LOOP_RUNS.jsonl`
 
@@ -247,8 +295,24 @@ If `TARGET.md` and `ACCEPTANCE.md` disagree, stop before coding and reconcile th
 ## Write Rules
 
 - Append to `LOOP_RUNS.jsonl` and `EVALUATION.md`.
+- Update `STATUS.md` compressed context every loop.
+- Update touched `ACCEPTANCE.md` items every loop by filling `Current evidence`, or by noting the missing evidence for blocked criteria.
+- Append completed, evidence-backed work to `COMPLETED.md`.
 - Preserve unresolved blockers in `PENDING.md`.
 - Keep only the current continuation path in `NEXT_ACTIONS.md`.
 - Never store secrets, full private documents, large logs, or full chat transcripts.
-- Prefer writing state files in this order at loop end: `EVALUATION.md`, `PENDING.md`, `NEXT_ACTIONS.md`, `LOOP_RUNS.jsonl`.
+- Prefer writing state files in this order at loop end: `EVALUATION.md`, `STATUS.md`, `ACCEPTANCE.md`, `COMPLETED.md`, `PENDING.md`, `NEXT_ACTIONS.md`, `LOOP_RUNS.jsonl`.
 - If a previous write was interrupted, recover by reading `TARGET.md` and `ACCEPTANCE.md` first, then reconciling lower-priority files.
+
+## Verification Command Discovery
+
+Discover commands in this order:
+
+1. Read project manifests such as `package.json`, `pyproject.toml`, `Makefile`, `Cargo.toml`, `go.mod`, `pom.xml`, or repository docs.
+2. Map conventional script names to `verification_commands`: `test`, `typecheck`, `build`, `lint`, `check`, `validate`, `acceptance`.
+3. If no runnable artifact exists, set `core_verification: review` and record the reason in `Docs/EVALUATION.md`.
+4. If no command can be discovered, add `Manual Confirmation Needed` to `Docs/ACCEPTANCE.md` and stop before claiming `Done`.
+
+## Protocol Versioning
+
+Use `protocol_version: 1` for this document. Future versions must preserve canonical file names or provide an alias migration table. Unknown fields should be preserved when rewriting state.

@@ -12,6 +12,28 @@ Every runner must:
 - Write `EVALUATION.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `LOOP_RUNS.jsonl` before exiting.
 - Avoid storing product-specific state as the only copy of project memory.
 
+Minimum external loop contract:
+
+```text
+input: workspace path + prompt that says "run one Agent Loop OS loop"
+must read: Docs/LOOP_CONFIG.md, TARGET.md, ACCEPTANCE.md, STATUS.md, PENDING.md, NEXT_ACTIONS.md
+must write: EVALUATION.md, STATUS.md, ACCEPTANCE.md, PENDING.md, NEXT_ACTIONS.md, LOOP_RUNS.jsonl
+optional write: COMPLETED.md, HANDOFF.md
+continue behavior: exit after one loop; the scheduler may start the next loop only if state is Continue
+budget exhausted: write Blocked, name the exhausted budget, and exit
+```
+
+Suggested adapter exit convention:
+
+| State | Exit code | Meaning |
+| --- | ---: | --- |
+| Continue | 0 | One loop finished and another loop may be scheduled. |
+| Done | 0 | Target completed; scheduler must not continue. |
+| Done with Risk | 1 | Core target appears complete but user review is needed. |
+| Blocked | 2 | Human input, permission, or decision is required. |
+
+If a runner cannot set exit codes, it must still write the state to `Docs/EVALUATION.md` and `Docs/LOOP_RUNS.jsonl`.
+
 ## Codex
 
 Use heartbeat or automation when available. Each wakeup should instruct Codex to:
@@ -19,6 +41,8 @@ Use heartbeat or automation when available. Each wakeup should instruct Codex to
 ```text
 Use $agent-loop-os in this workspace. Read Docs/LOOP_CONFIG.md and Docs/NEXT_ACTIONS.md, run one bounded loop, then write evaluation and stop/continue status.
 ```
+
+Blocked example: if a command needs GitHub login, write `Blocked` with needed login scope, update `PENDING.md`, and stop.
 
 ## Claude Code
 
@@ -34,6 +58,15 @@ Use an external scheduler or command loop. The wrapper should call OpenCode with
 
 ```text
 Continue the project from Docs/NEXT_ACTIONS.md. Do one bounded implementation and verification loop. Do not continue after a hard stop; write Blocked state to Docs/.
+```
+
+Outer loop sketch:
+
+```text
+while last_state == Continue and loop_count < max_loops:
+  run opencode with the one-loop prompt
+  read latest state from Docs/EVALUATION.md
+  stop unless state is Continue
 ```
 
 ## Cline
@@ -76,6 +109,8 @@ Use an outer script, manual command, or scheduler. Limit each run by time and fa
 Run one bounded coding loop from Docs/NEXT_ACTIONS.md. Use Docs/LOOP_CONFIG.md budgets. Write all durable state back to Docs/ before exiting.
 ```
 
+Do not let CLI history become the only memory source. If the wrapper sees exit code 2 or latest state `Blocked`, stop scheduling.
+
 ## GitHub Actions
 
 Use for CI checks, scheduled diagnostics, issue creation, and repair PRs. Do not use GitHub Actions to access secrets, production resources, or perform destructive changes unless explicitly approved.
@@ -85,6 +120,34 @@ Suggested use:
 ```text
 schedule -> run checks -> summarize failure -> open issue or PR -> stop for review
 ```
+
+Minimal workflow shape:
+
+```yaml
+name: agent-loop-check
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run project checks
+        run: |
+          echo "Run verification commands from Docs/LOOP_CONFIG.md here"
+      - name: Summarize
+        if: always()
+        run: |
+          echo "Write or upload sanitized check summary; do not access production secrets"
+```
+
+Actions should normally report, open an issue, or prepare a reviewed PR. They should not self-merge, force-push, rewrite history, or run migrations.
 
 ## Adapter Selection
 

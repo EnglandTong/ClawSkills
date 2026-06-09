@@ -1,6 +1,6 @@
 ---
 name: agent-loop-os
-description: "Agent Loop Operating System for AI coding agents. Use when Codex needs to control coding direction, run long-running or repeated development loops, preserve project goals and acceptance criteria in Docs/, reduce context usage, classify environment problems, stop safely on blockers, and decide Done / Done with Risk / Blocked across Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, GitHub Actions, or other AI coding agents."
+description: "Use when an AI coding agent needs bounded development loops, persistent project-local Docs/ state, context budgeting, environment escalation rules, safe stop gates, and Done / Done with Risk / Blocked completion decisions across Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, GitHub Actions, or other AI coding agents."
 ---
 
 # Agent Loop OS
@@ -9,13 +9,15 @@ Version: 1.0.0
 
 ## Purpose
 
-Use this skill as the top-level controller for AI coding work. The goal is to turn development into a managed loop:
+Use this skill as the top-level controller for AI coding work only. The goal is to turn development into a managed loop:
 
 ```text
 Target -> Plan -> Implement -> Verify -> Review -> Fix -> Evaluate -> Continue or Stop
 ```
 
 Do not rely on chat history as memory. Persist the working state in the project's own `Docs/` directory so any agent can resume after context loss, a new session, or a different runner.
+
+For non-coding workflow governance, research intake, knowledge-base work, or cross-source synthesis, use `ai-workflow-os`. For coding-loop control, implementation direction, stop gates, and completion gates, this skill is authoritative.
 
 ## Core Rule
 
@@ -27,6 +29,7 @@ State is stable. Runner is replaceable. Stop rules are universal.
 - Stop when a hard gate, budget gate, direction gate, or validation gate is triggered.
 - Mark completion only when evidence supports it.
 - Resolve state conflicts in this order: `TARGET.md` -> `ACCEPTANCE.md` -> `STATUS.md` -> `PENDING.md` -> `NEXT_ACTIONS.md`.
+- Use canonical `Docs/` file names. Legacy aliases may be read for migration, but write canonical files only.
 
 ## Flow
 
@@ -45,10 +48,10 @@ Bootstrap if Docs/ is missing
 
 Route to existing skills only when needed:
 
-1. Use `project-lifecycle-navigator` when `Docs/TARGET.md` is missing, the user cannot state the goal in one sentence, multiple goals conflict, or MVP boundaries are unclear.
-2. Use `ai-workflow-os` when project governance, cross-source synthesis, workflow coordination, or multi-source decision tracking is needed.
-3. Use `daily-workflow` when creating checkpoints, handoff summaries, compressed continuation context, or recovery after context loss.
-4. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling.
+1. Use `project-lifecycle-navigator` when `Docs/TARGET.md` is missing, the user cannot state the goal in one sentence, multiple goals conflict, or MVP boundaries are unclear. If unavailable, use the bootstrap questions in `references/bootstrap.md` and stop for confirmation when the target remains unclear.
+2. Use `ai-workflow-os` for multi-source research decisions, knowledge intake governance, cross-module audits, or non-coding workflow governance. Do not route pure code verification or bug-fix loops to it. If unavailable, keep coding-loop state in this skill and record unresolved governance work in `Docs/PENDING.md`.
+3. Use `daily-workflow` when the user explicitly asks to checkpoint, wrap up, recover after context loss, or create a standalone handoff. During a coding loop, keep lightweight loop updates in this skill. If unavailable, write `Docs/HANDOFF.md` using `references/loop-state-protocol.md`.
+4. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling. If unavailable, use primary sources where possible and record source limits in `Docs/STATUS.md`.
 
 Do not load every related skill every loop. Load the narrow skill or reference file that answers the current question.
 
@@ -71,6 +74,9 @@ Agent Loop OS files:
 - `Docs/EVALUATION.md`
 - `Docs/STOP_RULES.md`
 - `Docs/LOOP_RUNS.jsonl`
+- `Docs/COMPLETED.md`
+
+Canonical file names are `TARGET.md`, `STATUS.md`, `COMPLETED.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `HANDOFF.md`. Read legacy aliases only for migration, such as `PROJECT_TARGET.md`, `PROJECT_STATUS.md`, `COMPLETED_JOBS.md`, `PENDING_JOBS.md`, `NEXT_STEPS.md`, or `SCHEDULE.md`; after migration, write the canonical files.
 
 If `Docs/` does not exist or both `Docs/TARGET.md` and `Docs/ACCEPTANCE.md` are missing, follow `references/bootstrap.md` before coding.
 
@@ -99,6 +105,8 @@ max_runtime_minutes: 60
 max_context_files_per_loop: 8
 max_recent_loop_records: 5
 require_double_evidence_for_done: true
+core_verification: test
+max_compressed_context_lines: 40
 log_directory: .agent/logs
 verification_commands:
   test: null
@@ -106,6 +114,11 @@ verification_commands:
   build: null
   lint: null
   functional: null
+progress_signals:
+  - new passing verification
+  - narrower failing scope
+  - changed root cause with evidence
+  - implemented accepted next action
 allow_parallel_tasks: false
 ```
 
@@ -122,6 +135,20 @@ Select next action -> Implement minimal change -> Run verification -> Review res
 ```
 
 The agent may automatically handle project-local problems listed in `references/environment-escalation.md`. The agent must stop and ask a human for anything outside that whitelist.
+
+At the end of every loop, update the touched acceptance criteria in `Docs/ACCEPTANCE.md` under `Current evidence`. If a criterion is blocked, name the unmet criterion ID or heading in `Docs/EVALUATION.md` and `Docs/PENDING.md`.
+
+Loop-end write contract:
+
+1. Append the gate decision and evidence to `Docs/EVALUATION.md`.
+2. Update `Docs/STATUS.md` compressed context and latest verification.
+3. Update `Docs/ACCEPTANCE.md` current evidence for touched criteria.
+4. Preserve blockers and decisions in `Docs/PENDING.md`.
+5. Keep exactly one immediate continuation in `Docs/NEXT_ACTIONS.md`.
+6. Append completed items to `Docs/COMPLETED.md` when a user-visible or verification-backed unit is finished.
+7. Append one concise record to `Docs/LOOP_RUNS.jsonl`.
+
+`daily-workflow` may create broader checkpoint or handoff summaries when explicitly triggered by the user, but it should not replace the loop-end write contract above.
 
 If the user explicitly changes direction, update `Docs/TARGET.md`, regenerate affected acceptance criteria in `Docs/ACCEPTANCE.md`, append a `target_revision` entry to `Docs/EVALUATION.md`, and continue only after the new target is unambiguous. If the direction change is ambiguous, stop and ask.
 
@@ -145,9 +172,11 @@ Stop immediately and report `Blocked` when the loop needs:
 - Secrets, credentials, OAuth, account login, or browser session access.
 - Production databases, real user data, paid cloud resources, or external account changes.
 - System-level installs, administrator permissions, drivers, or host-level configuration.
-- Destructive, irreversible, migration, deletion, overwrite, or history-rewrite operations.
+- Destructive, irreversible, migration, deletion, overwrite, force-push, reset, history-rewrite, or other irreversible Git operations.
 - Technology-stack replacement or major framework upgrade.
 - A direction change that conflicts with `Docs/TARGET.md`.
+
+The built-in hard stops in this section and `references/environment-escalation.md` are authoritative. `Docs/STOP_RULES.md` may add stricter project rules. It may not loosen hard stops unless a human approval is recorded under `Docs/STOP_RULES.md` -> `Overrides` with scope and expiration, and that override still cannot permit secret exposure, production data access, or irreversible action without explicit human confirmation for that run.
 
 Stop on budget when:
 
@@ -157,6 +186,8 @@ Stop on budget when:
 - Context cannot be reduced enough to continue safely.
 
 Record every stop in `Docs/EVALUATION.md`, `Docs/PENDING.md`, `Docs/NEXT_ACTIONS.md`, and `Docs/LOOP_RUNS.jsonl`.
+
+When `max_context_files_per_loop` would be exceeded, queue optional reads, summarize already-read material first, and continue only if the loop can still be completed safely. If the agent cannot decide without exceeding the budget, stop as `Blocked`.
 
 ## Completion Gate
 

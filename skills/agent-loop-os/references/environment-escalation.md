@@ -15,7 +15,7 @@ The agent may proceed without asking when the change is project-local, reversibl
 - Regenerate project-local generated files when the repository already uses that generator.
 - Fix regressions introduced by the current loop.
 
-`Docs/LOOP_CONFIG.md` may disable any of these actions for a project. It cannot enable actions listed in Must Ask A Human unless the user explicitly approves that specific run.
+`Docs/LOOP_CONFIG.md` may disable any of these actions for a project. It cannot enable actions listed in Must Ask A Human unless the user explicitly approves that specific run and the approval is recorded in `Docs/STOP_RULES.md` under `Overrides`.
 
 ## Must Ask A Human
 
@@ -29,6 +29,40 @@ Stop and ask before:
 - Replacing the technology stack or doing a major framework/runtime upgrade.
 - Changing security posture, authentication, authorization, encryption, data retention, or audit policy.
 - Continuing after repeated failures reach the budget in `LOOP_CONFIG.md`.
+
+## Approval Records
+
+When a human approves an otherwise stopped action, write a narrow record before proceeding:
+
+```markdown
+## Overrides
+- Override:
+  Approved by:
+  Approval source: chat / ticket / commit / other
+  Expiration:
+  Scope:
+  Cannot override: secrets exposure, production data access, destructive Git, irreversible changes without explicit per-run confirmation
+```
+
+Do not treat `allow_secret_access: true`, `allow_system_install: true`, `allow_production_data_access: true`, or `allow_destructive_changes: true` as sufficient approval by itself.
+
+## Failure Budget Exhausted
+
+When `max_consecutive_failures` or `max_loops` is reached, stop as `Blocked`. Do not keep retrying with small variations unless a progress signal is present in `Docs/LOOP_CONFIG.md`.
+
+Write this summary to `Docs/EVALUATION.md` and the user report:
+
+```text
+Failure budget exhausted
+- Tried paths:
+- Current hypothesis:
+- Evidence:
+- Why another automatic loop is unsafe or low value:
+- Human choices:
+  1. Approve a broader investigation scope.
+  2. Provide missing environment/input/decision.
+  3. Change or narrow the target.
+```
 
 ## Classification Report
 
