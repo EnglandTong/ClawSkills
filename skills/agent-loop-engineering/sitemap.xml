@@ -12,8 +12,8 @@
     <skill:name><![CDATA[Agent Loop Engineering]]></skill:name>
     <skill:summary_en><![CDATA[A runner-neutral AI coding loop controller that keeps goals, acceptance criteria, verification evidence, stop rules, and loop history in project-local Docs/ files so multiple AI coding agents can safely continue the same development work.]]></skill:summary_en>
     <skill:summary_zh><![CDATA[一个面向多 AI Coding Agent 的编码循环总控 Skill，用项目本地 Docs/ 文件保存目标、验收标准、验证证据、停止规则和循环历史，让不同 Agent 可以安全接力同一项开发工作。]]></skill:summary_zh>
-    <skill:functions><![CDATA[Controls bounded coding loops; bootstraps TARGET.md and ACCEPTANCE.md; enforces context budgets; classifies environment escalation; writes STATUS, PENDING, NEXT_ACTIONS, EVALUATION, COMPLETED, and LOOP_RUNS.jsonl; defines Done / Done with Risk / Blocked gates; provides runner adapter contracts for Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, and GitHub Actions.]]></skill:functions>
-    <skill:tags><![CDATA[ai-coding, agent-loop, multi-agent, coding-agent, project-memory, acceptance-criteria, verification, stop-gates, context-budget, handoff, runner-adapters]]></skill:tags>
+    <skill:functions><![CDATA[Controls bounded coding loops; bootstraps TARGET.md and ACCEPTANCE.md; enforces context budgets; classifies environment escalation; writes STATUS, PENDING, NEXT_ACTIONS, EVALUATION, COMPLETED, and LOOP_RUNS.jsonl; defines Done / Done with Risk / Blocked gates; provides automation runner guidance and runner adapter contracts for Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, and GitHub Actions.]]></skill:functions>
+    <skill:tags><![CDATA[ai-coding, agent-loop, automation-runner, multi-agent, coding-agent, project-memory, acceptance-criteria, verification, stop-gates, context-budget, handoff, runner-adapters]]></skill:tags>
   </url>
   <url>
     <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/SKILL.md</loc>
@@ -54,6 +54,14 @@
     <priority>0.7</priority>
     <skill:file>references/runner-adapters.md</skill:file>
     <skill:description><![CDATA[Runner-neutral adapter contract and examples.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/references/automation-runner.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/automation-runner.md</skill:file>
+    <skill:description><![CDATA[Automation runner guidance for repeated one-loop scheduling, stop-state parsing, budgets, locking, and CI boundaries.]]></skill:description>
   </url>
   <url>
     <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/references/context-budget.md</loc>

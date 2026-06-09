@@ -22,7 +22,7 @@ Agent Loop Engineering 是一个面向 AI Coding Agent 的编码循环总控 Ski
 
 推荐入口：
 
-- 编码循环、长期实现、验证门禁、停止门禁：使用 `agent-loop-engineering`。
+- 编码循环、长期实现、自动化 Runner、验证门禁、停止门禁：使用 `agent-loop-engineering`。
 - 非编码研究、资料接入、知识治理：使用 `ai-workflow-os` 或 `web-search-rules`。
 - 用户明确说 checkpoint、收工、交接：使用 `daily-workflow`，但要保留 Agent Loop Engineering 的 loop evidence。
 
@@ -194,6 +194,7 @@ Use progressive reading:
 - Read detailed reference files only when their decision surface is active.
 
 Read `references/context-budget.md` when context size becomes a risk or when designing a long-running loop.
+Read `references/automation-runner.md` when the user asks to add scheduled, repeated, local, CI, or runner-driven automation around the loop.
 
 ## Stop Rules
 
@@ -237,6 +238,7 @@ Before ending any loop, run the checklist in `references/self-check.md`.
 ## Runner Adapters
 
 This skill is runner-neutral. Use `references/runner-adapters.md` when adapting the loop to Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, GitHub Actions, or a local scheduler.
+Use `references/automation-runner.md` when designing the outer automation mechanism that repeatedly starts one-loop agent runs, parses stop states, enforces budgets, and stops on human gates.
 
 All adapters must:
 
