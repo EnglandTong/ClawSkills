@@ -5,7 +5,7 @@ description: "Bilingual EN/ZH research intake governance skill for web search re
 
 # Web Search Rules / 研究资料入库治理
 
-Version: 4.0.0  
+Version: 3.0.0  
 Risk level: High when cloud upload, browser automation, deletion, migration, or external account access is enabled.  
 Storage: canonical config under `~/.skill-config/web-search-rules/`; content storage depends on the selected platform.
 Upgrade note: This is the upgraded version of the previous Chinese and English Web Search Rules editions; going forward, both language editions will be maintained together in this single bilingual package. / 这是此前中文与英文 Web Search Rules 两版的升级版；以后中英文版本会合并在这个双语包里统一维护。
