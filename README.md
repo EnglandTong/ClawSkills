@@ -6,7 +6,7 @@ This repository contains public AI workflow skills by England Tong, including sk
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `agent-loop-engineering` | 1.0.0 | Top-level loop controller for long-running AI coding work with persistent `Docs/` state, automation runner guidance, stop gates, completion gates, runner adapters, and context budgeting. |
+| `agent-loop-engineering` | 1.0.0 | Top-level loop controller for long-running AI coding work with persistent `Docs/` state, Harness Engineering guidance, automation runner guidance, stop gates, completion gates, runner adapters, and context budgeting. |
 | `web-search-rules` | 3.0.0 | Rules and operating guidance for evidence-backed web search workflows. |
 | `ai-workflow-os` | 1.0.0 | A workflow operating system for AI-assisted projects, research, and handoffs. |
 | `project-lifecycle-navigator` | 1.0.0 | Project lifecycle prompts and guidance for intake, realignment, and code-review upgrades. |
