@@ -17,6 +17,8 @@ Canonical files are written in the names below. Legacy aliases may be read for m
 
 If aliases are found, migrate once, record the mapping in `Docs/EVALUATION.md`, then write only canonical files.
 
+If a later agent writes a legacy alias again after migration, treat it as a compatibility warning: read it once, merge any new information into the canonical file, record the warning in `Docs/EVALUATION.md`, and keep writing only canonical files. Do not delete the legacy file without user approval.
+
 ### `Docs/TARGET.md`
 
 Store the stable goal contract. `TARGET.md` is the source of truth for what the project is trying to do and what is out of scope. Keep success criteria high-level here; put executable checks in `ACCEPTANCE.md`.
@@ -45,6 +47,8 @@ Status: Confirmed
 ## Last Confirmed
 YYYY-MM-DD
 ```
+
+Terminology aliases: `Non-Goals`, `Out of scope`, and `Scope / Out of scope` mean the same boundary field. Preserve the canonical `Non-Goals` heading when rewriting `TARGET.md`.
 
 ### `Docs/ACCEPTANCE.md`
 
@@ -114,7 +118,7 @@ Keep only the latest working state and recent update history. This schema is com
 
 ### `Docs/COMPLETED.md`
 
-Append user-visible or verification-backed completed units. Keep entries concise; archive by month if the file becomes too large.
+Append user-visible or verification-backed completed units. Keep entries concise; archive by month if the file becomes too large. `COMPLETED.md` is for acceptance items, user-visible deliverables, or durable milestones. `STATUS.md` -> `Completed` is only the latest compressed summary, capped to about 5 bullets.
 
 ```markdown
 # Completed Work
@@ -280,14 +284,16 @@ Append one JSON object per loop. Keep it concise:
 
 Required fields: `run_id`, `state`, `action`.
 
-Optional fields: `timestamp`, `goal_snapshot`, `verification`, `risks`, `files_touched`, `next_action`, `progress_signal`, `core_verification`, `failure_count`.
+Optional fields: `timestamp`, `goal_snapshot`, `verification`, `risks`, `files_touched`, `next_action`, `progress_signal`, `progress_signal_evidence`, `core_verification`, `failure_count`.
+
+When `progress_signal` is present, `progress_signal_evidence` must contain a one-line reason or evidence path.
 
 Use ISO 8601 timestamps with timezone. Prefer UTC (`Z`) unless the project config requires a local timezone.
 
 Examples:
 
 ```json
-{"run_id":"2026-06-09T10:30:00Z","timestamp":"2026-06-09T10:30:00Z","state":"continue","action":"fixed login validation branch","verification":["test failed: 2 auth tests remain"],"progress_signal":"narrower failing scope","core_verification":"test","failure_count":0,"files_touched":["src/auth/login.ts"],"next_action":"fix remaining expired-session test"}
+{"run_id":"2026-06-09T10:30:00Z","timestamp":"2026-06-09T10:30:00Z","state":"continue","action":"fixed login validation branch","verification":["test failed: 2 auth tests remain"],"progress_signal":"narrower failing scope","progress_signal_evidence":"failed tests decreased from 5 to 2 with no new category","core_verification":"test","failure_count":0,"files_touched":["src/auth/login.ts"],"next_action":"fix remaining expired-session test"}
 ```
 
 ```json
@@ -375,3 +381,7 @@ Discover commands in this order:
 ## Protocol Versioning
 
 Use `protocol_version: 1` for this document. Future versions must preserve canonical file names or provide an alias migration table. Unknown fields should be preserved when rewriting state.
+
+## Scope Change Counting
+
+For `scope_expansion` versus `target_revision`, count `Must Pass` changes by acceptance checkbox item. If an agent splits or merges acceptance items during the same decision, freeze the pre-change count until the scope decision is recorded. Changes that alter `Non-Goals`, the user goal, or the verification strategy are always `target_revision`, regardless of item count.

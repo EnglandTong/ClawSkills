@@ -9,7 +9,7 @@ Every runner must:
 - Start by reading the minimum `Docs/` set.
 - Execute one bounded loop.
 - Respect hard and budget stop rules.
-- Write `EVALUATION.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `LOOP_RUNS.jsonl` before exiting.
+- Write `EVALUATION.md`, `STATUS.md`, `ACCEPTANCE.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `LOOP_RUNS.jsonl` before exiting.
 - Avoid storing product-specific state as the only copy of project memory.
 
 Minimum external loop contract:
@@ -18,7 +18,7 @@ Minimum external loop contract:
 input: workspace path + prompt that says "run one Agent Loop OS loop"
 must read: Docs/LOOP_CONFIG.md, TARGET.md, ACCEPTANCE.md, STATUS.md, PENDING.md, NEXT_ACTIONS.md
 must write: EVALUATION.md, STATUS.md, ACCEPTANCE.md, PENDING.md, NEXT_ACTIONS.md, LOOP_RUNS.jsonl
-optional write: COMPLETED.md, HANDOFF.md
+must write when applicable: COMPLETED.md for completed acceptance items or user-visible deliverables; HANDOFF.md for standalone handoff triggers
 continue behavior: exit after one loop; the scheduler may start the next loop only if state is Continue
 budget exhausted: write Blocked, name the exhausted budget, and exit
 ```
@@ -29,10 +29,12 @@ Suggested adapter exit convention:
 | --- | ---: | --- |
 | Continue | 0 | One loop finished and another loop may be scheduled. |
 | Done | 0 | Target completed; scheduler must not continue. |
-| Done with Risk | 1 | Core target appears complete but user review is needed. |
+| Done with Risk | 1 | Core target appears complete but user review is needed; scheduler must stop automatic loops. |
 | Blocked | 2 | Human input, permission, or decision is required. |
 
 If a runner cannot set exit codes, it must still write the state to `Docs/EVALUATION.md` and `Docs/LOOP_RUNS.jsonl`.
+
+Do not run multiple writers concurrently against the same `Docs/` state. Use sequential scheduling or file locking. If concurrent runners are detected and no lock exists, stop as `Blocked` and ask the user to choose a single active runner.
 
 ## Codex
 

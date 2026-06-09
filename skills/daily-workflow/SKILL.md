@@ -42,6 +42,20 @@ Create `Docs/` if missing. Maintain these files:
 - `Docs/NEXT_ACTIONS.md`: immediate continuation plan and handoff plan. Overwrite each checkpoint/wrap-up with the latest actionable plan.
 - `Docs/CONFIG.md`: optional trigger and language preferences.
 
+## Agent Loop OS Compatibility
+
+When a coding loop is active, `agent-loop-os` is authoritative for loop-specific state: latest verification, acceptance evidence, loop evaluation, stop gates, and `LOOP_RUNS.jsonl`.
+
+Checkpoint, wrap-up, and handoff must preserve these fields instead of replacing them:
+
+- `Docs/STATUS.md` -> `Latest Verification`
+- `Docs/STATUS.md` -> `Compressed Context`
+- `Docs/ACCEPTANCE.md` -> `Current evidence`
+- `Docs/EVALUATION.md`
+- `Docs/LOOP_RUNS.jsonl`
+
+Daily Workflow may add checkpoint summaries, completed work, pending work, and handoff text, but it must not erase Agent Loop OS evidence. If both workflows are active, write canonical files only: `TARGET.md`, `STATUS.md`, `COMPLETED.md`, `PENDING.md`, `NEXT_ACTIONS.md`, and `HANDOFF.md`.
+
 Compatibility alias:
 
 - `Docs/SCHEDULE.md` is a legacy/current alias for next actions. If it exists, read it. Prefer writing `NEXT_ACTIONS.md` in v3.0.0. If a project already depends on `SCHEDULE.md`, either keep both synchronized or explain the migration before changing.
@@ -167,6 +181,11 @@ If the target is unclear, create a provisional section instead of stopping:
 
 ## Current State / 当前状态
 [Short factual summary.]
+
+## Latest Verification
+- Command/result:
+- Functional check:
+- Evidence path:
 
 ## Progress / 进度
 [Percent or milestone-based progress when known.]
@@ -326,6 +345,7 @@ Keep `STATUS.md` readable.
 - Use absolute paths when reporting file locations to the user.
 - Append to `COMPLETED.md`; do not overwrite it.
 - Preserve `STATUS.md` update history unless archiving older entries.
+- Preserve Agent Loop OS fields when present: `Latest Verification`, `Compressed Context`, `ACCEPTANCE.md` current evidence, `EVALUATION.md`, and `LOOP_RUNS.jsonl`.
 - Preserve unresolved blockers when rewriting `PENDING.md`.
 - Overwrite `NEXT_ACTIONS.md` at each checkpoint or wrap-up so the next AI has a single current plan.
 - Never delete managed or legacy files automatically.

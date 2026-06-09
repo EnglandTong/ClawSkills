@@ -17,6 +17,8 @@ If `LOOP_RUNS.jsonl` is needed, read only the latest 3-5 records.
 
 These six items count toward `max_context_files_per_loop`. Reading only a section of a file still counts as one context file. Project manifests used to discover verification commands also count. Files listed but not opened do not count.
 
+Skill instruction files and `references/*.md` files from the skill package do not count toward the project `max_context_files_per_loop`; that budget is for workspace/project files. Still read skill references progressively and only when their decision surface is active.
+
 ## Conditional Reads
 
 - Read `completion-gate.md` only before declaring completion or risk.

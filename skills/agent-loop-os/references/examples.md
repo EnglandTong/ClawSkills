@@ -65,19 +65,19 @@ Expected behavior:
 Loop 1:
 
 ```json
-{"run_id":"loop-1","state":"continue","action":"reproduced failing login test","verification":["npm test failed: login redirects incorrectly"],"next_action":"inspect auth redirect handler"}
+{"run_id":"2026-06-09T10:00:00Z","timestamp":"2026-06-09T10:00:00Z","state":"continue","action":"reproduced failing login test","verification":["core test failed: 5 login tests failing"],"core_verification":"test","failure_count":1,"files_touched":[],"next_action":"inspect auth redirect handler"}
 ```
 
 Loop 2:
 
 ```json
-{"run_id":"loop-2","state":"continue","action":"patched redirect handler","verification":["typecheck passed","login test still failed"],"risks":["second consecutive verification failure would trigger budget stop"],"next_action":"inspect session state fixture"}
+{"run_id":"2026-06-09T10:20:00Z","timestamp":"2026-06-09T10:20:00Z","state":"continue","action":"patched redirect handler","verification":["typecheck passed","core test failed: 2 login tests failing"],"progress_signal":"narrower failing scope","progress_signal_evidence":"failing login tests decreased from 5 to 2 with no new failure category","core_verification":"test","failure_count":0,"files_touched":["src/auth/redirect.ts"],"next_action":"inspect session state fixture"}
 ```
 
 Loop 3:
 
 ```json
-{"run_id":"loop-3","state":"done","action":"fixed session fixture and redirect handler","verification":["typecheck passed","login test passed","manual login fixture passed"],"next_action":"none"}
+{"run_id":"2026-06-09T10:45:00Z","timestamp":"2026-06-09T10:45:00Z","state":"done","action":"fixed session fixture and redirect handler","verification":["typecheck passed","core login test passed","functional login fixture passed"],"core_verification":"test","failure_count":0,"files_touched":["src/auth/redirect.ts","tests/auth/session.fixture.ts"],"next_action":"none"}
 ```
 
 If Loop 3 failed without measurable progress, classify as `Blocked` because `max_consecutive_failures: 2` would be reached.

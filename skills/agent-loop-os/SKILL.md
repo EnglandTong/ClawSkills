@@ -51,7 +51,7 @@ Route to existing skills only when needed:
 1. Use `project-lifecycle-navigator` when `Docs/TARGET.md` is missing, the user cannot state the goal in one sentence, multiple goals conflict, or MVP boundaries are unclear. If unavailable, use the bootstrap questions in `references/bootstrap.md` and stop for confirmation when the target remains unclear.
 2. Use `ai-workflow-os` for multi-source research decisions, knowledge intake governance, cross-module audits, or non-coding workflow governance. Do not route pure code verification or bug-fix loops to it. If unavailable, keep coding-loop state in this skill and record unresolved governance work in `Docs/PENDING.md`.
 3. Use `daily-workflow` when the user explicitly asks to checkpoint, wrap up, recover after context loss, or create a standalone handoff. During a coding loop, keep lightweight loop updates in this skill. If unavailable, write `Docs/HANDOFF.md` using `references/loop-state-protocol.md`.
-4. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling. If unavailable, use primary sources where possible and record source limits in `Docs/STATUS.md`.
+4. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling. If unavailable, use primary sources where possible and record source limits in `Docs/STATUS.md`. In a coding loop, write the short research conclusion to `Docs/STATUS.md` compressed context or `Docs/PENDING.md`; use the full intake path only when the task is research/governance-heavy.
 
 Do not load every related skill every loop. Load the narrow skill or reference file that answers the current question.
 
