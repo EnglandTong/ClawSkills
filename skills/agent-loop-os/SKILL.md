@@ -7,6 +7,25 @@ description: "Use when an AI coding agent needs bounded development loops, persi
 
 Version: 1.0.0
 
+## 中文快速说明
+
+Agent Loop OS 是一个面向 AI Coding Agent 的编码循环总控 Skill。它把用户目标、验收标准、当前状态、待办、停止规则、完成判定和每轮记录保存在项目自己的 `Docs/` 目录中，让 Codex、Claude Code、OpenCode、Cline、Qoder、CodeBuddy、Trae、Gemini CLI、Aider、GitHub Actions 等不同 Agent 可以接力同一个开发工作。
+
+核心原则：
+
+- 状态保存在项目文件里，不依赖聊天记忆。
+- Runner 可以替换，`Docs/` 协议不变。
+- 每轮只做一个有边界的 coding loop。
+- 遇到密钥、账号、生产数据、系统安装、不可逆 Git 操作、技术栈替换或方向冲突时必须停止并问人。
+- 只有自动验证和功能验证等证据足够时，才可以标记 `Done`。
+- 多 Agent 共用时必须串行写入或使用文件锁，不能同时改同一套 `Docs/` 状态文件。
+
+推荐入口：
+
+- 编码循环、长期实现、验证门禁、停止门禁：使用 `agent-loop-os`。
+- 非编码研究、资料接入、知识治理：使用 `ai-workflow-os` 或 `web-search-rules`。
+- 用户明确说 checkpoint、收工、交接：使用 `daily-workflow`，但要保留 Agent Loop OS 的 loop evidence。
+
 ## Purpose
 
 Use this skill as the top-level controller for AI coding work only. The goal is to turn development into a managed loop:

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:skill="https://clawhub.ai/schemas/skill-sitemap/1.0">
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <skill:slug>agent-loop-os</skill:slug>
+    <skill:version>1.0.0</skill:version>
+    <skill:title><![CDATA[Agent Loop OS]]></skill:title>
+    <skill:name><![CDATA[Agent Loop OS]]></skill:name>
+    <skill:summary_en><![CDATA[A runner-neutral AI coding loop controller that keeps goals, acceptance criteria, verification evidence, stop rules, and loop history in project-local Docs/ files so multiple AI coding agents can safely continue the same development work.]]></skill:summary_en>
+    <skill:summary_zh><![CDATA[一个面向多 AI Coding Agent 的编码循环总控 Skill，用项目本地 Docs/ 文件保存目标、验收标准、验证证据、停止规则和循环历史，让不同 Agent 可以安全接力同一项开发工作。]]></skill:summary_zh>
+    <skill:functions><![CDATA[Controls bounded coding loops; bootstraps TARGET.md and ACCEPTANCE.md; enforces context budgets; classifies environment escalation; writes STATUS, PENDING, NEXT_ACTIONS, EVALUATION, COMPLETED, and LOOP_RUNS.jsonl; defines Done / Done with Risk / Blocked gates; provides runner adapter contracts for Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, and GitHub Actions.]]></skill:functions>
+    <skill:tags><![CDATA[ai-coding, agent-loop, multi-agent, coding-agent, project-memory, acceptance-criteria, verification, stop-gates, context-budget, handoff, runner-adapters]]></skill:tags>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/SKILL.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>SKILL.md</skill:file>
+    <skill:description><![CDATA[Main instruction file for Agent Loop OS.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/skill-card.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>skill-card.md</skill:file>
+    <skill:description><![CDATA[ClawHub display card and public description.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/SECURITY.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>SECURITY.md</skill:file>
+    <skill:description><![CDATA[Security and privacy guidance for Agent Loop OS.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/references/loop-state-protocol.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/loop-state-protocol.md</skill:file>
+    <skill:description><![CDATA[Project-local Docs/ state protocol for multi-agent loop memory.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/references/completion-gate.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/completion-gate.md</skill:file>
+    <skill:description><![CDATA[Done, Done with Risk, Blocked, and Continue decision rules.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/references/runner-adapters.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/runner-adapters.md</skill:file>
+    <skill:description><![CDATA[Runner-neutral adapter contract and examples.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/references/context-budget.md</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/context-budget.md</skill:file>
+    <skill:description><![CDATA[Progressive reading and context budget rules.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-os/artifact/agents/openai.yaml</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>agents/openai.yaml</skill:file>
+    <skill:description><![CDATA[OpenAI agent configuration for this skill.]]></skill:description>
+  </url>
+</urlset>
