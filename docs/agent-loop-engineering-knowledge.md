@@ -403,3 +403,157 @@ Invalid State
 最重要的方向：
 
 > 不要只让 Agent “知道该怎么做”，要让系统检查它“有没有真的这么做”。
+
+## 20. IMA 生产管理笔记补充
+
+后续 IMA 笔记进一步确认：TPS、TQC、FSSC 22000 以及生产管理方法论，与 AI 编程管理 / Agent Loop Engineering 是同一类问题。
+
+相关 IMA 笔记：
+
+| IMA note_id | 标题 | 价值 |
+| --- | --- | --- |
+| `7470298035138559` | 随身笔记：TPS、TQC、FSSC 22000 对 AI 编程管理的启发 | 确认 AI 编程需要生产管理式的流程、标准、检查、异常处理、门禁和持续改善 |
+| `7470303445780059` | 随身笔记：生产管理方法论大全——管人、管工作、管生产 | 建立从管人、管过程、管系统、管质量到 AI Agent 管理的完整方法地图 |
+| `7470311574341202` | 随身笔记：生产管理方法论大全（续篇）——战略部署、防错、快速切换与创新方法 | 补充战略、防错、效率、创新、现场管理方法，形成 26 种方法全集 |
+
+核心结论：
+
+> 稳定、高质量、可复制的生产，不是靠人或 Agent 自觉，而是靠流程、标准、门禁、异常处理、审核和持续改善。
+
+这与 AI Agent 的问题完全对应：
+
+- Agent 会写代码，但不一定会主动复核。
+- Agent 会修 bug，但不一定追根因。
+- Agent 会执行一步，但不一定做到可验收。
+- Agent 会说完成，但不一定有证据。
+- Agent 能运行很久，但可能目标漂移。
+
+生产管理体系的价值，就是把这些“靠自觉”的行为变成系统规则。
+
+## 21. AI Coding Production System
+
+这些生产管理方法最终可以收敛成一套更适合 AI Coding 的方法论：
+
+```text
+AI Coding Production System
+  = Direction Alignment
+  + Standard Work
+  + Built-in Quality
+  + Abnormal Stop
+  + Root Cause Debugging
+  + Real Evidence
+  + Independent Audit
+  + Continuous Improvement
+```
+
+对应执行链路：
+
+```text
+目标标准化
+-> 执行最小增量
+-> 异常即停止
+-> 质量内建
+-> 独立验证
+-> 持续改善
+-> 可审计交付
+```
+
+这条线比继续扩写 reference 更有价值。它可以成为 `agent-loop-engineering` 下一阶段的核心框架。
+
+## 22. 生产管理方法到 Agent Loop 的核心映射
+
+不应把 26 种方法全部塞进 Skill。应抽出最有工程约束力的 7 类机制。
+
+| 生产管理机制 | AI Agent 机制 | 进入 Skill 的方式 |
+| --- | --- | --- |
+| Hoshin Kanri 方针管理 | `DIRECTION.md -> TARGET.md -> ACCEPTANCE.md` 三层对齐 | 目标门禁和模板 |
+| Standard Work 标准作业 | 每轮固定流程：读目标、实现、验证、记录、评估 | `EXECUTION_CONTRACT.md` |
+| Jidoka / Andon 异常即停止 | 测试失败、构建失败、环境异常时不能假装完成 | Stop gate + checker |
+| Poka-Yoke 防错 | 不测试就无法 Done，状态不完整就无法继续 | checker / MCP tool |
+| Gemba Walk 现场 | 不看 Agent 自述，看真实代码、日志、测试、截图 | evidence policy |
+| PDCA / DMAIC / Toyota Kata | 小实验、看结果、追根因、再调整 | debug loop |
+| TQC / FSSC 22000 | 前提条件、风险分析、关键控制点、独立审核 | quality system |
+
+这些机制可以覆盖大多数 AI Coding 跑偏问题，同时避免把 Skill 变成生产管理百科。
+
+## 23. 最值得进入 Skill 顶层的 7 条规则
+
+下一轮 Skill 更新建议只强化这些顶层规则：
+
+1. Direction Alignment
+   大方向可以演化，但当前阶段目标和验收标准必须明确。
+
+2. Standard Work
+   每个 coding loop 都必须按固定顺序执行，不允许只做一步。
+
+3. Built-in Quality
+   验证嵌入每轮执行，不能最后才想起测试。
+
+4. Abnormal Stop
+   测试失败、构建失败、权限缺失、环境异常、目标冲突时必须暴露问题并停止或进入修复循环。
+
+5. Root Cause Before Repeated Fix
+   连续失败时必须写根因，不允许随机改。
+
+6. Gemba Evidence
+   以真实代码、测试、日志、浏览器截图、DOM、API 响应为准，不以 Agent 自述为准。
+
+7. Independent Audit
+   复杂任务必须由 Evaluator / Checker / CI 独立判断是否完成。
+
+## 24. 对下一阶段实现的影响
+
+下一步不应继续新增大量 reference，而应做：
+
+| 优先级 | 动作 | 对应生产管理思想 |
+| --- | --- | --- |
+| P0 | `templates/EXECUTION_CONTRACT.md` | Standard Work |
+| P0 | `templates/DIRECTION.md`、`TARGET.md`、`ACCEPTANCE.md` | Hoshin Kanri |
+| P0 | `templates/EVALUATION.md` | TQC / Independent Audit |
+| P1 | `agent-loop-check` | Poka-Yoke / Andon |
+| P1 | 停止门禁和状态合法性检查 | Jidoka |
+| P1 | 失败根因字段 | DMAIC / Five Whys |
+| P2 | Runner 自动循环 | PDCA / Toyota Kata |
+| P2 | MCP 工具化 | FSSC-style auditable control system |
+
+核心路线：
+
+```text
+Skill 顶层规则
+-> Templates 固化标准作业
+-> Checker 防止违规状态
+-> Runner 自动循环
+-> MCP 工具化状态和门禁
+```
+
+## 25. 最重要的新判断
+
+`agent-loop-engineering` 不应该只是一个 Prompt Skill。
+
+它可以演化成：
+
+```text
+AI Coding Production System 的协议层
+```
+
+也就是把生产管理中的：
+
+- 标准作业。
+- 异常停止。
+- 防错。
+- 现场证据。
+- 关键控制点。
+- 独立审核。
+- 持续改善。
+
+迁移到 AI 编程。
+
+最终目标不是让 Agent “更听话”，而是让 AI 编程像生产系统一样：
+
+```text
+可控制
+可验证
+可追溯
+可复盘
+可持续改善
+```
