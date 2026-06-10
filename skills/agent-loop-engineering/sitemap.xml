@@ -10,10 +10,10 @@
     <skill:version>1.0.0</skill:version>
     <skill:title><![CDATA[Agent Loop Engineering]]></skill:title>
     <skill:name><![CDATA[Agent Loop Engineering]]></skill:name>
-    <skill:summary_en><![CDATA[A runner-neutral AI coding loop controller that keeps goals, acceptance criteria, verification evidence, stop rules, and loop history in project-local Docs/ files so multiple AI coding agents can safely continue the same development work. Includes Harness Engineering guidance for role separation, rubric evaluation, quality vision, and environment observability.]]></skill:summary_en>
-    <skill:summary_zh><![CDATA[一个面向多 AI Coding Agent 的编码循环总控 Skill，用项目本地 Docs/ 文件保存目标、验收标准、验证证据、停止规则和循环历史，让不同 Agent 可以安全接力同一项开发工作。包含 Harness Engineering 指南，用于角色分工、Rubric 评估、品质锚定和环境可读性。]]></skill:summary_zh>
-    <skill:functions><![CDATA[Controls bounded coding loops; bootstraps TARGET.md and ACCEPTANCE.md; enforces context budgets; classifies environment escalation; writes STATUS, PENDING, NEXT_ACTIONS, EVALUATION, COMPLETED, and LOOP_RUNS.jsonl; defines Done / Done with Risk / Blocked gates; provides Harness Engineering guidance, automation runner guidance, and runner adapter contracts for Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, and GitHub Actions.]]></skill:functions>
-    <skill:tags><![CDATA[ai-coding, agent-loop, harness-engineering, automation-runner, multi-agent, rubric-evaluation, coding-agent, project-memory, acceptance-criteria, verification, stop-gates, context-budget, handoff, runner-adapters]]></skill:tags>
+    <skill:summary_en><![CDATA[A runner-neutral AI coding loop controller that keeps goals, acceptance criteria, verification evidence, stop rules, and loop history in project-local Docs/ files so multiple AI coding agents can safely continue the same development work. Includes production-system guidance adapted from TPS, TQC, Six Sigma, ISO, HACCP, and FSSC-style control systems.]]></skill:summary_en>
+    <skill:summary_zh><![CDATA[一个面向多 AI Coding Agent 的编码循环总控 Skill，用项目本地 Docs/ 文件保存目标、验收标准、验证证据、停止规则和循环历史，让不同 Agent 可以安全接力同一项开发工作。包含从 TPS、TQC、Six Sigma、ISO、HACCP、FSSC 等体系抽象出的 AI Coding Production System 控制规则。]]></skill:summary_zh>
+    <skill:functions><![CDATA[Controls bounded coding loops; bootstraps TARGET.md and ACCEPTANCE.md; enforces context budgets; classifies environment escalation; writes STATUS, PENDING, NEXT_ACTIONS, EVALUATION, COMPLETED, and LOOP_RUNS.jsonl; defines Done / Done with Risk / Blocked gates; provides AI Coding Production System guidance, Harness Engineering guidance, automation runner guidance, and runner adapter contracts for Codex, Claude Code, OpenCode, Cline, Qoder, CodeBuddy, Trae, Gemini CLI, Aider, and GitHub Actions.]]></skill:functions>
+    <skill:tags><![CDATA[ai-coding, agent-loop, ai-coding-production-system, harness-engineering, automation-runner, multi-agent, rubric-evaluation, coding-agent, project-memory, acceptance-criteria, verification, stop-gates, context-budget, handoff, runner-adapters]]></skill:tags>
   </url>
   <url>
     <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/SKILL.md</loc>
@@ -70,6 +70,14 @@
     <priority>0.7</priority>
     <skill:file>references/harness-engineering.md</skill:file>
     <skill:description><![CDATA[Harness Engineering guidance for Planner / Developer / Evaluator separation, rubric evaluation, quality vision, environment observability, and low-gain stop rules.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/references/ai-coding-production-system.md</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/ai-coding-production-system.md</skill:file>
+    <skill:description><![CDATA[Production-system controls for AI coding adapted from TPS, TQC, Six Sigma, ISO, HACCP, FSSC, FSMA, GFSI, and root-cause methods.]]></skill:description>
   </url>
   <url>
     <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/references/context-budget.md</loc>
