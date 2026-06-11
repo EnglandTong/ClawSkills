@@ -88,11 +88,75 @@
     <skill:description><![CDATA[Progressive reading and context budget rules.]]></skill:description>
   </url>
   <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/references/checker-and-evidence.md</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/checker-and-evidence.md</skill:file>
+    <skill:description><![CDATA[Checker boundaries, strict evidence gate, command exit-code evidence, and cross-repo checker usage.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/references/host-runtime-integration.md</loc>
+    <lastmod>2026-06-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>references/host-runtime-integration.md</skill:file>
+    <skill:description><![CDATA[Host runtime integration and feedback governance rules for separating development CMS, product runtime CMS, reusable Skill updates, AgentLoopRuntime hooks, evidence layers, and dogfooding feedback boundaries.]]></skill:description>
+  </url>
+  <url>
     <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/agents/openai.yaml</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <skill:file>agents/openai.yaml</skill:file>
     <skill:description><![CDATA[OpenAI agent configuration for this skill.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/scripts/agent-loop-check.ps1</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>scripts/agent-loop-check.ps1</skill:file>
+    <skill:description><![CDATA[CMS Lite v0.2 deterministic checker for TARGET.md, ACCEPTANCE.md, LOOP_STATE.md, LOOP_LOG.jsonl, code size, and strict verification evidence.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/scripts/agent-loop-health-check.mjs</loc>
+    <lastmod>2026-06-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <skill:file>scripts/agent-loop-health-check.mjs</skill:file>
+    <skill:description><![CDATA[Read-only expanded Docs health checker for duplicate acceptance IDs, WORK_ORDER environment-note gaps, LOOP_RUNS JSONL issues, and obvious completion gate contradictions.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/templates/TARGET.md</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <skill:file>templates/TARGET.md</skill:file>
+    <skill:description><![CDATA[CMS Lite target template.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/templates/ACCEPTANCE.md</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <skill:file>templates/ACCEPTANCE.md</skill:file>
+    <skill:description><![CDATA[CMS Lite acceptance criteria template.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/templates/LOOP_STATE.md</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <skill:file>templates/LOOP_STATE.md</skill:file>
+    <skill:description><![CDATA[CMS Lite loop state template.]]></skill:description>
+  </url>
+  <url>
+    <loc>https://clawhub.ai/englandtong/agent-loop-engineering/artifact/templates/LOOP_LOG.example.jsonl</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <skill:file>templates/LOOP_LOG.example.jsonl</skill:file>
+    <skill:description><![CDATA[CMS Lite loop log JSONL example with strict evidence fields.]]></skill:description>
   </url>
 </urlset>

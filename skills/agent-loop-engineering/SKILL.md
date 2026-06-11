@@ -5,7 +5,7 @@ description: "Use when an AI coding agent needs bounded development loops, persi
 
 # Agent Loop Engineering
 
-Version: 1.0.0
+Version: 1.1.0
 
 ## 中文快速说明
 
@@ -19,6 +19,9 @@ Agent Loop Engineering 是一个面向 AI Coding Agent 的编码循环总控 Ski
 - 遇到密钥、账号、生产数据、系统安装、不可逆 Git 操作、技术栈替换或方向冲突时必须停止并问人。
 - 只有自动验证和功能验证等证据足够时，才可以标记 `Done`。
 - 多 Agent 共用时必须串行写入或使用文件锁，不能同时改同一套 `Docs/` 状态文件。
+- 多 Agent 项目中，Developer 以 `WORK_ORDER.md` 为唯一任务来源；`TARGET.md` 只守方向，`ACCEPTANCE.md` 只守验收，状态和日志不能扩大任务。
+- `ACCEPTANCE.md` 必须保持每个活动工单一个当前验收表；重复 AC、粘贴反馈、互相竞争的 AC 段都属于 `Invalid State`。
+- 涉及本地/云端、provider、feature flag、真实设备、模型或 waived 条件的工单，必须在 `WORK_ORDER.md` 写清环境模式和 Done 前必须验证的内容。
 
 推荐入口：
 
@@ -38,6 +41,42 @@ Do not rely on chat history as memory. Persist the working state in the project'
 
 For non-coding workflow governance, research intake, knowledge-base work, or cross-source synthesis, use `ai-workflow-os`. For coding-loop control, implementation direction, stop gates, and completion gates, this skill is authoritative.
 
+## Default Coding Semantics
+
+Unless the user explicitly asks for analysis only, review only, planning only, or discussion only, treat a coding request as a request to complete the implementation loop:
+
+```text
+Understand target -> Implement -> Verify -> Debug failures -> Re-verify -> Evaluate -> Continue or Stop
+```
+
+Do not stop after only one step when a safe next action remains. Stop only at:
+
+- `Done`
+- `Done with Risk`
+- `Blocked`
+- Budget exhausted
+
+No verification means no `Done`. Failed verification means continue debugging, report `Done with Risk` with explicit limits, or stop as `Blocked` when a stop rule or human decision is required.
+
+Checker `Done` means the project-local loop state is valid. It does not, by itself, prove the product behavior is correct. Before accepting a completion claim, use real project verification and read `references/checker-and-evidence.md` when strict evidence, command exit codes, or cross-repo checking are relevant.
+
+When the user asks to absorb feedback from a real project and update the CMS process, Skill, or references, do not automatically modify that project's active `Docs/` state. First classify the feedback and update the reusable Skill/reference layer unless the user explicitly asks you to act as that project's Developer, Controller, or Acceptance agent. See `references/host-runtime-integration.md`.
+
+## Task Classification
+
+Classify the task before choosing workflow and file set:
+
+| Task type | Human engineering effort | AI loop budget | Agent roles | Default workflow |
+| --- | ---: | ---: | --- | --- |
+| Small task | 0.5-2 person-days | 1-3 loops | 1 agent | Single-agent loop |
+| Medium task | 3-10 person-days | 3-8 loops | Developer + Evaluator | Develop + independent evaluation |
+| Large project | 2+ weeks | 8+ loops | Planner + Developer + Evaluator | Phase target + feedback loops |
+| Product-level project | 1+ month | Multi-phase loops | Multi-agent + Runner + Rubric | Production system / harness |
+
+Use human engineering effort to estimate complexity. Use AI loop budget to estimate automation cost. Use agent roles to decide whether independent evaluation is needed.
+
+For small tasks, keep governance light. For medium and larger tasks, do not rely only on developer self-evaluation. For large or product-level work, keep final direction flexible but make the current phase target and acceptance criteria strict.
+
 ## Core Rule
 
 State is stable. Runner is replaceable. Stop rules are universal.
@@ -49,6 +88,10 @@ State is stable. Runner is replaceable. Stop rules are universal.
 - Mark completion only when evidence supports it.
 - Resolve state conflicts in this order: `TARGET.md` -> `ACCEPTANCE.md` -> `STATUS.md` -> `PENDING.md` -> `NEXT_ACTIONS.md`.
 - Use canonical `Docs/` file names. Legacy aliases may be read for migration, but write canonical files only.
+- In multi-agent work, `WORK_ORDER.md` is the Developer's only task authority. `TARGET.md` guards direction and non-goals, `ACCEPTANCE.md` defines evidence gates, and `STATUS.md`, `NEXT_ACTIONS.md`, `LOOP_RUNS.jsonl`, or chat context must not expand scope.
+- Keep one current acceptance table per active work order. Duplicate acceptance IDs, raw feedback pasted into acceptance rows, or competing AC sections are `Invalid State` until Controller or the project maintainer cleans them up.
+- Treat CMS/process rules as maintainer-owned. Ordinary Developer, Controller, or Acceptance agents may propose rule changes, but must not edit reusable CMS settings unless the user explicitly assigns that maintainer role.
+- If a work order depends on local/cloud mode, provider configuration, feature flags, unavailable devices/models, or waived criteria, it must name the environment mode, authoritative config, waived reason, and mandatory validation before `Done`.
 
 ## Flow
 
@@ -74,11 +117,48 @@ Route to existing skills only when needed:
 
 Do not load every related skill every loop. Load the narrow skill or reference file that answers the current question.
 
+## Host Runtime And Feedback Governance
+
+Use `references/host-runtime-integration.md` when:
+
+- a product host such as OpenCode, Cursor, Cline, WebBridge, Privacy Gateway, Memory, or a local runner needs to integrate Agent Loop state;
+- feedback from a dogfooding project should be promoted into reusable CMS / Skill rules;
+- there is risk of confusing development-process CMS (`Docs/`) with product runtime CMS (`.mywork/cms/{taskId}/` or an equivalent store);
+- a reviewer needs a standard hook contract such as `ensureState`, `buildSystemContext`, `gateAction`, and `recordRun`;
+- evidence must be separated into `code_refs`, `validation_refs`, `doc_refs`, and `known_limits`.
+
+Default boundary: updating this Skill or its references is not the same as acting on a live project's loop state. Do not edit an active project's `Docs/` records unless that is the explicit current role and task.
+
 ## Required Project State
 
 Use project-local `Docs/` files. Create missing files conservatively from the schemas in `references/loop-state-protocol.md`.
 
-Minimum reused files:
+CMS Lite v0.1 test mode starts with this required state set:
+
+- `Docs/TARGET.md`
+- `Docs/ACCEPTANCE.md`
+- `Docs/LOOP_STATE.md`
+- `Docs/LOOP_LOG.jsonl`
+
+Use the templates in `templates/TARGET.md`, `templates/ACCEPTANCE.md`, `templates/LOOP_STATE.md`, and `templates/LOOP_LOG.example.jsonl` when bootstrapping a new CMS Lite test task.
+
+For CMS Lite testing, audit, or cross-agent review, create `Docs/LOOP_LOG.jsonl` from `templates/LOOP_LOG.example.jsonl`. This log records observable decision and evidence trace only: scenario guess, skill/templates used, files read or written, commands run, evidence collected, and checker result. Do not record hidden chain-of-thought.
+
+After each CMS Lite test loop, run `scripts/agent-loop-check.ps1` against the project workspace. The checker validates the four test-mode files, state enum, Done evidence, Continue next action, Blocked reason, stop-rule conflict, JSONL log fields, scenario guess, rough code size, and optional strict verification evidence. Treat `Invalid State` as a system state that must be repaired before continuing.
+
+Use `scripts/agent-loop-check.ps1 -Strict` when judging `Done`. Strict mode requires machine-readable verification commands with successful exit codes in `Docs/LOOP_LOG.jsonl`.
+
+For expanded/full `Docs/` projects, use the read-only health checker when CMS state changed:
+
+```text
+node scripts/agent-loop-health-check.mjs --workspace "D:\path\to\project"
+```
+
+It checks duplicate acceptance IDs, `WORK_ORDER.md` environment-note gaps, `LOOP_RUNS.jsonl` JSONL health, and obvious completion-gate contradictions. Checker errors mean `Invalid State`; the checker must not auto-edit project files.
+
+Split `Docs/LOOP_STATE.md` into `STATUS.md`, `NEXT_ACTIONS.md`, `PENDING.md`, `EVALUATION.md`, and `LOOP_RUNS.jsonl` only when the task grows beyond CMS Lite or needs long-running handoff, runner automation, auditability, or multi-agent coordination.
+
+Expanded or full protocol reused files:
 
 - `Docs/TARGET.md`
 - `Docs/STATUS.md`
@@ -86,7 +166,7 @@ Minimum reused files:
 - `Docs/NEXT_ACTIONS.md`
 - `Docs/HANDOFF.md` when a standalone handoff is needed
 
-Agent Loop Engineering files:
+Expanded or full Agent Loop Engineering files:
 
 - `Docs/LOOP_CONFIG.md`
 - `Docs/ACCEPTANCE.md`
@@ -112,6 +192,16 @@ At the start of each loop:
 7. Read project manifests such as `package.json`, `pyproject.toml`, `Makefile`, `Cargo.toml`, `go.mod`, `pom.xml`, or repository docs to identify test, lint, build, typecheck, and functional verification commands. Record discovered commands in `Docs/LOOP_CONFIG.md`.
 8. If the target or acceptance criteria are missing, create or propose them before coding.
 9. If the next action conflicts with the target, stop and ask for direction unless the user explicitly requested a target revision.
+
+For role-based multi-agent projects, use the smaller role entry set when present:
+
+| Role | Minimum project state |
+| --- | --- |
+| Developer | `ACTIVE_LOOP.md`, `WORK_ORDER.md`, `STOP_RULES.md`, relevant `ACCEPTANCE.md` rows, relevant `TARGET.md` non-goals |
+| Controller / Evaluator | `TARGET.md`, `ACCEPTANCE.md`, `WORK_ORDER.md`, `LOOP_CONFIG.md`, `STOP_RULES.md`, latest 3-5 `LOOP_RUNS.jsonl` records |
+| Acceptance / QA | `ACCEPTANCE.md`, `REVIEW.md` or evaluator notes, `EVALUATION.md`, evidence paths, latest 3-5 `LOOP_RUNS.jsonl` records |
+
+If those files disagree about scope or status, report `Invalid State` instead of guessing.
 
 Default budget:
 
@@ -173,6 +263,8 @@ Loop-end write contract:
 6. Append completed items to `Docs/COMPLETED.md` when a user-visible or verification-backed unit is finished.
 7. Append one concise record to `Docs/LOOP_RUNS.jsonl`.
 
+Keep loop records concise and preferably runner-generated. Store command, result, key error summary, and artifact path; do not duplicate long logs, chat history, or repeated status across multiple files.
+
 `daily-workflow` may create broader checkpoint or handoff summaries when explicitly triggered by the user, but it should not replace the loop-end write contract above.
 
 If the user changes direction, classify it before editing:
@@ -194,6 +286,7 @@ Use progressive reading:
 - Read detailed reference files only when their decision surface is active.
 
 Read `references/context-budget.md` when context size becomes a risk or when designing a long-running loop.
+Read `references/checker-and-evidence.md` when validating `Done`, adding strict evidence gates, running cross-repo checks, or explaining why checker `Done` does not equal product completion.
 Read `references/automation-runner.md` when the user asks to add scheduled, repeated, local, CI, or runner-driven automation around the loop.
 Read `references/harness-engineering.md` when designing a multi-agent AI coding harness with Planner / Developer / Evaluator separation, rubric scoring, quality vision, environment observability, or long-running feedback loops.
 Read `references/ai-coding-production-system.md` when designing or auditing the control system for long-running, high-risk, multi-agent, production-grade, or quality-critical AI coding work.
