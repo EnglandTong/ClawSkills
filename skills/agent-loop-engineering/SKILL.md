@@ -123,7 +123,7 @@ Use `references/host-runtime-integration.md` when:
 
 - a product host such as OpenCode, Cursor, Cline, WebBridge, Privacy Gateway, Memory, or a local runner needs to integrate Agent Loop state;
 - feedback from a dogfooding project should be promoted into reusable CMS / Skill rules;
-- there is risk of confusing development-process CMS (`Docs/`) with product runtime CMS (`.mywork/cms/{taskId}/` or an equivalent store);
+- there is risk of confusing development-process CMS (`Docs/`) with a product runtime CMS store such as `.app/cms/{taskId}` or an equivalent host-owned state directory;
 - a reviewer needs a standard hook contract such as `ensureState`, `buildSystemContext`, `gateAction`, and `recordRun`;
 - evidence must be separated into `code_refs`, `validation_refs`, `doc_refs`, and `known_limits`.
 
@@ -286,6 +286,7 @@ Use progressive reading:
 - Read detailed reference files only when their decision surface is active.
 
 Read `references/context-budget.md` when context size becomes a risk or when designing a long-running loop.
+Read `references/cms-context-memory.md` when designing CMS memory, Context Packets, memory distillation, knowledge retrieval, or a small Memory & Context Steward layer.
 Read `references/checker-and-evidence.md` when validating `Done`, adding strict evidence gates, running cross-repo checks, or explaining why checker `Done` does not equal product completion.
 Read `references/automation-runner.md` when the user asks to add scheduled, repeated, local, CI, or runner-driven automation around the loop.
 Read `references/harness-engineering.md` when designing a multi-agent AI coding harness with Planner / Developer / Evaluator separation, rubric scoring, quality vision, environment observability, or long-running feedback loops.

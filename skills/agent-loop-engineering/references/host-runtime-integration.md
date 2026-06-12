@@ -1,60 +1,56 @@
-# Host Runtime Integration And Feedback Governance
+# Host Runtime Integration and Feedback Governance
 
-## 中文
+Use this reference when a coding host, editor, local agent app, CLI runner, or
+automation service wants to integrate Agent Loop Engineering into its runtime.
 
-本 reference 用于把真实项目中的 Agent Loop / CMS 使用反馈，抽象回
-Agent Loop Engineering 的流程、系统、Skill 和 reference，而不是自动改动正在开发
-中的项目记录。
+This reference is generic. It must not contain active state from one dogfooding
+project.
 
-核心原则：
+## 1. Three CMS Layers
 
-- 如果当前任务是“吸收反馈、升级 Skill/reference”，不要修改活跃项目的 `Docs/`
-  状态文件。
-- 只有当 Agent 明确承担该项目的 Controller / Developer / Acceptance 角色，并且
-  当前 loop 要求它写项目状态时，才更新项目内 `Docs/`。
-- Dogfooding 反馈应先分类，再决定进入 Skill/reference、项目代码、项目 `Docs/`
-  或待人工确认。
+Keep these layers separate:
 
-## 1. 两层 CMS 必须分清
-
-| 层级 | 存储 | 用途 | 典型写入者 |
+| Layer | Storage | Purpose | Typical writer |
 | --- | --- | --- | --- |
-| 开发过程 CMS | 项目 `Docs/` | 管理 AI coding 工作流、工单、验收、状态和交接 | Controller / Runner |
-| 产品运行时 CMS | 产品自己的运行态存储，如 `.mywork/cms/{taskId}/` | 管理产品里某个用户任务的目标、状态、工具门禁和运行证据 | 产品 runtime adapter |
-| Skill / Reference | Skill 仓库 | 沉淀跨项目可复用规则、接口、模板和方法论 | Skill maintainer |
+| Development CMS | project-local `Docs/` | manage AI coding work orders, acceptance, review, QA, handoff | Controller / Runner |
+| Product Runtime CMS | product-owned runtime store | manage one end-user task/session: target, gate, tool action, evidence | host runtime adapter |
+| Skill / Reference | skill repository | reusable rules, templates, scripts, methods | skill maintainer |
 
-不要把三者混成一层：
+Rules:
 
-- 开发过程 CMS 判断“这个开发工作是否完成”。
-- 产品运行时 CMS 判断“产品内这一轮用户任务是否应该继续、停止或门禁”。
-- Skill/reference 判断“以后其他项目和其他 Agent 是否也应该遵守这条规则”。
+- Development CMS decides whether a development work order is complete.
+- Product Runtime CMS decides whether one product task/session should continue,
+  stop, or ask for permission.
+- Skill/reference decides whether a rule should be reused across projects.
+- Do not edit an active project's `Docs/` state when the task is only to update
+  reusable skill/reference guidance.
 
-## 2. 反馈先分类
+## 2. Feedback Classification
 
-当收到其他 Agent 的反馈时，先分类，不要直接执行：
+When receiving feedback from a real project or another agent, classify before
+acting.
 
-| 分类 | 例子 | 默认处理 |
+| Feedback type | Example | Default action |
 | --- | --- | --- |
-| 项目代码问题 | 类型错误、测试失败、UI 未渲染 | 只有在当前任务是项目 Controller/Developer 时才改项目 |
-| 项目状态问题 | `STATUS.md`、`LOOP_RUNS.jsonl`、`ACCEPTANCE.md` 不一致 | 只有在当前任务是该项目状态维护时才改项目 |
-| Skill / 流程问题 | 角色边界不清、证据格式不清、Done 门禁不清 | 更新 Skill/reference |
-| 宿主集成问题 | OpenCode、Cursor、Cline、WebBridge 接入点不一致 | 更新 host integration reference 或 adapter 规范 |
-| Runner / 环境问题 | Bun 不在 PATH、workspace link 未生成、权限不足 | 更新 environment escalation / runner guidance；项目内只在承担项目角色时记录 |
-| 人工决策问题 | 是否接受风险、是否改目标、是否安装系统依赖 | 停止并问人 |
+| Project code issue | test failure, type error, UI defect | act only when assigned project Developer/Controller role |
+| Project state issue | duplicate AC IDs, bad JSONL, stale status | act only when assigned project state maintainer role |
+| Skill/process issue | unclear role boundary, missing evidence rule | update skill/reference |
+| Host integration issue | adapter hook missing, runtime gate wrong | update this reference or adapter spec |
+| Runner/environment issue | missing runtime, path, dependency, command | update runner/environment guidance or project PENDING |
+| Human decision issue | accept risk, change target, install system dependency | stop and ask human |
 
-判断句：
+Default decision:
 
 ```text
-I am updating the governance system, not acting as this project's Controller.
-Therefore I must not modify the active project's Docs state.
+If I am updating reusable governance, I must not modify the active project's Docs state.
 ```
 
-## 3. 推荐宿主运行时接口
+## 3. Runtime Adapter Contract
 
-当一个产品或 coding host 要接入 Agent Loop Engineering，应提供稳定 runtime
-adapter，而不是让每个宿主直接理解 store、taskId、gate、context。
+Hosts should expose a stable adapter instead of making every agent understand
+store paths, task IDs, gates, and context assembly.
 
-推荐 API：
+Recommended interface:
 
 ```ts
 interface AgentLoopRuntime {
@@ -66,111 +62,158 @@ interface AgentLoopRuntime {
 }
 ```
 
-推荐 hook：
+Recommended hooks:
 
-| Hook | 时机 | 职责 |
+| Hook | When | Responsibility |
 | --- | --- | --- |
-| `ensureState()` | 第一个有效用户主 loop | 创建或加载 task state |
-| `buildSystemContext()` / `beforePrompt` | 模型 prompt 组装前 | 注入最小目标、验收、下一步、停止规则 |
-| `gateAction()` / `beforeToolExecute` | 工具、浏览器、云调用、写操作前 | 判断 allow / warning / confirmation / block |
-| `afterToolExecute()` | 工具执行后 | 记录结果摘要和证据引用 |
-| `recordRun()` | loop 结束或重要状态转换时 | 追加机器可读运行记录 |
+| `ensureState()` | first valid user task/session turn | create or load task state |
+| `buildSystemContext()` / `beforePrompt` | before model prompt assembly | inject minimal target, acceptance, pending, next action, and stop rules |
+| `gateAction()` / `beforeToolExecute` | before tools, browser, cloud calls, write actions, or data transfer | allow, warn, require confirmation, redirect, or block |
+| `afterToolExecute()` | after tool execution | record result summary and evidence reference |
+| `recordRun()` | loop end or important transition | append machine-readable run record |
 
-Privacy Gateway 不应只在工具执行后审计；它应在 `gateAction()` 前或内部成为输入的一部分。
+Privacy, security, and production-data checks should happen before or inside
+`gateAction()`, not only after a tool has already executed.
 
-## 4. 初始化边界
+## 4. Initialization Boundary
 
-首轮初始化必须严格：
+Only a real user-driven task turn should initialize a new runtime target.
 
-- 只有用户主 loop 的真实用户消息可以初始化 `target.userGoal`。
-- 内部工具调用、后台任务、合成消息、测试 fixture 不应静默创建新 target。
-- 长会话应区分：
-  - stable user goal
-  - current phase target
-  - current subtask / work order
+Do not silently create a new target from:
 
-否则运行越久，target 会越来越粗，后续 gate 会失去方向约束。
+- internal tool calls;
+- background jobs;
+- synthetic messages;
+- test fixtures;
+- summarization or compaction jobs.
 
-## 5. 标准 evidence 分层
+Long sessions should distinguish:
 
-每轮反馈、review、handoff 应尽量使用四层证据：
+- stable user goal;
+- current phase target;
+- current subtask or work order.
 
-| 字段 | 含义 |
+Otherwise target state becomes too broad and later gates lose direction.
+
+## 5. Evidence Layers
+
+Every loop report, review, or handoff should separate evidence:
+
+| Field | Meaning |
 | --- | --- |
-| `code_refs` | 修改的代码文件、函数、模块 |
-| `validation_refs` | 测试、类型检查、构建、手动运行、E2E、截图 |
-| `doc_refs` | 更新的 CMS、review、acceptance、handoff、reference 文件 |
-| `known_limits` | 未验证项、环境限制、跳过项、剩余风险 |
-
-规则：
-
-- “已实现”不是“已验证”。
-- 类型检查通过不是完整 Done，除非 acceptance 明确只要求类型证据。
-- 如果单测、路由测试、浏览器目视验证无法运行，应写 `Blocked` 或
-  `Done with Risk`，不能写普通 `Done`。
-- 证据必须写命令、结果、时间或证据路径；不要只写“测试通过”。
-
-## 6. 回滚开关应标准化
-
-所有产品运行时集成都应有零侵入回滚开关：
-
-| 集成 | 示例 |
-| --- | --- |
-| CMS runtime | `MYWORK_CMS=0` |
-| UI shell | `MYWORK_UI=0` / `VITE_MYWORK_UI=0` |
-| Privacy layer | `MYWORK_PRIVACY=0` |
-| WebBridge | `MYWORK_WEBBRIDGE=0` |
-
-开关规则：
-
-- 默认行为必须可解释。
-- 关闭后应尽量回到宿主原行为。
-- 关闭状态也应有可验证行为，例如 API 返回 disabled 或功能不渲染。
-
-## 7. 何时更新项目 Docs，何时更新 Skill
-
-| 当前任务 | 应更新 |
-| --- | --- |
-| 执行项目工单 | 项目 `Docs/` + 项目代码 |
-| Controller review 项目交付 | 项目 `Docs/REVIEW.md`、`EVALUATION.md`、`PENDING.md` 等 |
-| Workbuddy / Acceptance 验收 | 项目 `Docs/QA_ACCEPTANCE.md` 或等价验收文件 |
-| 总结 dogfooding 经验 | Skill/reference，不直接改项目状态 |
-| 改进 Agent Loop Engineering 方法论 | Skill/reference、templates、scripts |
-| 准备发布 Skill | Skill 仓库、README、zip、listing |
-
-如果用户说“参考这些反馈，更新 CMS / Skill / reference”，默认不要改正在开发项目的
-`Docs/` 状态。只把反馈提炼到 Skill/reference。
-
-## 8. English summary
-
-Use this reference when feedback from a real project should improve the reusable
-CMS / Agent Loop Engineering system.
+| `code_refs` | changed code files, functions, modules |
+| `validation_refs` | tests, typecheck, build, manual run, E2E, screenshots |
+| `doc_refs` | updated CMS, review, acceptance, handoff, reference files |
+| `known_limits` | unverified paths, environment limits, skipped checks, residual risks |
 
 Rules:
 
-- Do not modify an active project's `Docs/` state when the task is to update the
-  reusable skill or references.
-- Separate development-process CMS, product runtime CMS, and reusable skill
-  governance.
-- Treat reusable CMS / Agent Loop rules as maintainer-owned. Ordinary project
-  Developer, Controller, or Acceptance agents may propose rule changes, but must
-  not edit the reusable rule layer unless explicitly assigned that maintainer
-  role.
-- For Developer loops, `WORK_ORDER.md` is the task authority. `TARGET.md`,
-  `ACCEPTANCE.md`, `STATUS.md`, `NEXT_ACTIONS.md`, `LOOP_RUNS.jsonl`, and chat
-  context must not expand the work order scope.
-- Keep one current acceptance table per active work order. Duplicate AC IDs,
-  raw feedback pasted into acceptance rows, and competing AC sections are
-  `Invalid State`.
-- Work orders that depend on local/cloud mode, providers, feature flags,
-  unavailable devices/models, or waived checks must state the environment mode,
-  authoritative config, waived reason, and mandatory validation before `Done`.
-- Classify feedback before acting: project code issue, project state issue,
-  skill/process issue, host integration issue, runner/environment issue, or
-  human-decision issue.
-- Prefer a host-neutral `AgentLoopRuntime` adapter with `ensureState`,
-  `buildSystemContext`, `gateAction`, and `recordRun`.
-- Evidence should be layered as `code_refs`, `validation_refs`, `doc_refs`, and
-  `known_limits`.
+- Implemented is not verified.
+- Typecheck passing is not full Done unless acceptance only requires typecheck.
 - Missing tests, missing visual checks, or missing runtime verification should
-  stop as `Blocked` or `Done with Risk`, not `Done`.
+  produce `Blocked` or `Done with Risk`, not plain `Done`.
+- Evidence must name command, result, time or evidence path where possible.
+
+## 6. Runtime Bypass Switch
+
+Every product runtime integration should have a narrow rollback switch.
+
+Examples:
+
+| Integration | Example flag |
+| --- | --- |
+| CMS runtime | `MYAPP_CMS=0` |
+| UI shell | `MYAPP_UI=0` |
+| Privacy layer | `MYAPP_PRIVACY=0` |
+| Web bridge | `MYAPP_WEBBRIDGE=0` |
+
+Switch rules:
+
+- Default behavior must be clear.
+- Disabled mode should approximate the host's original behavior.
+- Disabled behavior should be testable, such as returning `disabled` or not
+  rendering the integration.
+
+Use product-specific names in the product, not in this reusable reference.
+
+## 7. Context Builder Boundary
+
+The host context builder should produce a bounded Context Packet:
+
+- current task/work order;
+- relevant target and non-goals;
+- current acceptance rows;
+- current stop rules;
+- latest compressed state;
+- latest evidence summary;
+- selected retrieved facts with sources;
+- one next action.
+
+It should not inject:
+
+- full chat history;
+- full logs;
+- all reference files;
+- stale plans;
+- conflicting memories without warning;
+- project-specific dogfooding notes from unrelated work.
+
+For the detailed CMS memory model, see `cms-context-memory.md`.
+
+## 8. Tool Classes
+
+Host gates should distinguish tool classes:
+
+| Tool class | Meaning | Default gate |
+| --- | --- | --- |
+| data | read-only context retrieval | allow with audit |
+| action | file write, command, API call, external side effect | gate by risk |
+| orchestration | call another agent, schedule work, start a loop | require role/budget policy |
+
+Suggested metadata:
+
+```yaml
+tool_class: data | action | orchestration
+side_effects: none | local_files | external_api | production_data
+requires_gate: true
+audit_level: low | medium | high
+```
+
+## 9. State Write Safety
+
+Runtime state writes should be ACID-like where possible:
+
+- write temp file first;
+- validate JSON or schema;
+- atomically replace when possible;
+- append JSONL as one valid line;
+- run a read-only checker after state updates;
+- never store secrets, credentials, or raw private documents.
+
+If a state write is interrupted, the next loop should recover from the highest
+authority files first: target, acceptance, stop rules, latest valid state, then
+logs.
+
+## 10. What To Remove From Reusable References
+
+Remove or do not add:
+
+- active project status;
+- project-specific paths;
+- full dogfooding transcripts;
+- exact provider secrets or account setup;
+- one-off environment failures;
+- raw external article text;
+- product-specific feature flags unless shown only as examples;
+- rules that cannot be generalized.
+
+Promote only reusable patterns:
+
+- hook contracts;
+- evidence format;
+- stop gates;
+- context packet shape;
+- memory classification;
+- tool classes;
+- checker/evaluator rules.
+

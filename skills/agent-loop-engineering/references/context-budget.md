@@ -1,6 +1,44 @@
 # Context Budget
 
-Long-running coding agents fail when they reread too much history. Prefer progressive disclosure and compressed state.
+Long-running coding agents fail when they reread too much history, but they also
+fail when they receive too little authority context. Context must be treated as
+a bounded work packet, not a dump of all project knowledge.
+
+For the broader CMS / memory model, read `cms-context-memory.md`.
+
+## Context Packet Rule
+
+Every role should receive a Context Packet:
+
+```yaml
+context_packet:
+  role: Developer | Reviewer | QA | Controller | Archivist
+  work_order: one current task
+  target: only relevant goal and non-goals
+  acceptance: only current acceptance rows
+  constraints: stop rules and allowed scope
+  recent_state: compressed latest status
+  evidence: latest relevant validation only
+  next_action: one intended action
+  exclusions: what not to do
+```
+
+Do not load full chat history, full logs, stale plans, or entire reference
+folders into the packet.
+
+## Budget Tiers
+
+Use tiers instead of "read everything".
+
+| Tier | Use case | Suggested size | Suggested max project files |
+| --- | --- | ---: | ---: |
+| Lite | small bug, single file, clear acceptance | 3k-6k tokens | 3-5 |
+| Standard | normal feature or review | 6k-12k tokens | 5-8 |
+| Deep | repeated failure, architecture boundary, high-risk refactor | 12k-25k tokens | 8-12 |
+| Rich | exceptional incident or design review | explicit approval | case by case |
+
+Default to Lite or Standard. Escalate only when evidence shows missing context
+caused failure or risk.
 
 ## Minimum Read Set
 
@@ -26,6 +64,51 @@ Skill instruction files and `references/*.md` files from the skill package do no
 - Read `runner-adapters.md` only when configuring or changing a runner.
 - Read `web-search-rules` only for external sources, API docs, uploaded files, or knowledge intake.
 - Read lifecycle skills only when scope, MVP, or project stage is unclear.
+
+## Memory And Retrieval
+
+Retrieved knowledge is a hint, not authority.
+
+Use this authority order:
+
+```text
+Current work order
+-> current acceptance criteria
+-> stop rules
+-> current compressed status
+-> retrieved project memory
+-> specialist knowledge
+-> personal preference
+-> external general reference
+```
+
+Before adding retrieved knowledge to context:
+
+1. Extract a query from the current work order: goal, package, feature, role,
+   risk, or error class.
+2. Search only relevant memory scopes.
+3. Rank by current relevance and freshness.
+4. Compress to 3-7 facts.
+5. Attach source paths.
+6. Drop facts that do not change the next action.
+
+Do not pass search dumps, full article summaries, or raw dogfooding logs to the
+coding agent.
+
+## Context Composition Ratio
+
+For normal coding loops, aim for:
+
+| Context type | Target share |
+| --- | ---: |
+| Task authority: work order and acceptance | 30-40% |
+| Current code facts | 30-40% |
+| State and evidence | 10-20% |
+| Rules and guardrails | 10-15% |
+| External reference / general theory | 0-5% |
+
+If history, rules, or references dominate the packet, summarize them or move
+them out of the current loop.
 
 ## Compression Rules
 
