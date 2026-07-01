@@ -7,6 +7,7 @@ This repository contains public AI workflow skills by England Tong, including sk
 | Skill | Version | Description |
 | --- | --- | --- |
 | `agent-loop-engineering` | 1.1.0 | Top-level loop controller for long-running AI coding work with persistent `Docs/` state, role-based work-order authority, acceptance health checks, host runtime integration guidance, automation runner guidance, stop gates, completion gates, runner adapters, feedback governance, and context budgeting. |
+| `cms-project-governance` | 1.0.0 | Full CMS governance layer for Milestones, Programs, Work Orders, Controller/QA acceptance, rebaseline reviews, roadmap reviews, Developer briefs, and current-stage finish lines. |
 | `web-search-rules` | 3.0.0 | Rules and operating guidance for evidence-backed web search workflows. |
 | `ai-workflow-os` | 1.0.0 | A workflow operating system for AI-assisted projects, research, and handoffs. |
 | `project-lifecycle-navigator` | 1.0.0 | Project lifecycle prompts and guidance for intake, realignment, and code-review upgrades. |
@@ -18,6 +19,7 @@ Use `agent-loop-engineering` as the entry skill for AI coding work. Use `ai-work
 
 ```text
 agent-loop-engineering
+  -> cms-project-governance
   -> project-lifecycle-navigator
   -> ai-workflow-os
   -> daily-workflow
@@ -31,6 +33,7 @@ Do not load every skill on every loop. `agent-loop-engineering` uses progressive
 ```text
 skills/
   agent-loop-engineering/
+  cms-project-governance/
   ai-workflow-os/
   daily-workflow/
   project-lifecycle-navigator/

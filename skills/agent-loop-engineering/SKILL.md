@@ -26,6 +26,7 @@ Agent Loop Engineering 是一个面向 AI Coding Agent 的编码循环总控 Ski
 推荐入口：
 
 - 编码循环、长期实现、自动化 Runner、Harness Engineering、AI Coding Production System、验证门禁、停止门禁：使用 `agent-loop-engineering`。
+- Milestone / Program / Work Order 规划、Controller/QA 验收、Rebaseline Review、Roadmap Review、阶段结束线：使用 `cms-project-governance`。
 - 非编码研究、资料接入、知识治理：使用 `ai-workflow-os` 或 `web-search-rules`。
 - 用户明确说 checkpoint、收工、交接：使用 `daily-workflow`，但要保留 Agent Loop Engineering 的 loop evidence。
 
@@ -111,9 +112,10 @@ Bootstrap if Docs/ is missing
 Route to existing skills only when needed:
 
 1. Use `project-lifecycle-navigator` when `Docs/TARGET.md` is missing, the user cannot state the goal in one sentence, multiple goals conflict, or MVP boundaries are unclear. If unavailable, use the bootstrap questions in `references/bootstrap.md` and stop for confirmation when the target remains unclear.
-2. Use `ai-workflow-os` for multi-source research decisions, knowledge intake governance, cross-module audits, or non-coding workflow governance. Do not route pure code verification or bug-fix loops to it. If unavailable, keep coding-loop state in this skill and record unresolved governance work in `Docs/PENDING.md`.
-3. Use `daily-workflow` when the user explicitly asks to checkpoint, wrap up, recover after context loss, or create a standalone handoff. During a coding loop, keep lightweight loop updates in this skill. If unavailable, write `Docs/HANDOFF.md` using `references/loop-state-protocol.md`.
-4. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling. If unavailable, use primary sources where possible and record source limits in `Docs/STATUS.md`. In a coding loop, write the short research conclusion to `Docs/STATUS.md` compressed context or `Docs/PENDING.md`; use the full intake path only when the task is research/governance-heavy.
+2. Use `cms-project-governance` when the task is Milestone / Program planning, Work Order dispatch, Controller/QA acceptance, Developer handoff review, Rebaseline Review, Roadmap Review, or current-stage finish-line definition. Do not use it for ordinary implementation loops.
+3. Use `ai-workflow-os` for multi-source research decisions, knowledge intake governance, cross-module audits, or non-coding workflow governance. Do not route pure code verification or bug-fix loops to it. If unavailable, keep coding-loop state in this skill and record unresolved governance work in `Docs/PENDING.md`.
+4. Use `daily-workflow` when the user explicitly asks to checkpoint, wrap up, recover after context loss, or create a standalone handoff. During a coding loop, keep lightweight loop updates in this skill. If unavailable, write `Docs/HANDOFF.md` using `references/loop-state-protocol.md`.
+5. Use `web-search-rules` when using external web pages, API docs, uploaded files, or other sources that require trust and provenance handling. If unavailable, use primary sources where possible and record source limits in `Docs/STATUS.md`. In a coding loop, write the short research conclusion to `Docs/STATUS.md` compressed context or `Docs/PENDING.md`; use the full intake path only when the task is research/governance-heavy.
 
 Do not load every related skill every loop. Load the narrow skill or reference file that answers the current question.
 

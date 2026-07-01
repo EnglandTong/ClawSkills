@@ -71,7 +71,9 @@ Strict mode still does not judge code quality, UI beauty, architecture quality, 
 The checker can be kept in one skill or test-suite folder and pointed at any repository that contains `Docs/`:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "D:\Codex\clawhub-skills\ClawSkills\skills\agent-loop-engineering\scripts\agent-loop-check.ps1" -WorkspacePath "D:\Development\SomeProject" -Strict -Json
+$skillCheck = "C:\path\to\agent-loop-engineering\scripts\agent-loop-check.ps1"
+$workspace = "C:\path\to\project"
+powershell -NoProfile -ExecutionPolicy Bypass -File $skillCheck -WorkspacePath $workspace -Strict -Json
 ```
 
 Use a real path. Do not paste placeholder brackets such as `<project-path>` into PowerShell.

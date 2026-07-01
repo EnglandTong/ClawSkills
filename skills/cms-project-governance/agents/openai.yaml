@@ -1,0 +1,4 @@
+interface:
+  display_name: "CMS Project Governance"
+  short_description: "Project governance, QA, and rebaseline control"
+  default_prompt: "Use $cms-project-governance to review this project milestone, check evidence, and define the next authorized work."
