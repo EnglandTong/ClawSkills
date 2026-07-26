@@ -1,0 +1,12 @@
+{
+  "id": "ai-engineering-expert",
+  "name": "AI Engineering Expert",
+  "skills": [
+    "./skills"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

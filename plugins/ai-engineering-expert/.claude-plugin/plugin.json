@@ -1,0 +1,17 @@
+{
+  "name": "ai-engineering-expert",
+  "version": "1.0.0",
+  "description": "Bilingual AI engineering expert for requirements, governance, implementation loops, alignment, evidence, and QA.",
+  "author": {
+    "name": "England Tong"
+  },
+  "homepage": "https://github.com/EnglandTong/ClawSkills",
+  "repository": "https://github.com/EnglandTong/ClawSkills.git",
+  "license": "MIT",
+  "keywords": [
+    "ai-engineering",
+    "project-governance",
+    "ai-coding",
+    "quality-assurance"
+  ]
+}

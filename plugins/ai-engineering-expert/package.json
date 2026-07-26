@@ -1,0 +1,32 @@
+{
+  "name": "@englandtong/ai-engineering-expert",
+  "version": "1.0.0",
+  "description": "A bilingual AI engineering expert bundle for goal discovery, governed delivery, bounded coding loops, alignment, evidence, and QA.",
+  "license": "MIT",
+  "author": "England Tong",
+  "homepage": "https://github.com/EnglandTong/ClawSkills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnglandTong/ClawSkills.git",
+    "directory": "plugins/ai-engineering-expert"
+  },
+  "keywords": [
+    "openclaw",
+    "clawhub",
+    "qoder",
+    "agent-skills",
+    "ai-coding",
+    "project-governance",
+    "quality-assurance"
+  ],
+  "files": [
+    ".qoder-plugin",
+    ".claude-plugin",
+    "openclaw.plugin.json",
+    "agents",
+    "skills",
+    "qoder.md",
+    "README.md",
+    "LICENSE"
+  ]
+}
