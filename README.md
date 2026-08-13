@@ -1,13 +1,13 @@
-﻿# Clawhub Skills
+# ClawHub Skills
 
-This repository contains public AI workflow skills by England Tong, including skills originally published on Clawhub.
+This repository contains public AI workflow Skills and Plugins by England Tong.
 
 ## Skills
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `agent-loop-engineering` | 2.0.0 | Execution-plane skill for authorized AI coding work with a versioned Active Packet, ten-stage timeboxes, bounded loops, automatic and functional evidence, failure budgets, context control, safe stop gates, and resumable handoffs. |
-| `cms-project-governance` | 2.0.0 | Human-facing control-plane skill that turns vague ideas into clear outcomes, sizes work, selects Lite/Standard/Full governance, dispatches delivery, checks direction, and separates Developer completion from QA acceptance. |
+| `agent-loop-engineering` | 2.1.0 | Execution plane for low-context Bounded Autopilot, proactive failure repair, focused and functional evidence, real-path write boundaries, stage review, and independent final acceptance. |
+| `cms-project-governance` | 2.1.0 | Control plane for non-technical goal guidance, compact legacy CMS bootstrap, sizing, alignment, delivery-class evidence, and independent QA governance. |
 | `web-search-rules` | 3.0.0 | Rules and operating guidance for evidence-backed web search workflows. |
 | `ai-workflow-os` | 1.0.0 | A workflow operating system for AI-assisted projects, research, and handoffs. |
 | `project-lifecycle-navigator` | 1.0.0 | Project lifecycle prompts and guidance for intake, realignment, and code-review upgrades. |
@@ -15,41 +15,54 @@ This repository contains public AI workflow skills by England Tong, including sk
 
 ## Recommended Entry
 
-Use `cms-project-governance` when the goal is vague, needs planning, or requires QA and direction control. Use `agent-loop-engineering` once the target and acceptance criteria are authorized. The two skills share the `ACTIVE_PACKET` contract version 2.0 but remain independently usable:
+Use `cms-project-governance` when a goal is vague or changing, old project records conflict, work needs sizing or alignment, or independent acceptance is required. Use `agent-loop-engineering` once outcome, scope, acceptance, and authority are coherent.
 
 ```text
-cms-project-governance
-  -> ACTIVE_PACKET 2.0
-  -> agent-loop-engineering
-
-agent-loop-engineering
-  -> project-lifecycle-navigator
-  -> ai-workflow-os
-  -> daily-workflow
-  -> web-search-rules
+cms-project-governance 2.1
+  -> compact ACTIVE_PACKET (contract_version 2.0)
+  -> agent-loop-engineering 2.1
+  -> Ready for Independent Acceptance
+  -> another agent, task, or human QA
 ```
 
-Do not load every skill on every loop. Version 2.0 defaults to a minimal Active Packet plus append-only loop evidence, expands documentation only when risk requires it, and treats stages as timeboxed checkpoints rather than Milestones or files.
+Both Skills remain independently installable. Do not merge either ClawHub listing into the other.
 
-Both v2 skills include:
+## Version 2.1
 
-- `SKILL.md` as the English ClawHub entry;
-- `SKILL.zh-CN.md` as the complete Chinese operating guide;
-- matching `references/en/` and `references/zh-CN/` sets;
-- English and Chinese copy-ready templates;
-- English machine keys and state enums for cross-language interoperability.
+- `Controller -> Developer -> QC` prompts route directly into Bounded Autopilot; QC means Stage Reviewer inside a single-agent loop.
+- Standard and Full execution cannot self-sign final acceptance.
+- Legacy Bootstrap indexes `Docs/docs`, reads selected current authority only, and writes nothing on conflict.
+- Compact context defaults to the Packet, current Work Order, affected source/tests, verification configuration, and last three Loop records.
+- Old JSONL gaps are aggregated and detailed findings are capped at 20 unless `--strict-history` is requested.
+- Runtime, Contract, Governance, Artifact, and Mixed delivery claims use distinct evidence rules.
+- Real paths are checked before project writes to reject `..`, symlink, or junction escapes.
+
+## Local Commands
+
+```powershell
+node skills/agent-loop-engineering/scripts/bootstrap-active-packet.mjs --workspace <project> --language zh-CN --json
+node skills/agent-loop-engineering/scripts/validate-loop-state.mjs --workspace <project> --json --summary --max-findings 20
+node skills/agent-loop-engineering/scripts/test-state-tools.mjs
+```
+
+Bootstrap is read-only unless `--write` is supplied and current authority is conflict-free.
 
 ## Bundle Plugin
 
-`plugins/ai-engineering-expert` packages both v2 Skills as one no-code ClawHub `bundle-plugin` and Qoder Expert Kit. It adds a bilingual expert role that routes vague or governance-heavy work to `cms-project-governance` and authorized implementation work to `agent-loop-engineering`.
+`plugins/ai-engineering-expert` version 1.1.0 bundles both Skills as a ClawHub `bundle-plugin` and Qoder Expert Kit. It includes OpenClaw, Claude, and Qoder manifests plus bilingual routing instructions.
 
-The Plugin is an additional distribution format. Keep both standalone Skill listings live so users can install either capability independently.
+The Plugin is an additional one-install distribution format. Keep both standalone Skill listings live and searchable.
 
-Release files:
+Release artifacts:
 
-- `release/AI-Engineering-Expert-v1.0.0/ai-engineering-expert-v1.0.0-qoder.zip`
-- `release/AI-Engineering-Expert-v1.0.0/PUBLISH.md`
-- `release/AI-Engineering-Expert-v1.0.0/SHA256SUMS.txt`
+- `release/ClawHub-v2.1/agent-loop-engineering-v2.1.0.zip`
+- `release/ClawHub-v2.1/cms-project-governance-v2.1.0.zip`
+- `release/ClawHub-v2.1/AGENT_LOOP_ENGINEERING_LISTING.md`
+- `release/ClawHub-v2.1/CMS_PROJECT_GOVERNANCE_LISTING.md`
+- `release/AI-Engineering-Expert-v1.1.0/ai-engineering-expert-v1.1.0-qoder.zip`
+- `release/AI-Engineering-Expert-v1.1.0/CLAWHUB_LISTING.md`
+
+Publish the ClawHub `bundle-plugin` from `plugins/ai-engineering-expert` or its exact committed GitHub source. The Qoder ZIP is not a ClawPack upload.
 
 ## Repository Layout
 
@@ -64,8 +77,6 @@ skills/
   project-lifecycle-navigator/
   web-search-rules/
 ```
-
-Each skill keeps its original Clawhub package structure, including `SKILL.md`, metadata, agent configuration, and supporting references or templates when present.
 
 ## License
 

@@ -1,77 +1,84 @@
 # AI Engineering Expert
 
-Version: 1.0.0
+Version: 1.1.0
 
-AI Engineering Expert is a bilingual, no-code bundle Plugin for governed AI-assisted software delivery. It packages two independent Skills and one Qoder expert role:
+AI Engineering Expert is a bilingual ClawHub bundle Plugin and Qoder Expert Kit for governed, proactive AI-assisted software delivery. It packages two independently usable Skills:
 
-- `cms-project-governance`: turns ideas and changing requirements into clear, right-sized, reviewable delivery.
-- `agent-loop-engineering`: executes an authorized software goal through bounded, evidence-backed coding loops.
-- `ai-engineering-expert`: routes work between governance and execution without collapsing their authority boundaries.
+- `cms-project-governance` 2.1.0: goal discovery, Legacy Bootstrap, sizing, alignment, rebaseline, and independent QA control.
+- `agent-loop-engineering` 2.1.0: low-context Bounded Autopilot, focused verification, proactive repair, and layered stage review.
 
-## Why Two Skills
+The expert role routes work between them without collapsing governance and execution authority.
 
-The two Skills remain separate by design:
+## What Changed In 1.1
 
-- governance decides what should be built, how much control is needed, whether work remains aligned, and whether QA accepts it;
-- execution decides how to implement the authorized target and supplies evidence.
+- Recognizes existing `Controller -> Developer -> QC` CMS prompts directly.
+- Maps QC to Stage Reviewer and preserves independent Standard/Full acceptance.
+- Bootstraps legacy `Docs/docs` state without recursively reading all history.
+- Stops with zero writes on route, QA, authority, claim-class, or path conflicts.
+- Aggregates legacy validator warnings and caps details at 20 by default.
+- Adds context and verification-cost controls for measurable Token reduction.
+- Bundles read-only bootstrap, compact validation, and regression test utilities.
 
-They share the `ACTIVE_PACKET` contract but can still be invoked independently.
+## Shared Contract
 
-## Languages
+Both Skills use `Docs/ACTIVE_PACKET.md` with backward-compatible `contract_version: "2.0"` plus the 2.1 fields for bounded autonomy, layered acceptance, delivery class, compact context, real-path write scope, and authority fingerprint.
 
-Both Skills include complete English and Simplified Chinese instructions, references, and templates. The expert responds in the user's language. Machine-readable state keys and enum values remain English for interoperability.
+New Standard/Full execution ends at `Ready for Independent Acceptance`. Another agent, task, or human owns final QA.
 
 ## Qoder
 
-The bundle contains:
-
-- `.qoder-plugin/plugin.json`
-- `qoder.md`
-- `agents/ai-engineering-expert.md`
-- `skills/*`
-
-Qoder registers bundled Skills with plugin-qualified names:
+The bundle contains `.qoder-plugin/plugin.json`, `qoder.md`, `agents/ai-engineering-expert.md`, and `skills/*`. Qualified Skill names are:
 
 ```text
 ai-engineering-expert:cms-project-governance
 ai-engineering-expert:agent-loop-engineering
 ```
 
-Qoder Expert Kits can install the ZIP directly. Qoder CLI can install the extracted directory as a local Plugin.
+Qoder Expert Kits can install the release ZIP directly. Qoder CLI can install the extracted Plugin directory.
 
 ## ClawHub
 
-This directory is a ClawHub `bundle-plugin`. It also includes a `.claude-plugin/plugin.json` compatibility marker for package discovery.
+This directory is the ClawHub publication unit for a no-service `bundle-plugin`. OpenClaw loads the two Skill directories through `openclaw.plugin.json`; `.claude-plugin/plugin.json` and `.qoder-plugin/plugin.json` provide compatible package discovery metadata.
 
-OpenClaw loads the two bundled Skill directories through `openclaw.plugin.json`. The manifest declares no runtime module, tools, hooks, services, or configuration fields.
+ClawHub publishes a bundle Plugin from this folder or from its committed GitHub source. Do not pass the Qoder ZIP to `clawhub package publish`, and do not run `clawhub package pack`: ClawPack `.tgz` output is the code-plugin path, while bundle Plugins use extracted-file publication.
 
-Preview publication:
+Validate and preview from the repository root:
 
 ```powershell
+npx.cmd --yes clawhub@latest package validate ".\plugins\ai-engineering-expert" `
+  --out ".\work\clawhub-plugin-validation-1.1.0"
+
 npx.cmd --yes clawhub@latest package publish ".\plugins\ai-engineering-expert" `
   --family bundle-plugin `
   --name "@englandtong/ai-engineering-expert" `
-  --version 1.0.0 `
+  --display-name "AI Engineering Expert" `
   --owner englandtong `
-  --dry-run
+  --version 1.1.0 `
+  --changelog "Adds bounded-autonomous execution, compact legacy CMS bootstrap, proactive repair, layered acceptance, and low-context validation." `
+  --tags latest `
+  --categories context,tools `
+  --topics ai-coding,autonomous-agents,project-governance,context-management,quality-assurance `
+  --bundle-format claude `
+  --dry-run `
+  --json
 ```
 
-Publish only after the dry run and package validation pass.
+The Plugin category vocabulary is different from the standalone Skill vocabulary. Use `context,tools` here; do not reuse `development,automation,agents` for the Plugin listing. Commit and push the release before live publication so ClawHub source provenance identifies the exact released content.
 
-## Dependencies And Permissions
+Do not merge or hide the two standalone Skill listings. The Plugin is an additional one-install distribution channel.
 
-- No MCP server.
-- No API key.
-- No external service.
-- No bundled executable code.
-- The execution Skill may ask the host agent to read, edit, test, or run project code, subject to the host's permission and sandbox controls.
+## Requirements And Permissions
+
+- Node.js 18 or later for the optional local bootstrap and validator scripts.
+- No MCP server, API key, external service, hook, or runtime service.
+- Project reads, edits, tests, and commands remain subject to host sandbox and project permissions.
+- Bootstrap is read-only unless `--write` is supplied and its state is conflict-free.
 
 ## 中文说明
 
-AI Engineering Expert 是一个中英文、无外部依赖的软件交付专家套件：
+AI Engineering Expert 1.1 是中英文 ClawHub Plugin 与 Qoder Expert Kit，包含两个保持独立权限的 Skill：
 
-- `cms-project-governance` 负责需求、规划、规模、方向、重基线和 QA；
-- `agent-loop-engineering` 负责经过授权的开发、调试、验证和循环推进；
-- 专家角色负责判断先治理还是直接执行，但不会把两种权限混在一起。
+- `cms-project-governance` 负责需求分析、旧项目引导、分级、方向对齐、重基线和独立 QA；
+- `agent-loop-engineering` 负责低上下文自主开发、聚焦验证、主动返修和阶段审查。
 
-Qoder Expert Kits 可以直接上传 ZIP。Qoder CLI 可以安装解压后的 Plugin 目录。Plugin 不需要 MCP、API Key 或外部服务。
+它可直接理解“按 CMS 规则推进，Controller 派工、Developer 开发、QC 验收并自主循环，目录外禁止修改”的调用方式。QC 在单 Agent 循环中代表阶段审查；Standard/Full 最终必须停在独立验收前。旧项目 Bootstrap 默认只读，有冲突时零写入。Plugin 不需要 MCP、API Key 或外部服务。

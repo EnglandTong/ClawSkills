@@ -1,7 +1,7 @@
 {
   "name": "ai-engineering-expert",
-  "version": "1.0.0",
-  "description": "Bilingual AI engineering expert for requirements, governance, implementation loops, alignment, evidence, and QA.",
+  "version": "1.1.0",
+  "description": "Bilingual AI engineering plugin for compact CMS bootstrap, bounded-autonomous coding loops, proactive repair, alignment, and independent QA.",
   "author": "England Tong",
   "homepage": "https://github.com/EnglandTong/ClawSkills",
   "repository": "https://github.com/EnglandTong/ClawSkills.git",
@@ -10,6 +10,8 @@
     "ai-engineering",
     "project-governance",
     "ai-coding",
+    "autonomous-agents",
+    "context-management",
     "quality-assurance",
     "qoder"
   ]
