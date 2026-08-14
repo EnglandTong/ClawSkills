@@ -1,14 +1,16 @@
 {
   "name": "project-lifecycle-navigator",
   "display_name": "Project Lifecycle Navigator / 项目生命周期导航助手",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "language": "bilingual-en-zh",
-  "description": "Bilingual EN/ZH skill that routes users through new project intake, mid-project realignment, or code review and upgrade planning.",
+  "description": "Bilingual EN/ZH project advisory skill for intake, realignment, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline.",
   "type": "instruction-only",
   "modes": [
     "new_project_intake",
     "mid_project_realignment",
-    "code_review_upgrade_plan"
+    "repository_wide_health_review",
+    "latest_delivery_alignment_review",
+    "owner_led_target_rebaseline"
   ],
   "entrypoint": "SKILL.md",
   "requires": {

@@ -1,99 +1,53 @@
-# Publishing to ClawHub / 发布到 ClawHub
+# Publishing To ClawHub / 发布到 ClawHub
 
-This package is prepared for ClawHub as an instruction-only skill folder.
+Publish from the repository root. ClawHub publishes the skill folder containing `SKILL.md`; `.clawhubignore` removes repository-only and generated files from the bundle.
 
-本包已按 ClawHub 纯文本 Skill 的方式整理。
+## Release Identity
 
-## Confirmed structure
+- Slug: `project-lifecycle-navigator`
+- Display name: `Project Lifecycle Navigator`
+- Version: `2.0.0`
+- Source path: `skills/project-lifecycle-navigator`
+- License: ClawHub `MIT-0`
 
-```text
-project-lifecycle-navigator-bilingual/
-  SKILL.md
-  README.md
-  README.zh.md
-  README.en.md
-  skill.json
-  .clawhubignore
-  prompts/
-    zh/
-    en/
-  examples/
-  publish/
-```
+Before a live release, inspect the existing listing and confirm that this slug is still the canonical owned identity. A local `_meta.json` is historical registry state, not proof of the current live version.
 
-## Suggested slug
+## Validation
 
-```text
-project-lifecycle-navigator
-```
+```powershell
+$env:PYTHONUTF8='1'
+python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" `
+  ".\skills\project-lifecycle-navigator"
 
-## Suggested display name
-
-```text
-Project Lifecycle Navigator / 项目生命周期导航助手
-```
-
-## Suggested short description
-
-```text
-Bilingual EN/ZH project lifecycle navigator for new project intake, mid-project realignment, and code review upgrade planning.
-```
-
-## Suggested tags
-
-```text
-project-management,product-management,ai-coding-agent,mvp,code-review,bilingual,chinese,english
-```
-
-## Publish command
-
-According to current OpenClaw/ClawHub documentation, ClawHub publishes skills from a local folder containing `SKILL.md` with:
-
-```bash
-clawhub skill publish ./project-lifecycle-navigator-bilingual \
-  --slug project-lifecycle-navigator \
-  --name "Project Lifecycle Navigator / 项目生命周期导航助手" \
-  --version 1.0.0 \
-  --tags latest,project-management,product-management,ai-coding-agent,mvp,code-review,bilingual
-```
-
-Optional dry run if supported by your CLI version:
-
-```bash
-clawhub skill publish ./project-lifecycle-navigator-bilingual \
-  --slug project-lifecycle-navigator \
-  --name "Project Lifecycle Navigator / 项目生命周期导航助手" \
-  --version 1.0.0 \
-  --tags latest,project-management,product-management,ai-coding-agent,mvp,code-review,bilingual \
+npx.cmd --yes clawhub@latest skill publish ".\skills\project-lifecycle-navigator" `
+  --slug project-lifecycle-navigator `
+  --name "Project Lifecycle Navigator" `
+  --version 2.0.0 `
+  --changelog "Separate whole-system audit, latest-delivery review, and Owner-led rebaseline; add evidence states and specialist handoff boundaries." `
+  --tags latest,project-management,product-management,ai-coding-agent,mvp,code-review,bilingual `
   --dry-run
 ```
 
-## Safety / 安全说明
+## Live Release Gate
 
-This skill does not declare or require:
+Do not publish live until the exact source is committed and pushed, the dry run is clean, and the user explicitly authorizes publication.
 
-- environment variables
-- API keys
-- external binaries
-- install scripts
-- code execution
-- network access
+```powershell
+npx.cmd --yes clawhub@latest login
+npx.cmd --yes clawhub@latest whoami
 
-本 Skill 不声明也不需要：
+npx.cmd --yes clawhub@latest skill publish ".\skills\project-lifecycle-navigator" `
+  --slug project-lifecycle-navigator `
+  --name "Project Lifecycle Navigator" `
+  --version 2.0.0 `
+  --changelog "Separate whole-system audit, latest-delivery review, and Owner-led rebaseline; add evidence states and specialist handoff boundaries." `
+  --tags latest,project-management,product-management,ai-coding-agent,mvp,code-review,bilingual
+```
 
-- 环境变量
-- API Key
-- 外部命令
-- 安装脚本
-- 代码执行
-- 网络权限
+A dry run is not publication. After a live publish, inspect the exact version and security scan result before calling the release complete.
 
-## Version changelog
+## Changes In 2.0.0
 
-### 1.0.0
-
-Initial bilingual release with three modes:
-
-- New Project Intake
-- Mid-Project Realignment
-- Code Review & Upgrade Plan
+- Adds separate Latest Delivery Alignment and Owner-Led Target Rebaseline modes.
+- Keeps repository-wide audit read-only and distinct from delivery review and final QA.
+- Adds evidence vocabulary, Owner authority gates, user-visible runtime expectations, and specialist handoffs.

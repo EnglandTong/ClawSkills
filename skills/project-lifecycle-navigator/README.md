@@ -4,9 +4,9 @@
 
 **项目生命周期导航助手** 是一个中英双语、纯文本指令型 Skill，适合非技术用户、创业者、运营团队、产品负责人和 AI Coding Agent 用户使用。
 
-It routes the conversation into one of three modes:
+It routes the conversation into one of five mutually distinct modes:
 
-它会根据用户当前情况自动进入三种模式之一：
+它会根据用户当前情况进入五种互相区分的模式之一：
 
 1. **New Project Intake / 新项目需求访谈**  
    Turn a vague idea into a scoped MVP, project plan, technical approach, and Coding Agent execution plan.
@@ -16,6 +16,12 @@ It routes the conversation into one of three modes:
 
 3. **Code Review & Upgrade Plan / 代码审查与升级优化**  
    Review an existing codebase for security, dead code, logic bugs, performance, architecture, testability, dependencies, and produce an executable upgrade plan.
+
+4. **Latest Delivery Alignment / 最新交付对齐审查**
+   Review one active delivery boundary and its evidence without repeating a whole-repository audit or signing final QA acceptance.
+
+5. **Owner-Led Target Rebaseline / Owner 主导目标重基线**
+   Compare new requirements with current authority and prepare a proposal that remains pending until the Owner confirms it.
 
 ---
 
@@ -39,15 +45,20 @@ project-lifecycle-navigator/
   README.md
   skill.json
   .clawhubignore
+  agents/openai.yaml
   prompts/
     zh/
       01-new-project-intake.zh.md
       02-midproject-realignment.zh.md
       03-code-review-upgrade.zh.md
+      04-latest-delivery-alignment.zh.md
+      05-target-rebaseline.zh.md
     en/
       01-new-project-intake.en.md
       02-midproject-realignment.en.md
       03-code-review-upgrade.en.md
+      04-latest-delivery-alignment.en.md
+      05-target-rebaseline.en.md
   examples/
     usage-examples.md
   publish/

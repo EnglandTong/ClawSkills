@@ -8,10 +8,10 @@ This repository contains public AI workflow Skills and Plugins by England Tong.
 | --- | --- | --- |
 | `agent-loop-engineering` | 2.1.0 | Execution plane for low-context Bounded Autopilot, proactive failure repair, focused and functional evidence, real-path write boundaries, stage review, and independent final acceptance. |
 | `cms-project-governance` | 2.1.0 | Control plane for non-technical goal guidance, compact legacy CMS bootstrap, sizing, alignment, delivery-class evidence, and independent QA governance. |
-| `web-search-rules` | 3.0.0 | Rules and operating guidance for evidence-backed web search workflows. |
-| `ai-workflow-os` | 1.0.0 | A workflow operating system for AI-assisted projects, research, and handoffs. |
-| `project-lifecycle-navigator` | 1.0.0 | Project lifecycle prompts and guidance for intake, realignment, and code-review upgrades. |
-| `daily-workflow` | 3.0.0 | Daily workflow and project-local handoff guidance for AI coding work. |
+| `web-search-rules` | 4.0.0 | Evidence-backed web research, claim verification, source rules, staging, archive safeguards, and audit. |
+| `ai-workflow-os` | 2.0.0 | Router across lifecycle, governance, coding, memory, research, and synthesis without competing state. |
+| `project-lifecycle-navigator` | 2.0.0 | Lifecycle advisory for intake, realignment, whole-system audit, delivery review, and Owner rebaseline. |
+| `daily-workflow` | 4.0.0 | Evidence-backed project orientation, checkpoint, wrap-up, and self-contained handoff memory. |
 
 ## Recommended Entry
 
@@ -26,6 +26,8 @@ cms-project-governance 2.1
 ```
 
 Both Skills remain independently installable. Do not merge either ClawHub listing into the other.
+
+For combined workflow requests, use `ai-workflow-os` as a router only. It delegates lifecycle advisory to `project-lifecycle-navigator`, session memory to `daily-workflow`, web research intake to `web-search-rules`, formal governance to `cms-project-governance`, and authorized coding execution to `agent-loop-engineering`. Each specialist remains independently installable and authoritative for its state surface.
 
 ## Version 2.1
 
