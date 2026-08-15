@@ -369,6 +369,22 @@ Runtime feature: Accepted and usable.
     assert.ok(result.data.findings.some((item) => item.code === "invalid_value"))
   })
 
+  test("unsafe parallel delegation settings are rejected", () => {
+    const root = fixture("unsafe-delegation-policy")
+    baseLegacy(root)
+    const bootstrap = runJson(bootstrapScript, root, ["--write"])
+    assert.equal(bootstrap.status, 0)
+    const packetPath = join(root, "Docs/ACTIVE_PACKET.md")
+    const unsafe = readFileSync(packetPath, "utf8")
+      .replace("max_parallel_agents: 3", "max_parallel_agents: 9")
+      .replace("single_writer: true", "single_writer: false")
+    writeFileSync(packetPath, unsafe, "utf8")
+    const result = runJson(validatorScript, root, ["--summary"])
+    assert.equal(result.status, 1)
+    assert.ok(result.data.findings.some((item) => item.code === "invalid_parallel_agent_limit"))
+    assert.ok(result.data.findings.some((item) => item.code === "invalid_single_writer"))
+  })
+
   console.log(`\n${passed} state-tool regression tests passed.`)
 } finally {
   rmSync(temporaryRoot, { recursive: true, force: true })

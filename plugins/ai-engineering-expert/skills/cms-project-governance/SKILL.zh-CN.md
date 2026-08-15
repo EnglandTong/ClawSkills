@@ -1,6 +1,6 @@
 # CMS Project Governance 中文治理协议
 
-版本：2.1.0
+版本：2.1.1
 
 本 Skill 是 AI 软件交付的控制层。它把模糊意图、变化中的目标和大量旧 CMS 记录收敛成一个当前授权，让执行 Agent 在边界内主动推进，并确保完成声明不超过证据强度。
 
@@ -148,6 +148,10 @@ Direction Alignment 不改写目标。目标变化要先独立做 Rebaseline 决
 5. 最近三至五条 Loop。
 
 Audit 可以扩大读取，但必须只读并使用明确上下文预算。禁止把审计级上下文带进每个执行循环。
+
+对于高输出调查、日志、验证或独立 QA，应授权隔离 Worker，而不是扩大协调 Agent 的上下文。默认最多三个活跃 Worker、一个协调写者、不重叠写入范围、以 fingerprint 加必要摘录共享权威，并只回传摘要与证据。小型或高耦合工作若启动和重读成本更高，不应委派。
+
+授权多 Agent 委派时，阅读执行 Skill 的 `{baseDir}/../agent-loop-engineering/references/zh-CN/isolated-delegation.md`。
 
 只有持久权限边界、Owner 决策、最终独立 QA、跨团队交接、正式重基线或归档边界才创建新文件。Standard 通常只需要 Active Packet、Loop Runs、必要时一份合并 Work Order 和一份最终 QA Decision。
 

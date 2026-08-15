@@ -5,7 +5,7 @@ description: Execute an authorized software goal through low-context, bounded-au
 
 # Agent Loop Engineering
 
-Version: 2.1.0
+Version: 2.1.1
 
 Use this skill as the execution plane for authorized software work. Continue by default while useful progress remains inside scope. Make ordinary reversible project-local decisions, diagnose failures, repair them, and verify real behavior without asking the Owner to supervise each loop.
 
@@ -62,6 +62,11 @@ context_profile: "Compact"
 write_scope: "."
 outside_write_policy: "Deny"
 authority_fingerprint: "sha256:..."
+agent_strategy: "Isolated"
+max_parallel_agents: 3
+context_return_policy: "SummaryAndEvidence"
+shared_authority_mode: "FingerprintAndExcerpt"
+single_writer: true
 ```
 
 Allowed delivery classes are `Runtime`, `Contract`, `Governance`, `Artifact`, and `Mixed`. A Contract or Governance delivery must not be reported as a working runtime feature. For `Mixed`, label each acceptance criterion with its class.
@@ -154,6 +159,14 @@ Do not reread TARGET, ACCEPTANCE, or the Work Order when their recorded authorit
 Use soft context ceilings by size: Small 6 files / 30,000 characters, Medium 10 / 60,000, Large 16 / 100,000. Exceed only for named evidence, record why, and compact before continuing. These are context controls, not proof of completion.
 
 Read `{baseDir}/references/en/safety-and-context.md`.
+
+## Isolated Delegation
+
+Delegate work to reduce retained context only when it is separable and expected to produce substantial reading or tool output. Keep small, tightly coupled work in the main loop. Give each worker a bounded task packet, disjoint write scope, authority fingerprint plus required excerpts, and a structured return capped to conclusions and evidence. Never send the full parent conversation.
+
+Use one coordinating writer per Packet and normally no more than three active workers. Isolate log review, broad read-only discovery, noisy validation, and independent QA first. Parallel Developers require non-overlapping Work Orders and an authorized integration stage.
+
+Read `{baseDir}/references/en/isolated-delegation.md`. For host-specific session, cache, attachment, compaction, and rewind controls, read `{baseDir}/references/en/host-cost-controls.md` only when that host is in use.
 
 ## State Updates
 

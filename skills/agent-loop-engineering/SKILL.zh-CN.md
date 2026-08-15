@@ -1,6 +1,6 @@
 # Agent Loop Engineering 中文执行协议
 
-版本：2.1.0
+版本：2.1.1
 
 本 Skill 是已授权软件工作的执行层。只要仍能在范围内产生有效进展，默认继续推进。对于普通、可逆、项目目录内的技术选择，应遵循现有项目模式自主决定、诊断、修复和验证，不要求 Owner 逐轮监督。
 
@@ -59,6 +59,11 @@ context_profile: "Compact"
 write_scope: "."
 outside_write_policy: "Deny"
 authority_fingerprint: "sha256:..."
+agent_strategy: "Isolated"
+max_parallel_agents: 3
+context_return_policy: "SummaryAndEvidence"
+shared_authority_mode: "FingerprintAndExcerpt"
+single_writer: true
 ```
 
 `delivery_class` 可为 `Runtime`、`Contract`、`Governance`、`Artifact`、`Mixed`。Contract 或 Governance 交付不得表述成运行功能已可用；Mixed 必须逐条标明验收项类别。
@@ -151,6 +156,14 @@ authority fingerprint 未变化时，不重复读取 TARGET、ACCEPTANCE 或 Wor
 按规模使用软上限：Small 6 个文件 / 30,000 字符，Medium 10 / 60,000，Large 16 / 100,000。只有明确证据需要时才能超过，并记录原因、先压缩再继续。这些限制用于控制上下文，不是完成证据。
 
 安全与上下文详见 `{baseDir}/references/zh-CN/safety-and-context.md`。
+
+## 隔离型委派
+
+只有任务可分离且预计产生大量读取或工具输出时，才用子 Agent 隔离上下文。小型、高耦合工作留在主 Loop。每个 Worker 只接收有界任务包、不重叠写入范围、authority fingerprint、必要摘录和结构化回传契约；禁止发送完整父对话。
+
+每个 Packet 只有一个协调写者，通常同时活跃的 Worker 不超过三个。优先隔离日志分析、大范围只读调查、嘈杂验证和独立 QA。并行 Developer 必须使用不重叠 Work Order，并有已授权集成阶段。
+
+阅读 `{baseDir}/references/zh-CN/isolated-delegation.md`。只有当前 Host 需要时，才读取 `{baseDir}/references/zh-CN/host-cost-controls.md` 的会话、缓存、附件、压缩和回退适配。
 
 ## 状态写回
 

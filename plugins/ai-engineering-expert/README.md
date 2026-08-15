@@ -1,11 +1,11 @@
 # AI Engineering Expert
 
-Version: 1.1.0
+Version: 1.1.1
 
 AI Engineering Expert is a bilingual ClawHub bundle Plugin and Qoder Expert Kit for governed, proactive AI-assisted software delivery. It packages two independently usable Skills:
 
-- `cms-project-governance` 2.1.0: goal discovery, Legacy Bootstrap, sizing, alignment, rebaseline, and independent QA control.
-- `agent-loop-engineering` 2.1.0: low-context Bounded Autopilot, focused verification, proactive repair, and layered stage review.
+- `cms-project-governance` 2.1.1: goal discovery, Legacy Bootstrap, sizing, alignment, isolated-worker authorization, rebaseline, and independent QA control.
+- `agent-loop-engineering` 2.1.1: low-context Bounded Autopilot, isolated subagent delegation, focused verification, proactive repair, and layered stage review.
 
 The expert role routes work between them without collapsing governance and execution authority.
 
@@ -46,14 +46,14 @@ Validate and preview from the repository root:
 
 ```powershell
 npx.cmd --yes clawhub@latest package validate ".\plugins\ai-engineering-expert" `
-  --out ".\work\clawhub-plugin-validation-1.1.0"
+  --out ".\work\clawhub-plugin-validation-1.1.1"
 
 npx.cmd --yes clawhub@latest package publish ".\plugins\ai-engineering-expert" `
   --family bundle-plugin `
   --name "@englandtong/ai-engineering-expert" `
   --display-name "AI Engineering Expert" `
   --owner englandtong `
-  --version 1.1.0 `
+  --version 1.1.1 `
   --changelog "Adds bounded-autonomous execution, compact legacy CMS bootstrap, proactive repair, layered acceptance, and low-context validation." `
   --tags latest `
   --categories context,tools `

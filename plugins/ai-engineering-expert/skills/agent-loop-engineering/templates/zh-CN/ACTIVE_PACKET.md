@@ -20,6 +20,11 @@ context_profile: "Compact"
 write_scope: "."
 outside_write_policy: "Deny"
 authority_fingerprint: "sha256:REPLACE_WITH_COMPUTED_HASH"
+agent_strategy: "Isolated"
+max_parallel_agents: 3
+context_return_policy: "SummaryAndEvidence"
+shared_authority_mode: "FingerprintAndExcerpt"
+single_writer: true
 updated_at: "YYYY-MM-DDTHH:mm:ssZ"
 ---
 

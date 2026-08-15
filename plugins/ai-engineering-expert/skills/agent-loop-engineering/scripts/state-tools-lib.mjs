@@ -21,7 +21,7 @@ import {
   sep,
 } from "node:path"
 
-export const TOOL_VERSION = "2.1.0"
+export const TOOL_VERSION = "2.1.1"
 
 export function parseArgs(argv) {
   const values = new Map()

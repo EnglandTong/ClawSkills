@@ -155,6 +155,11 @@ function validatePacket(root, docs, inventory) {
     write_scope: ".",
     outside_write_policy: "Deny",
     authority_fingerprint: null,
+    agent_strategy: "Isolated",
+    max_parallel_agents: 3,
+    context_return_policy: "SummaryAndEvidence",
+    shared_authority_mode: "FingerprintAndExcerpt",
+    single_writer: true,
   }
   const missingPolicies = Object.keys(policyDefaults).filter((field) => raw[field] === undefined || raw[field] === "")
   if (missingPolicies.length > 0) {
@@ -184,6 +189,16 @@ function validatePacket(root, docs, inventory) {
   validateEnum(metadata, "delivery_class", ["Runtime", "Contract", "Governance", "Artifact", "Mixed"], file)
   validateEnum(metadata, "context_profile", ["Compact"], file)
   validateEnum(metadata, "outside_write_policy", ["Deny"], file)
+  validateEnum(metadata, "agent_strategy", ["Isolated", "SingleAgent"], file)
+  validateEnum(metadata, "context_return_policy", ["SummaryAndEvidence"], file)
+  validateEnum(metadata, "shared_authority_mode", ["FingerprintAndExcerpt"], file)
+
+  if (!Number.isInteger(metadata.max_parallel_agents) || metadata.max_parallel_agents < 1 || metadata.max_parallel_agents > 3) {
+    findings.add("error", "invalid_parallel_agent_limit", "max_parallel_agents must be an integer from 1 to 3.", file)
+  }
+  if (typeof metadata.single_writer !== "boolean" || metadata.single_writer !== true) {
+    findings.add("error", "invalid_single_writer", "single_writer must be true.", file)
+  }
 
   if (metadata.write_scope !== ".") findings.add("error", "unsafe_write_scope", 'write_scope must be "." for the portable 2.1 contract.', file)
   if (!Number.isInteger(metadata.stage) || metadata.stage < 1 || metadata.stage > 10) findings.add("error", "invalid_stage", "stage must be an integer from 1 to 10.", file)

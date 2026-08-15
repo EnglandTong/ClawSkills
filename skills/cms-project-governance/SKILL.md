@@ -5,7 +5,7 @@ description: Turn vague or changing goals and legacy CMS project records into on
 
 # CMS Project Governance
 
-Version: 2.1.0
+Version: 2.1.1
 
 Use this skill as the control plane for AI-assisted software delivery. Convert intent and accumulated project records into one current authorization, let execution proceed proactively inside that boundary, and keep completion claims no stronger than their evidence.
 
@@ -152,6 +152,10 @@ Normal governance reads:
 5. last three to five loop records.
 
 Audit mode may read broadly but must remain read-only and use an explicit context budget. Do not use audit-sized context for each execution loop.
+
+For high-output discovery, logs, validation, or independent QA, authorize isolated workers instead of expanding the coordinating context. Default to at most three active workers, one coordinating writer, disjoint write scopes, fingerprint-and-excerpt authority sharing, and summary-plus-evidence returns. Do not delegate small or tightly coupled work where worker startup and rereading would cost more than direct execution.
+
+Read the execution skill's `{baseDir}/../agent-loop-engineering/references/en/isolated-delegation.md` when multi-agent delegation is authorized.
 
 Create a file only for a durable authority boundary, Owner decision, final independent QA decision, cross-team handoff, formal rebaseline, or archive boundary. Standard governance normally needs only Active Packet, Loop Runs, one consolidated Work Order when useful, and one final QA decision.
 
