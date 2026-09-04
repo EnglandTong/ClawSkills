@@ -1,6 +1,6 @@
 # CMS Project Governance 中文治理协议
 
-版本：2.1.1
+版本：2.1.2
 
 本 Skill 是 AI 软件交付的控制层。它把模糊意图、变化中的目标和大量旧 CMS 记录收敛成一个当前授权，让执行 Agent 在边界内主动推进，并确保完成声明不超过证据强度。
 
@@ -35,6 +35,15 @@
 - 单 Agent 提示词中的 `QC` 代表 Stage Reviewer，Standard / Full 终验仍须独立。
 
 创建或审核 Packet 前读取 `{baseDir}/references/zh-CN/execution-contract.md`。
+
+## 跨插件文件契约（CDH）
+
+当 Personal Supervisor 与 Governance 同时挂在同一 Cordis 上下文时，文件所有权
+遵循 CDH 握手，而不是共享可变目录。在写入 `.agent-state/<task-id>/`、盖戳
+`governance/supervisor-binding`、或跨插件缝引用 Active Packet / 工单之前，先读
+`{baseDir}/references/zh-CN/cross-plugin-file-contracts.md`。
+
+插件只实现该契约；本 Skill 拥有契约正文。冲突时以该参考文件为准。
 
 ## 单次模式
 
@@ -177,6 +186,12 @@ node <agent-loop-engineering>/scripts/validate-loop-state.mjs --workspace <项�
 ```
 
 只有旧日志迁移本身是任务时才使用 `--strict-history`。数千条旧字段缺失必须按类别聚合，不逐行输出。
+
+校验执行层 Markdown 文件上的 CDH 握手 front-matter：
+
+```text
+node {baseDir}/scripts/validate-handshake-frontmatter.mjs --file <.agent-state/.../HANDOFF.md> [--json]
+```
 
 ## 输出合同
 

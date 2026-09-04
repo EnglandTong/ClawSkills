@@ -5,7 +5,7 @@ description: Turn vague or changing goals and legacy CMS project records into on
 
 # CMS Project Governance
 
-Version: 2.1.1
+Version: 2.1.2
 
 Use this skill as the control plane for AI-assisted software delivery. Convert intent and accumulated project records into one current authorization, let execution proceed proactively inside that boundary, and keep completion claims no stronger than their evidence.
 
@@ -39,6 +39,17 @@ Respond in the user's language. Use plain language before technical language.
 - In a one-agent prompt, `QC` means Stage Reviewer. Standard/Full final acceptance remains independent.
 
 Read `{baseDir}/references/en/execution-contract.md`.
+
+## Cross-Plugin File Contracts (CDH)
+
+When Personal Supervisor and Governance both run in the same Cordis context,
+file ownership follows the CDH handshake — not a shared mutable folder. Read
+`{baseDir}/references/en/cross-plugin-file-contracts.md` before writing
+`.agent-state/<task-id>/` files, stamping `governance/supervisor-binding`, or
+citing an Active Packet / Work Order across the plugin seam.
+
+Plugins implement that contract; this skill owns the schema text. Conflicts
+resolve in favor of the reference file.
 
 ## Choose One Mode
 
@@ -181,6 +192,12 @@ node <agent-loop-engineering>/scripts/validate-loop-state.mjs --workspace <proje
 ```
 
 Use `--strict-history` only when historical log migration is the task. Thousands of legacy field gaps must be grouped, not emitted line by line.
+
+Validate a CDH handshake front-matter fence on an execution-layer Markdown file:
+
+```text
+node {baseDir}/scripts/validate-handshake-frontmatter.mjs --file <.agent-state/.../HANDOFF.md> [--json]
+```
 
 ## Output Contract
 
