@@ -18,6 +18,14 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Git Bash 给的是 /d/... 这种 POSIX 路径，而 clawhub CLI 是 Windows 版 Node 程序，
+# 不认这种路径（报 "Path must be a folder"）。必须转成 D:/... 盘符形式。
+# Linux/macOS 下 cygpath 不存在，跳过即可。
+if command -v cygpath >/dev/null 2>&1; then
+  ROOT="$(cygpath -w "$ROOT" | sed 's|\\\\|/|g')"
+fi
+
 SKILLS_DIR="$ROOT/skills"
 DRY=1
 ONLY=""
@@ -34,6 +42,14 @@ done
 # 可用 CLAWHUB_CLI 环境变量覆盖（本机装了 clawhub 就设成 clawhub，
 # 自测时可设成 echo）。
 CLI="${CLAWHUB_CLI:-npx --yes clawhub@latest}"
+
+# 代理绕过：clawhub CLI 是 Node/undici 写的，在 HTTP_PROXY 指向本地代理时
+# 会报 "TLS or certificate validation failed"（CONNECT 被中断），而裸 node fetch
+# 直连是通的。这里主动清掉代理变量，让 CLI 走直连。
+# 没有代理变量的环境不受影响。
+unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+export NO_PROXY='*'
+export no_proxy='*'
 
 # slug | 源目录 | 版本 | topics | tags
 # 注意 cms-project-governance 的 ClawHub slug 是 coding-management-system，
