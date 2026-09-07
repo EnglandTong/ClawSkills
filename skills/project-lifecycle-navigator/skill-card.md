@@ -1,5 +1,5 @@
 ## Description: <br>
-Bilingual EN/ZH project lifecycle navigator for non-technical users and AI Coding Agent workflows, routing users through new project intake, mid-project realignment, or code review and upgrade planning. <br>
+Bilingual EN/ZH project lifecycle navigator for non-technical users and AI Coding Agent workflows. Routes users through new project intake with MVP scoping and a go/no-go scoring gate, mid-project realignment with narrow-instead-of-restart guidance, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline. Also covers scope creep, stop-loss and archive decisions, duplicate-copy detection, and portfolio cleanup. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -11,7 +11,9 @@ MIT-0 <br>
 
 
 ## Use Case: <br>
-External users, non-technical builders, founders, operators, PMs, and AI Coding Agent users use this skill to clarify new project requirements, recalibrate drifting projects, or turn an existing codebase review into an actionable upgrade plan. <br>
+External users, non-technical builders, founders, operators, PMs, and AI Coding Agent users use this skill to clarify new project requirements, decide whether a project is worth starting or continuing, recalibrate drifting or over-scoped projects, and turn an existing codebase review into an actionable upgrade plan. <br>
+
+Typical requests: "I have an idea but no requirements", "should I keep going or kill this project", "the scope keeps growing", "audit this repository and tell me if it is salvageable", "define what done means", "is this over-engineered", "help me archive and move on". <br>
 
 ### Deployment Geography for Use: <br>
 Global <br>
@@ -39,7 +41,7 @@ Mitigation: Treat recommendations as plans to verify, test, and approve before e
 **Other Properties Related to Output:** [Bilingual English/Chinese output follows the user's language by default; recommendations are intended for human or Coding Agent review before execution.] <br>
 
 ## Skill Version(s): <br>
-1.0.0 (source: SKILL.md frontmatter, skill.json, and server release metadata) <br>
+2.1.0 (source: SKILL.md, skill.json, and _meta.json) <br>
 
 ## Ethical Considerations: <br>
 Users should evaluate whether this skill is appropriate for their environment, review any generated or modified files before relying on them, and apply their organization's safety, security, and compliance requirements before deployment. <br>

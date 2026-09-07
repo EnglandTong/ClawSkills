@@ -1,11 +1,11 @@
 ---
 name: agent-loop-engineering
-description: Execute an authorized software goal through low-context, bounded-autonomous AI coding loops with persistent state, proactive repair, automatic and functional evidence, layered stage review, independent final acceptance, safe workspace boundaries, and resumable handoffs. Use when a target and acceptance criteria are clear and the user asks to implement, debug, verify, continue autonomously, follow Controller-Developer-QC cycles, resume after context loss, or reduce repeated context and documentation. For vague goals, legacy-state conflicts, requirement discovery, QA acceptance, or target rebaseline, use cms-project-governance first.
+description: Execute an authorized software goal through low-context, bounded-autonomous AI coding loops with persistent state, proactive repair, automatic and functional evidence, layered stage review, independent final acceptance, safe workspace boundaries, and resumable handoffs. Use when a target and acceptance criteria are clear and the user asks to implement, debug, verify, continue autonomously, follow Controller-Developer-QC cycles, resume after context loss, or reduce repeated context and documentation. Typical triggers include keep going, continue where we left off, run it autonomously and fix what breaks, 接着跑 / 继续做 / 自动修 / 断点续跑 / 别再问我每一步, we are stuck on the same failure, 卡在同一个错误上, resume after compaction, 上下文快满了, stop burning tokens on repeated context, run the regression after this repair, and make a flaky test deterministic. Also use for bounded-autopilot, single-writer loop state, failure-signature stop rules, delivery-class-aware evidence, and anti-doc-bloat execution. For vague goals, legacy-state conflicts, requirement discovery, target rebaseline, scope creep triage, or QA acceptance authority, use cms-project-governance first.
 ---
 
 # Agent Loop Engineering
 
-Version: 2.1.1
+Version: 2.2.0
 
 Use this skill as the execution plane for authorized software work. Continue by default while useful progress remains inside scope. Make ordinary reversible project-local decisions, diagnose failures, repair them, and verify real behavior without asking the Owner to supervise each loop.
 
@@ -102,6 +102,14 @@ After a failed check:
 
 Stop after two consecutive attempts with the same failure signature and no new evidence, narrower scope, root cause, or passing behavior. Re-running the same command unchanged is not progress.
 
+### Stall Rule
+
+If the loop has not produced observable forward progress for three working sessions on the same Work Order, do not keep re-planning and do not restart the project. Cut the Work Order down to the smallest still-publishable increment, get it to `Ready for Independent Acceptance`, and hand the remainder back as a new proposal. Restarting a project to escape a stall is a failure mode, not a strategy; the usual cause is scope, not the codebase.
+
+### Deterministic Paths
+
+Keep wall-clock budgets out of deterministic code paths. In algorithms that must be reproducible (generators, solvers, seeded layouts, snapshot tests), bound work with deterministic counters such as `MAX_TRIES`, and keep any time budget in an outer wrapper only. Mixing `BUDGET_MS` into a deterministic path makes the same seed produce different results across runs and produces flaky evidence. If a first-run computation blocks the main thread or the first interaction, move it off the synchronous path before claiming the flow works.
+
 Read `{baseDir}/references/en/execution-loop.md`.
 
 ## Stages And Alignment
@@ -124,6 +132,12 @@ A stage is an outcome checkpoint, not a document. Run a lightweight target-link 
 
 At stage 10, return `Ready for Independent Acceptance`, `Needs Fix`, `Blocked`, `Invalid State`, or a split/rebaseline recommendation. Never silently start another ten stages.
 
+### Gates A Human Must Physically Perform
+
+An acceptance criterion that requires someone to leave the keyboard — a real-device touch check, a print preview, a physical hardware step, a third party's sign-off, a paid account action — must not be written as a blocking precondition for the loop. Classify it as `Deferred Owner Verification`, deliver everything else to `Ready for Independent Acceptance`, and list the deferred item with its exact manual repro steps. A gate that the loop cannot execute by itself will otherwise freeze an otherwise-finished delivery; the common failure is a milestone sitting "almost accepted" for weeks on one manual check.
+
+Never mark such a criterion `verified` because a similar automated check passed.
+
 ## Evidence And Verification Cost
 
 No evidence means no completion. A runtime claim normally requires:
@@ -143,6 +157,25 @@ Use the verification ladder:
 Successful commands record command, exit code, concise result, timestamp, and evidence path. Failed commands retain the useful failure tail and raw-log path, not complete stdout in project state.
 
 When evidence conflicts, keep the weaker result. Builds and unit tests do not overrule a broken user flow.
+
+### Evidence Downgrade Ban
+
+A stronger-sounding artifact never upgrades a weaker level of proof. Each row below is a claim-class error, not a wording preference:
+
+| Do not report | As if it proved |
+| --- | --- |
+| source tests pass | the packaged, portable, or offline build works |
+| build succeeds | a user flow is usable end to end |
+| schema-valid JSON or a passing packet validator | the packet content is coherent or correct |
+| lint passes with a raised `--max-warnings` ceiling | code quality is acceptable (a raised ceiling is a disabled check) |
+| a narrow unit test | a business or runtime flow works |
+| a screenshot or a rendered page | interaction, touch, printing, or offline behavior works |
+| a health endpoint or a `200` response | the feature delivers user value |
+| a security surface that was never assessed | `Passed` — write `Not Assessed` |
+| one shard or subset of a suite | the authorized full-suite gate |
+| a historical green record | the current state still passes |
+
+When a check was not run, record `not-executed`. Never substitute a passing synonym.
 
 ## Compact Context
 
@@ -191,9 +224,13 @@ Stop before:
 - destructive Git, migration, overwrite, reset, force push, or irreversible deletion;
 - protected architecture, data boundary, technology-stack, target, or Non-Goal change;
 - any write outside the resolved workspace;
-- unavailable authority or exhausted stage, failure, or context budget.
+- unavailable authority or exhausted stage, failure, or context budget;
+- writing real personal data or counterparty-confidential data into source, fixtures, tests, templates, or any artifact that will be distributed or published (names, phone numbers, email addresses, customer addresses, contract terms, internal pricing, supplier lists). Use placeholders or runtime config, then stop and report;
+- a bulk restructure, rename, split, or migration before a backup or a clean commit exists. Back up first, then change code.
 
 Diagnostic sharding may narrow a long or timed-out suite, but it cannot replace an authorized full-suite gate unless Controller or Owner formally changes that gate.
+
+For the concrete failure shapes behind these stops, read `{baseDir}/references/en/anti-patterns.md`.
 
 ## Automation And Handoff
 

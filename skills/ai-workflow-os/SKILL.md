@@ -1,11 +1,11 @@
 ---
 name: ai-workflow-os
-description: Route complex AI-assisted work across project lifecycle guidance, formal project governance, coding execution, session memory, web-research intake, and cross-source synthesis without creating competing state. Use when a request spans two or more of these surfaces, the user is unsure which workflow skill applies, or a combined research-to-project-to-handoff flow needs clear authority and ordering. Delegates to specialized skills when installed and uses bundled modules only as reduced-fidelity fallbacks.
+description: Route complex AI-assisted work across project lifecycle guidance, formal project governance, coding execution, session memory, web-research intake, and cross-source synthesis without creating competing state. Use when a request spans two or more of these surfaces, the user is unsure which workflow skill applies, or a combined research-to-project-to-handoff flow needs clear authority and ordering. Typical triggers include 我这个需求该用哪个 skill, which skill should handle this, 研究和开发一起做, research then implement then hand off, 这个项目该怎么管, orchestrate this across skills, 从头到尾帮我跑一遍, and end-to-end AI workflow. Delegates to specialized skills when installed and uses bundled modules only as reduced-fidelity fallbacks. Applies a subtraction-first guard so a combined request does not silently become new scope.
 ---
 
 # AI Workflow OS / AI 工作流路由系统
 
-Version: 2.0.0
+Version: 2.1.0
 
 Use this skill as an orchestrator, not as a second implementation of every workflow. Classify the request, choose the smallest set of specialist skills, assign one owner to each state surface, and keep claims no stronger than their evidence.
 
@@ -138,6 +138,21 @@ For each material conclusion, record:
 - next evidence needed.
 
 Prefer primary, current, traceable sources. Preserve conflicts instead of averaging them away. Use `cannot-confirm` when evidence is insufficient.
+
+## Scope Collapse Guard
+
+A combined request often arrives disguised as one task: research this market, then plan the product, then build it, then write it up. Route the parts, but do not let routing become authorization.
+
+Before the route is executed:
+
+1. name the one decision the request is actually about;
+2. confirm what "done" means for that decision in one sentence;
+3. ask what existing work will be dropped, paused, or archived to make room. If nothing can be named, the new item waits;
+4. record the stop-loss: a budget, time, or evidence ceiling whose breach defaults to archive rather than extension.
+
+When a request would add a project, a feature, or a research line, surface it as a portfolio question first. The most common failure across many projects is not poor execution of one, it is starting too many.
+
+This router reduces scope; it does not expand it. A route is not permission to start something new.
 
 ## Fallback Modules
 

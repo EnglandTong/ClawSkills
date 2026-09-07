@@ -1,6 +1,34 @@
 {
   "ownerId": "kn7bjt2sd8f7cq83y0nf33xt19855gv6",
   "slug": "ai-workflow-os",
-  "version": "1.0.0",
-  "publishedAt": 1780733231859
+  "version": "2.1.0",
+  "publishedAt": 1780733231859,
+  "license": "MIT-0",
+  "author": "englandtong",
+  "homepage": "https://clawhub.ai/englandtong/ai-workflow-os",
+  "topics": [
+    "Orchestration",
+    "Workflow",
+    "Research",
+    "工作流"
+  ],
+  "tags": [
+    "latest",
+    "ai-workflow",
+    "orchestration",
+    "router",
+    "project-management",
+    "research-governance",
+    "knowledge-base",
+    "source-filtering",
+    "web-search",
+    "handoff",
+    "project-memory",
+    "audit-log",
+    "bilingual",
+    "chinese",
+    "english",
+    "zh-cn",
+    "en"
+  ]
 }

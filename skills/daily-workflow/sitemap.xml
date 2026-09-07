@@ -7,7 +7,7 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <skill:slug>daily-workflow</skill:slug>
-    <skill:version>3.0.0</skill:version>
+    <skill:version>4.1.0</skill:version>
     <skill:title><![CDATA[Daily Workflow / 项目记忆工作流]]></skill:title>
     <skill:name><![CDATA[Daily Workflow / 项目记忆工作流]]></skill:name>
     <skill:summary_en><![CDATA[A bilingual project memory workflow that records project metadata, targets, current status, completed work, pending work, next actions, archive history, and AI handoff notes at project start, checkpoint, wrap-up, or handoff.]]></skill:summary_en>

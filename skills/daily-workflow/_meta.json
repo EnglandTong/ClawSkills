@@ -1,6 +1,39 @@
 {
   "ownerId": "kn7bjt2sd8f7cq83y0nf33xt19855gv6",
   "slug": "daily-workflow",
-  "version": "3.0.0",
-  "publishedAt": 1780730393599
+  "version": "4.1.0",
+  "publishedAt": 1780730393599,
+  "license": "MIT-0",
+  "author": "englandtong",
+  "homepage": "https://clawhub.ai/englandtong/daily-workflow",
+  "topics": [
+    "Handoff",
+    "Project Memory",
+    "Docs",
+    "工作流",
+    "记忆"
+  ],
+  "tags": [
+    "latest",
+    "project-memory",
+    "handoff",
+    "ai-handoff",
+    "ai-handover",
+    "checkpoint",
+    "wrap-up",
+    "context-management",
+    "context-compression",
+    "daily-routine",
+    "daily-standup",
+    "daily-workflow",
+    "work-session",
+    "project-management",
+    "productivity",
+    "documentation",
+    "bilingual",
+    "chinese",
+    "english",
+    "zh-cn",
+    "en"
+  ]
 }

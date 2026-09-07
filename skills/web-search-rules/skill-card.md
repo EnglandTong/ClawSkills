@@ -1,5 +1,5 @@
 ## Description: <br>
-Bilingual EN/ZH research intake governance skill for web search results that uses source trust levels, URL rules, staging, review queues, confirmation-controlled archiving, cloud-upload safeguards, and audit logs. <br>
+Bilingual EN/ZH research intake governance skill for web search results that uses source trust levels, URL rules, untrusted-metadata handling, single-source cross-checking, staging, review queues, confirmation-controlled archiving, cloud-upload safeguards, and audit logs. Distinguishes discovered from opened from supported, and refuses to promote a snippet, an AI overview, or a domain reputation into claim-level evidence. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 

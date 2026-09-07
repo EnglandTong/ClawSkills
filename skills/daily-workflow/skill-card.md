@@ -1,5 +1,5 @@
 ## Description: <br>
-Bilingual EN/ZH project memory workflow for start work, checkpoint, wrap-up, and handoff. Maintains project-local Docs/ notes with target, metadata, status, compressed context, completed work, pending work, next actions, archives, and legacy migration from older Daily Workflow file names. <br>
+Bilingual EN/ZH project memory workflow for start work, checkpoint, wrap-up, and handoff. Maintains project-local Docs/ notes with target, metadata, status, compressed context, completed work, pending work, next actions, archives, memory-bloat control, and legacy migration from older Daily Workflow file names. Produces self-contained handoffs that survive session switches, context compaction, and moving to a different agent. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 

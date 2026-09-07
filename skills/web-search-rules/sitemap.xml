@@ -7,7 +7,7 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <skill:slug>web-search-rules</skill:slug>
-    <skill:version>4.0.0</skill:version>
+    <skill:version>4.1.0</skill:version>
     <skill:title><![CDATA[Web Search Rules / 研究资料入库治理]]></skill:title>
     <skill:name><![CDATA[Web Search Rules / 研究资料入库治理]]></skill:name>
     <skill:summary_en><![CDATA[A bilingual research intake governance skill that turns web search results into controlled knowledge-base records using source trust levels, rules, staging, review queues, archive policies, cloud-upload safeguards, and audit logs.]]></skill:summary_en>

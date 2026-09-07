@@ -1,6 +1,38 @@
 {
   "ownerId": "kn7bjt2sd8f7cq83y0nf33xt19855gv6",
   "slug": "agent-loop-engineering",
-  "version": "2.1.1",
-  "publishedAt": null
+  "version": "2.2.0",
+  "publishedAt": null,
+  "license": "MIT-0",
+  "author": "englandtong",
+  "homepage": "https://clawhub.ai/englandtong/agent-loop-engineering",
+  "topics": [
+    "AI Coding",
+    "Autonomous Agents",
+    "Software Testing",
+    "Context Management"
+  ],
+  "tags": [
+    "latest",
+    "ai-coding",
+    "autonomous-agents",
+    "bounded-autonomy",
+    "agent-loop",
+    "acceptance-testing",
+    "context-management",
+    "execution-loops",
+    "software-testing",
+    "coding-agent",
+    "automation",
+    "resumable",
+    "handoff",
+    "project-governance",
+    "cms",
+    "ai-coding-agent",
+    "bilingual",
+    "chinese",
+    "english",
+    "zh-cn",
+    "en"
+  ]
 }

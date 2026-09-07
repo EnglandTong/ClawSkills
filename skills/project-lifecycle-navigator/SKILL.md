@@ -1,11 +1,11 @@
 ---
 name: project-lifecycle-navigator
-description: Navigate software and AI projects through evidence-based discovery, MVP definition, mid-project realignment, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline. Use when a non-technical user needs structured project guidance, a project is drifting, existing code needs a read-only audit, a recent delivery needs comparison with its current target, or new requirements may change scope. Produces bounded recommendations and handoffs without coding, self-authorizing work, changing governance state, or claiming QA acceptance.
+description: Navigate software and AI projects through evidence-based discovery, MVP definition, mid-project realignment, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline. Use when a non-technical user needs structured project guidance, a project is drifting, existing code needs a read-only audit, a recent delivery needs comparison with its current target, or new requirements may change scope. Typical triggers include 项目做了一半要不要继续, 我是不是该重开一个, 范围蔓延, 想加个新功能, I have too many projects, should I kill this one, 帮我看看这个仓库还能不能救, audit my codebase, is this project over-engineered, 定义一下 MVP, 怎样算做完, 止损, 归档, 这个项目还有价值吗, define MVP scope, scope creep, project drift, startup checklist, go or no-go, portfolio cleanup, and repository health audit. Also use for duplicate-copy detection, missing version control, hardcoded secrets in shipped artifacts, god-module and entrypoint-sprawl findings, and pre-commitment stop-loss rules. Produces bounded recommendations and handoffs without coding, self-authorizing work, changing governance state, or claiming QA acceptance.
 ---
 
 # Project Lifecycle Navigator / 项目生命周期导航
 
-Version: 2.0.0
+Version: 2.1.0
 
 Use this skill as a project advisory and routing layer. Diagnose the current lifecycle decision, gather only missing evidence, and produce a bounded plan or handoff. Do not implement changes unless the user separately asks for implementation and an execution skill takes over.
 
@@ -33,6 +33,47 @@ When a repository or project folder is available, begin read-only:
 5. state the review boundary and missing evidence.
 
 Do not ask the user for facts that can be discovered safely. Ask only questions whose answers materially change the recommendation. For a blank-slate idea, use a short first round of at most 6-8 questions. For an existing project, inspect first and ask a smaller gap-focused round.
+
+## Startup Gates
+
+Apply before recommending that a project start, continue, or expand. These gates exist because the dominant failure mode is not bad execution, it is starting too much.
+
+### Four Questions
+
+1. **What is it** — one sentence of user pain, not a feature list.
+2. **What it is not** — three explicit exclusions.
+3. **What counts as done** — one sentence an outsider could check without asking you.
+4. **How the MVP walks end to end** — the named steps of the primary user flow.
+
+If any question is unanswered, the recommendation is `do not start yet`, not a softer plan. "We will figure out done later" is the single strongest predictor of scope creep.
+
+### Go / No-Go Score
+
+| Dimension | Points |
+| --- | ---: |
+| Genuinely want to do it | 15 |
+| Solves a real, observed problem | 20 |
+| You have a unique advantage | 20 |
+| Verifiable within 30 days | 10 |
+| Easy to find users | 10 |
+| Plausible income path | 15 |
+| Becomes a long-term asset | 10 |
+
+Under 60: do not do it. 60-75: time-boxed experiment only. Above 75: active. Record the score with the recommendation so a later review can re-score instead of re-litigating.
+
+One more filter: if the work cannot also become something publicly shareable (an article, a tool, a talk), lower its priority. Work that can only be used once is worth less than work that sells twice.
+
+### First-Version Caps
+
+- self-written files under 200;
+- do not clone a whole framework to start;
+- one entrypoint, documented and verified to run;
+- the core loop must close before any second large feature;
+- if stuck on the same problem for three sessions, cut to the smallest publishable version — do not restart the project.
+
+### Pre-Commit Stop-Loss
+
+Set the exit before starting: a budget ceiling, a time ceiling, or an evidence threshold. When it is breached, the default action is archive with reusable parts extracted, not extension. A line kept alive by sunk cost is a decision that was never made.
 
 ## Route Into One Mode
 
@@ -76,6 +117,21 @@ Read the matching prompt:
 - English: `prompts/en/03-code-review-upgrade.en.md`
 
 Do not modify product code or governance state. A green build or narrow test does not prove usable runtime behavior.
+
+Report each of the following as its own finding when present. They are the recurring structural defects that a feature-level review misses:
+
+| Check | Finding when |
+| --- | --- |
+| Duplicate copies | Two or more sibling directories are byte-identical or near-identical; copies are future conflicts, not backups |
+| Version anchor | No `.git`, or `.git` is a pointer whose target no longer exists; an unversioned project has no recovery path |
+| Build residue | `tmp/`, `node_modules/`, `dist/`, or large temp trees are tracked or unignored |
+| Distributed secrets | Real names, phone numbers, emails, addresses, contract terms, or pricing are hardcoded in source, fixtures, templates, or docs that ship |
+| Debug bypass | An auth-disable or debug flag exists and the service can bind a non-local interface |
+| Entrypoint truth | A documented start command does not exist or does not run; entrypoints are verified by execution, not by reading |
+| God modules | Files over roughly 800-1000 lines created by merges, strangles, or "temporary" accumulation |
+| Dependency sprawl | Dependency count or install footprint wildly exceeds what the feature set justifies |
+
+Findings are hypotheses until validated. Attach the file path and the observed evidence to each.
 
 ### Mode D - Latest Delivery Alignment Review
 
@@ -126,7 +182,9 @@ Use these labels instead of optimistic status words:
 - `unusable`: present but the real user-visible flow cannot be completed;
 - `documentation-conflict`: authoritative records disagree;
 - `not-executed`: a scenario was not run;
-- `cannot-confirm`: evidence is insufficient.
+- `cannot-confirm`: evidence is insufficient;
+- `duplicate-copy`: the same asset exists in more than one place and authority is unclear;
+- `unversioned`: no recoverable version history exists.
 
 Record the full command, final exit/termination state, and evidence boundary. Do not turn historical records, screenshots, health endpoints, schema-valid JSON, or a narrow unit test into broader runtime acceptance.
 

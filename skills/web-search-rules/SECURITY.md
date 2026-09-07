@@ -1,6 +1,6 @@
 # Web Search Rules / 研究资料入库治理 - Security Guide
 
-Version: 4.0.0  
+Version: 4.1.0
 Last updated: 2026-06-06
 
 ## Security Statement / 安全说明
@@ -128,7 +128,7 @@ Never delete legacy configuration after migration unless the user asks for that 
 
 Before release or use, confirm:
 
-- `SKILL.md` and `SECURITY.md` show version `4.0.0`; generated registry snapshots are excluded from the publish bundle.
+- `SKILL.md` and `SECURITY.md` show version `4.1.0`; generated registry snapshots are excluded from the publish bundle.
 - The canonical config path is `~/.skill-config/web-search-rules/` everywhere.
 - Legacy `web-search-rules-en` paths are migration-only.
 - NotebookLM does not automate login and is disabled until selected.

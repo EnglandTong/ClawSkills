@@ -1,11 +1,11 @@
 ---
 name: web-search-rules
-description: Govern evidence-backed web research and controlled knowledge-base intake. Use when a user asks to search the web, verify current claims, evaluate sources, deduplicate results, manage source rules, stage research for review, archive approved findings, or migrate research records across local or cloud knowledge bases. Covers provenance, freshness, claim-level evidence, prompt-injection resistance, confirmations, and audit logs; it does not make a source trustworthy merely because its domain is allowed.
+description: Search the web and save findings into your knowledge base with a source URL, date and quote attached to every claim. Works with Obsidian, NotebookLM, IMA, Feishu Docs and Tencent Docs. Use when a user asks to search the web, verify a current claim, evaluate sources, deduplicate results, manage source allow/deny rules, stage research for review, archive approved findings, or migrate research notes between local and cloud knowledge bases. Typical triggers include 帮我查一下, 这个说法现在还成立吗, verify this claim, find authoritative sources, 查最新政策/价格/版本, fact check, 整理搜索结果, 放进知识库, archive these sources, deduplicate my research, and check whether this AI summary is accurate. Covers provenance, freshness, claim-level evidence, untrusted metadata, single-source cross-checking, prompt-injection resistance, confirmations, and audit logs; it does not make a source trustworthy merely because its domain is allowed, and it does not treat a snippet, a search engine summary, or a file's embedded metadata as an opened and verified source.
 ---
 
 # Web Search Rules / 网页研究与资料入库治理
 
-Version: 4.0.0
+Version: 4.1.0
 
 Use this skill to control the path from a research question to reusable evidence:
 
@@ -38,6 +38,8 @@ Read `SECURITY.md` before any local write, cloud write, browser automation, dele
 6. Require explicit confirmation for cloud upload or permanent writes unless the user has already established a narrow policy for the exact target and data class.
 7. Require an itemized dry run and a second confirmation for delete, cleanup, or migration.
 8. Prefer summaries, metadata, and short compliant excerpts over copying full copyrighted pages.
+9. Treat metadata as an unverified claim. A page's declared author, publication date, language, license, or a file's embedded language and encoding tags are assertions made by the producer, not established facts. Confirm them independently before they carry a conclusion.
+10. Treat a search snippet, an AI-generated overview, or a third-party summary as `discovered` at best. None of them is an opened source.
 
 ## Research Workflow
 
@@ -104,6 +106,17 @@ Use these source trust levels:
 | `blocked` | Do not fetch full content or archive unless the user explicitly overrides for this run. |
 
 Domain trust is not claim truth. A trusted site can contain outdated, opinionated, incomplete, or irrelevant material.
+
+Metadata is not claim truth either. A declared date can be a template default, a declared author can be an aggregator, and an embedded language tag can be wrong. When a conclusion depends on a metadata field, open the artifact and confirm it, or mark the claim `cannot-confirm`.
+
+### Single-Source Rule
+
+One source supports awareness, not a conclusion. Before a claim is recorded as `supported`, either:
+
+- corroborate it with at least one independent primary source, or
+- mark it `single-source` and state what would change the assessment.
+
+Numeric, legal, medical, pricing, version, and deadline claims always require a primary source read directly, never a restatement. Do not average conflicting values into a middle number; preserve the conflict.
 
 ### 6. Apply Rules
 
@@ -192,7 +205,7 @@ Minimum `config.json`:
 
 ```json
 {
-  "version": "4.0.0",
+  "version": "4.1.0",
   "platform": "obsidian",
   "rules_store": "search-url-library",
   "staging_store": "unorganized-search-content",

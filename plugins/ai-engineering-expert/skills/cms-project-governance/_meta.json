@@ -1,6 +1,37 @@
 {
   "ownerId": "kn7bjt2sd8f7cq83y0nf33xt19855gv6",
   "slug": "cms-project-governance",
-  "version": "2.1.1",
-  "publishedAt": null
+  "version": "2.2.0",
+  "publishedAt": null,
+  "license": "MIT-0",
+  "author": "englandtong",
+  "homepage": "https://clawhub.ai/englandtong/coding-management-system",
+  "topics": [
+    "Project Governance",
+    "Project Management",
+    "Requirements",
+    "QA Acceptance",
+    "项目治理"
+  ],
+  "tags": [
+    "latest",
+    "project-governance",
+    "requirements-analysis",
+    "goal-alignment",
+    "qa-acceptance",
+    "token-efficiency",
+    "scope-control",
+    "rebaseline",
+    "project-management",
+    "ai-coding-agent",
+    "milestone",
+    "work-order",
+    "legacy-bootstrap",
+    "drift-recovery",
+    "bilingual",
+    "chinese",
+    "english",
+    "zh-cn",
+    "en"
+  ]
 }

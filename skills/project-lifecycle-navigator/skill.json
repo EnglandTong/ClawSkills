@@ -1,9 +1,9 @@
 {
   "name": "project-lifecycle-navigator",
   "display_name": "Project Lifecycle Navigator / 项目生命周期导航助手",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "language": "bilingual-en-zh",
-  "description": "Bilingual EN/ZH project advisory skill for intake, realignment, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline.",
+  "description": "Bilingual EN/ZH project advisory skill for intake, MVP scoping, go/no-go startup gates, mid-project realignment, repository-wide health review, latest-delivery alignment review, stop-loss and archive decisions, and Owner-led target rebaseline.",
   "type": "instruction-only",
   "modes": [
     "new_project_intake",
@@ -25,6 +25,12 @@
     "ai-coding-agent",
     "mvp",
     "code-review",
+    "scope-creep",
+    "project-audit",
+    "go-no-go",
+    "stop-loss",
+    "portfolio-cleanup",
+    "technical-debt",
     "bilingual",
     "chinese",
     "english"

@@ -1,5 +1,5 @@
 ## Description: <br>
-A bilingual AI workflow operating system that combines project lifecycle planning, project memory, task handoff, web and file intake, source filtering, knowledge-base governance, cross-source synthesis, and audit tracking into one unified skill. <br>
+A bilingual AI workflow operating system that routes complex requests across project lifecycle planning, formal governance, coding execution, project memory, task handoff, web and file intake, source filtering, knowledge-base governance, cross-source synthesis, and audit tracking into one unified skill. Assigns one owner per state surface, applies a subtraction-first scope guard, and falls back to bundled modules only when a specialist skill is unavailable. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 

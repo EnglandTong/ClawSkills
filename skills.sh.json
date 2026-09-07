@@ -1,0 +1,40 @@
+{
+  "$schema": "https://skills.sh/skills.sh.json",
+  "name": "ClawSkills",
+  "description": "AI workflow Skills for project governance, bounded-autonomous coding loops, session memory, evidence-backed web research, and lifecycle advisory. Bilingual English and Chinese.",
+  "repository": "EnglandTong/ClawSkills",
+  "author": "englandtong",
+  "license": "MIT-0",
+  "skills": [
+    {
+      "name": "daily-workflow",
+      "path": "skills/daily-workflow",
+      "description": "Say 开工啦 or 收工啦 and get a resumable project note written for you."
+    },
+    {
+      "name": "web-search-rules",
+      "path": "skills/web-search-rules",
+      "description": "Search the web and save findings with a source URL, date, and quote on every claim."
+    },
+    {
+      "name": "project-lifecycle-navigator",
+      "path": "skills/project-lifecycle-navigator",
+      "description": "Decide whether to continue, cut, scope, or archive a project, with startup gates and stop-loss rules."
+    },
+    {
+      "name": "cms-project-governance",
+      "path": "skills/cms-project-governance",
+      "description": "Turn vague goals and legacy project records into one compact, conflict-checked delivery state."
+    },
+    {
+      "name": "agent-loop-engineering",
+      "path": "skills/agent-loop-engineering",
+      "description": "Execute an authorized goal through bounded-autonomous coding loops with resumable state and real evidence."
+    },
+    {
+      "name": "ai-workflow-os",
+      "path": "skills/ai-workflow-os",
+      "description": "Route complex requests across lifecycle, governance, coding, memory, and research into one skill."
+    }
+  ]
+}

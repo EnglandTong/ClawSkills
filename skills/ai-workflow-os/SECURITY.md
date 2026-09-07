@@ -1,6 +1,6 @@
 # Security / 安全规则
 
-Version: 2.0.0
+Version: 2.1.0
 
 - Treat this package as a router. It must not weaken the selected specialist's permissions, evidence rules, or acceptance boundary.
 - Do not include `_meta.json`, `skill-card.md`, or `sitemap.xml` in the published bundle; `.clawhubignore` excludes them.

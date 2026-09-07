@@ -1,6 +1,6 @@
 # CMS Project Governance 中文治理协议
 
-版本：2.1.1
+版本：2.2.0
 
 本 Skill 是 AI 软件交付的控制层。它把模糊意图、变化中的目标和大量旧 CMS 记录收敛成一个当前授权，让执行 Agent 在边界内主动推进，并确保完成声明不超过证据强度。
 
@@ -25,6 +25,8 @@
 8. 证据高于状态文字；证据冲突时采用较弱结论。
 9. 局部合规不能掩盖整体目标偏移。
 10. 使用足以控制真实风险的最轻治理档位。
+11. 治理产出按「消除了多少不确定性」计价，不按「产出了多少文档」计价。当文档持续增长而已验证行为不变时，治理本身已经成为风险。
+12. 目标变更必须新建基线记录，绝不在旧文件上标注作废。历史通过移动来归档，不通过叠加覆盖说明来处理。
 
 ## 与执行 Skill 的关系
 
@@ -33,8 +35,18 @@
 - 两者通过一份 `Docs/ACTIVE_PACKET.md` 交接。
 - 本 Skill 拥有目标和最终 QA 权限；执行 Skill 拥有实现与阶段证据。
 - 单 Agent 提示词中的 `QC` 代表 Stage Reviewer，Standard / Full 终验仍须独立。
+- **独立安装。** 本 Skill 不依赖 `agent-loop-engineering` 也能运行。文档中出现的 `{baseDir}/../agent-loop-engineering/...` 路径或 `node <agent-loop-engineering>/scripts/...` 命令，只是「两者同时安装」时的快捷写法。若未安装该同级 Skill，用一行说明情况，并改用等价的内置动作：跳过 Active Packet 引导脚本，直接用本包模板写 `Docs/ACTIVE_PACKET.md`；用手工阶段证据检查替代校验脚本；用上文「最多三个 worker」规则替代 `isolated-delegation.md`。不得仅因缺少同级 Skill 就中断流程。
 
 创建或审核 Packet 前读取 `{baseDir}/references/zh-CN/execution-contract.md`。
+
+## 跨插件文件契约（CDH）
+
+当 Personal Supervisor 与 Governance 同时挂在同一 Cordis 上下文时，文件所有权
+遵循 CDH 握手，而不是共享可变目录。在写入 `.agent-state/<task-id>/`、盖戳
+`governance/supervisor-binding`、或跨插件缝引用 Active Packet / 工单之前，先读
+`{baseDir}/references/zh-CN/cross-plugin-file-contracts.md`。
+
+插件只实现该契约；本 Skill 拥有契约正文。冲突时以该参考文件为准。
 
 ## 单次模式
 
@@ -157,6 +169,19 @@ Audit 可以扩大读取，但必须只读并使用明确上下文预算。禁�
 
 详见 `{baseDir}/references/zh-CN/governance-profiles.md`。
 
+## 反内卷控制
+
+治理有一种特定的失效方式：它持续产出看起来正确的治理产物，而产品停止前进。要看比值，不看动机。
+
+- **文档预算。** 活跃治理文档应保持一次可读完的规模。超过后把历史移入 `Docs/archive/YYYY-MM.md`，只保留当前权威在线。
+- **文档／代码信号。** 若文档数量或体积明显超过源码，或某个汇报周期只产出文档而没有代码改动和新的已验证行为，就停止扩张治理，并把这种失衡作为结论上报。一个只有几行代码却配了几百份治理文档的项目，是治理失败，不是文档成就。
+- **归档靠移动。** 被取代的目标、旧基线和已关闭循环一律移动，不靠批注。禁止在生效的权威文件里写 `Superseded`、`CURRENT OVERRIDE` 或「本段作废」；读者不应该被迫重建哪一层才是当前。
+- **重基线是追加。** 目标变更写一份新的 `REBASELINE-<日期>.md`，并在同一次改动中归档旧基线。
+- **`Accepted With Risk` 必须有出口。** 每个此类判定都要带具体解锁条件、责任人和日期。三者缺一，它就不是带风险的验收，而是挂着绿牌的未决阻塞。已 Accepted 但从未发布属于治理缺陷，必须上报。
+- **先减后加。** 新方向进来时，先说清楚要砍掉或暂停什么，再授权任何新工作。新范围是范围蔓延最强的诱饵，而一个组合只有靠删除才会变健康。
+
+详见 `{baseDir}/references/zh-CN/anti-involution.md`。
+
 ## 必须门禁
 
 - 目标、范围、Non-Goals、验收证据、写入边界和唯一下一步不一致时不得执行。
@@ -167,6 +192,10 @@ Audit 可以扩大读取，但必须只读并使用明确上下文预算。禁�
 - 诊断分片不得静默替代原有全量回归门禁。
 - 目标、Non-Goals、受保护架构或数据、生产、凭证、部署、付费、破坏性或不可逆事项需要 Owner 决策。
 - 阶段 10 必须接受、返修、拆分、重基线或停止。
+- 目的、排除项、完成条件和主用户流程有任何一项无法用一句话说清时不得授权。答不出「怎样算做完」是停止信号，不是可以推迟到执行中去问的问题。
+- 活跃治理文档集不得无归档地增长；当它不再能一次读完时，先归档再新增。
+- 没有解锁条件、责任人和日期，不得记录 `Accepted With Risk`。
+- 已验收但从未发布的项目不得视为完成，必须作为未决发布阻塞上报。
 
 ## 校验
 
@@ -177,6 +206,12 @@ node <agent-loop-engineering>/scripts/validate-loop-state.mjs --workspace <项�
 ```
 
 只有旧日志迁移本身是任务时才使用 `--strict-history`。数千条旧字段缺失必须按类别聚合，不逐行输出。
+
+校验执行层 Markdown 文件上的 CDH 握手 front-matter：
+
+```text
+node {baseDir}/scripts/validate-handshake-frontmatter.mjs --file <.agent-state/.../HANDOFF.md> [--json]
+```
 
 ## 输出合同
 

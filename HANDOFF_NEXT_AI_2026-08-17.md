@@ -4,7 +4,7 @@
 
 交接对象：下一位负责继续维护、验证或发布 ClawSkills 的 AI
 
-仓库：`D:\Development\ClawSkills\ClawSkills`
+仓库：仓库根目录（本机 `ClawSkills/ClawSkills`，路径以你的实际 clone 位置为准）
 
 GitHub：<https://github.com/EnglandTong/ClawSkills>
 
@@ -216,8 +216,8 @@ C:\Users\engla\.codex\skills\cms-project-governance\SKILL.md -> Version: 2.1.0
 
 可能同时存在：
 
-- 仓库源码：`D:\Development\ClawSkills\ClawSkills\skills\...`；
-- Plugin 内嵌副本：`D:\Development\ClawSkills\ClawSkills\plugins\ai-engineering-expert\skills\...`；
+- 仓库源码：`<repo-root>/skills/...`；
+- Plugin 内嵌副本：`<repo-root>\plugins\ai-engineering-expert\skills\...`；
 - 本机 Codex 安装副本：`C:\Users\engla\.codex\skills\...`；
 - 其他 Host 自己的安装缓存。
 
@@ -237,7 +237,7 @@ C:\Users\engla\.codex\skills\cms-project-governance\SKILL.md -> Version: 2.1.0
 先做只读确认，不要立即修改仓库：
 
 ```powershell
-Set-Location D:\Development\ClawSkills\ClawSkills
+Set-Location <repo-root>
 git status --short
 git rev-parse HEAD
 Get-Content skills\agent-loop-engineering\SKILL.md -Encoding UTF8 | Select-Object -First 12

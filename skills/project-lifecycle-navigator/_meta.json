@@ -1,6 +1,31 @@
 {
   "ownerId": "kn7bjt2sd8f7cq83y0nf33xt19855gv6",
   "slug": "project-lifecycle-navigator",
-  "version": "1.0.0",
-  "publishedAt": 1780726194167
+  "version": "2.1.0",
+  "publishedAt": 1780726194167,
+  "license": "MIT-0",
+  "author": "englandtong",
+  "homepage": "https://clawhub.ai/englandtong/project-lifecycle-navigator",
+  "topics": [
+    "Code Review",
+    "MVP",
+    "Project Management",
+    "项目"
+  ],
+  "tags": [
+    "latest",
+    "project-management",
+    "product-management",
+    "mvp",
+    "code-review",
+    "ai-coding-agent",
+    "project-audit",
+    "rebaseline",
+    "scope-control",
+    "bilingual",
+    "chinese",
+    "english",
+    "zh-cn",
+    "en"
+  ]
 }

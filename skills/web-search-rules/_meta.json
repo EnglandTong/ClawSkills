@@ -1,6 +1,43 @@
 {
   "ownerId": "kn7bjt2sd8f7cq83y0nf33xt19855gv6",
   "slug": "web-search-rules",
-  "version": "3.0.0",
-  "publishedAt": 1780730523085
+  "version": "4.1.0",
+  "publishedAt": 1780730523085,
+  "license": "MIT-0",
+  "author": "englandtong",
+  "homepage": "https://clawhub.ai/englandtong/web-search-rules",
+  "topics": [
+    "Web Search",
+    "Knowledge Base",
+    "Obsidian",
+    "Feishu",
+    "研究"
+  ],
+  "tags": [
+    "latest",
+    "web-search",
+    "search",
+    "research",
+    "knowledge-base",
+    "obsidian",
+    "notebooklm",
+    "ima",
+    "feishu",
+    "tencent-docs",
+    "source-governance",
+    "source-filtering",
+    "audit-log",
+    "whitelist",
+    "blacklist",
+    "url-rules",
+    "staging",
+    "fact-check",
+    "claim-verification",
+    "security",
+    "bilingual",
+    "chinese",
+    "english",
+    "zh-cn",
+    "en"
+  ]
 }

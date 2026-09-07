@@ -1,11 +1,11 @@
 ---
 name: daily-workflow
-description: Preserve concise, evidence-backed project memory across start-work orientation, checkpoints, wrap-up, and handoff. Use when a user explicitly asks to resume a project, save progress, record a checkpoint, end a work session, prepare a self-contained handoff, or reconcile stale working notes. Reads existing project authority first, preserves dirty worktrees and governance evidence, avoids competing state files, and records commands, final outcomes, blockers, risks, and exact next actions without claiming unverified completion or QA acceptance.
+description: Say 开工啦 or 收工啦 and get a resumable project note written for you, so tomorrow you or another AI can pick up without re-reading everything. Use when a user asks to resume a project, save progress, record a checkpoint, end a work session, prepare a handoff, switch to a new AI session, or reconcile stale working notes. Typical triggers include 开工啦, 中段检查, 吃饭啦, 收工啦, 交接, 记一下进度, 存个档, 明天接着做, 换个 AI 继续, 上下文快满了, start work, checkpoint, wrap up, handoff, save progress, resume tomorrow, and switch to a new agent session. Reads existing project authority first, preserves dirty worktrees and governance evidence, avoids competing state files, archives rather than deletes history, and records commands, final outcomes, blockers, risks, and exact next actions without claiming unverified completion or QA acceptance.
 ---
 
 # Daily Workflow / 项目记忆工作流
 
-Version: 4.0.0
+Version: 4.1.0
 
 Use this skill to make work resumable. Record only the compact factual state needed by the user or next agent; do not turn project memory into a second project-management system.
 
@@ -237,9 +237,22 @@ When several memory files describe one state transition, update them as one cohe
 - Use UTF-8 for all Markdown and JSONL files.
 - Report absolute paths to the user.
 
+## Memory Bloat Control
+
+Session memory must stay cheap enough to be read at the start of the next session.
+
+- Keep the live memory set small: a current snapshot plus one continuation plan. Everything older moves to `Docs/archive/YYYY-MM.md`.
+- Never annotate a live file with `Superseded`, `CURRENT OVERRIDE`, or `this section is void`. If the target changed, write a new `REBASELINE-<date>.md` and archive the previous one in the same pass. A reader should never have to reconstruct which layer is current.
+- Do not create a new file for information that already has an owner elsewhere. Summarize and link instead.
+- If the memory directory grows while verified behavior does not, report that imbalance as the checkpoint finding rather than adding another note.
+
+## Before A Bulk Restructure
+
+A checkpoint or handoff that precedes a rename, split, migration, or bulk deletion must first confirm a clean commit or an out-of-workspace backup exists. Record the backup location in the checkpoint. Back up first, then change code.
+
 ## Safety
 
-Never record API keys, tokens, passwords, cookies, private keys, `.env` values, browser sessions, full private customer records, confidential source bodies, large logs, or sensitive exploit detail.
+Never record API keys, tokens, passwords, cookies, private keys, `.env` values, browser sessions, real personal contact data, counterparty-confidential details, full private customer records, confidential source bodies, large logs, or sensitive exploit detail. A handoff is frequently pasted into a new session, a chat, or an issue tracker, so treat it as a document that travels.
 
 Summarize sensitive context safely and reference only an appropriate non-secret source location.
 

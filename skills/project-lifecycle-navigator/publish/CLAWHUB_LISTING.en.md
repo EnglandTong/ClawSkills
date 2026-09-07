@@ -36,6 +36,18 @@ The project is halfway done and feels off-track. Help me recalibrate the directi
 I have a codebase. Review it for vulnerabilities, dead code, architecture issues, and generate an upgrade plan.
 ```
 
+```text
+I have too many half-finished projects. Help me decide what to cut, archive, or keep.
+```
+
+```text
+Define what "done" means for this MVP and tell me if the scope is realistic.
+```
+
+```text
+Check whether this repository is still salvageable, or whether I should archive it.
+```
+
 ## Safety Note
 
 This is an instruction-only Skill:

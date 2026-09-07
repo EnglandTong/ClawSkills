@@ -1,6 +1,6 @@
 # Daily Workflow / 项目记忆工作流 - Security Guide
 
-Version: 4.0.0
+Version: 4.1.0
 
 ## Security Statement / 安全说明
 
@@ -42,7 +42,7 @@ Archiving older status history is allowed only by moving content into `Docs/arch
 
 ## Release Checklist / 发布检查
 
-- `SKILL.md` and `SECURITY.md` show version `4.0.0`; generated registry snapshots are excluded from the publish bundle.
+- `SKILL.md` and `SECURITY.md` show version `4.1.0`; generated registry snapshots are excluded from the publish bundle.
 - The package uses one bilingual skill, not separate English and Chinese packages.
 - Legacy file migration is documented.
 - `NEXT_ACTIONS.md` is the primary continuation file, with `SCHEDULE.md` treated as compatibility alias.
