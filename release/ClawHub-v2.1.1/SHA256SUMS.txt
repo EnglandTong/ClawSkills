@@ -1,3 +1,0 @@
-d8e4c9eb9976c33a89ac68e8c86dd6af36d26c8a41fc20ba82e7a3d481b90320  agent-loop-engineering-v2.1.1.zip
-0d86f8afa1fbb3094e0f4900f331ac579df7aab6f62e0c6e2c44d76979daf71c  cms-project-governance-v2.1.1.zip
-0309043f2ea07f5d3f11ce15b8e2a9325b5aa8b6b1b42cfa2cef7afa7a6a11c4  RELEASE_NOTES.md

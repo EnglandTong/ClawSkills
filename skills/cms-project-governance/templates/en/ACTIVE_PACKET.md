@@ -22,6 +22,7 @@ outside_write_policy: "Deny"
 authority_fingerprint: "sha256:REPLACE_WITH_COMPUTED_HASH"
 updated_at: "YYYY-MM-DDTHH:mm:ssZ"
 ---
+<!-- Governance subset of ACTIVE_PACKET. The full template with multi-agent fields lives in agent-loop-engineering; the five omitted fields are agent_strategy, max_parallel_agents, context_return_policy, shared_authority_mode, single_writer. -->
 
 # Active Packet
 

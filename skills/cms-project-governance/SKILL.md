@@ -1,11 +1,11 @@
 ---
 name: cms-project-governance
-description: Turn vague or changing goals and legacy CMS project records into one compact, conflict-checked delivery state with clear outcomes, right-sized scope, bounded autonomy, alignment checks, delivery-class-aware evidence, and independent QA control. Use for non-technical requirement guidance, Legacy Bootstrap, Small/Medium/Large sizing, Lite/Standard/Full governance, Controller-Developer-QC routing, Milestones, Work Orders, QA acceptance, drift recovery, target rebaseline, roadmap review, or reducing token and document overhead. Typical triggers include 项目做了一半 / 不知道该不该继续 / 范围蔓延 / 想加新方向 / 想重开一个项目, scope creep, we keep adding features, too many documents and no working code, docs outweigh code, governance overhead is too high, 治理内卷, which project should I kill, should I archive this, redefine done, change the target, rebaseline, is this really accepted, and we accepted it but never shipped. Also use for anti-involution doc budgets, archive discipline, stop-loss rules, Active Packet bootstrap, and accepted-but-never-released risk. For already-authorized ordinary coding loops, use agent-loop-engineering.
+description: Keep a drifting or half-finished project under control with one compact, conflict-checked delivery state, right-sized scope, bounded autonomy, and independent QA acceptance. Use for non-technical requirement guidance, Legacy Bootstrap, Small/Medium/Large sizing, Lite/Standard/Full governance, Controller-Developer-QC routing, Milestones, Work Orders, QA acceptance, drift recovery, target rebaseline, roadmap review, or reducing token and document overhead. Typical triggers include 项目做了一半 / 不知道该不该继续 / 范围蔓延 / 想加新方向 / 想重开一个项目, scope creep, we keep adding features, too many documents and no working code, docs outweigh code, governance overhead is too high, 治理内卷, which project should I kill, should I archive this, redefine done, change the target, rebaseline, is this really accepted, and we accepted it but never shipped. Also use for anti-involution doc budgets, archive discipline, stop-loss rules, Active Packet bootstrap, and accepted-but-never-released risk. For already-authorized ordinary coding loops, use agent-loop-engineering. For a one-time read-only verdict on a project you have not committed to yet, use project-lifecycle-navigator.
 ---
 
 # CMS Project Governance
 
-Version: 2.2.0
+Version: 2.2.1
 
 Use this skill as the control plane for AI-assisted software delivery. Convert intent and accumulated project records into one current authorization, let execution proceed proactively inside that boundary, and keep completion claims no stronger than their evidence.
 
@@ -39,6 +39,7 @@ Respond in the user's language. Use plain language before technical language.
 - Both use one `Docs/ACTIVE_PACKET.md` with contract version `2.0` and 2.1 policy fields.
 - This skill owns target and final QA authority; execution owns implementation and stage evidence.
 - In a one-agent prompt, `QC` means Stage Reviewer. Standard/Full final acceptance remains independent.
+- Use `project-lifecycle-navigator` instead for a one-time read-only verdict, such as go / narrow / pivot / archive / stop, when no persistent governance state is needed.
 - **Standalone install.** This skill works without `agent-loop-engineering`. Any `{baseDir}/../agent-loop-engineering/...` path or `node <agent-loop-engineering>/scripts/...` command in this document is a convenience shortcut for co-installed setups only. When that sibling skill is absent, state it in one line and substitute the equivalent in-skill action: skip the Active Packet bootstrap script and write `Docs/ACTIVE_PACKET.md` from the bundled template; replace the loop-state validator with a manual stage-evidence check; replace reading `isolated-delegation.md` with the at-most-three-workers rule stated above. Never fail a run only because the sibling skill is missing.
 
 Read `{baseDir}/references/en/execution-contract.md`.

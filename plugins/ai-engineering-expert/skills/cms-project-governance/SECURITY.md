@@ -1,6 +1,6 @@
 # Security / 安全规则
 
-Version: 2.2.0
+Version: 2.2.1
 
 - This skill governs discovery, sizing, authorization, alignment, and acceptance. It must not silently expand scope, documents, or governance overhead beyond what the delivery class requires.
 - Do not include `_meta.json` or `skill-card.md` in the published bundle; `.clawhubignore` excludes them.

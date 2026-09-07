@@ -1,7 +1,7 @@
 {
   "name": "project-lifecycle-navigator",
   "display_name": "Project Lifecycle Navigator / 项目生命周期导航助手",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "language": "bilingual-en-zh",
   "description": "Bilingual EN/ZH project advisory skill for intake, MVP scoping, go/no-go startup gates, mid-project realignment, repository-wide health review, latest-delivery alignment review, stop-loss and archive decisions, and Owner-led target rebaseline.",
   "type": "instruction-only",

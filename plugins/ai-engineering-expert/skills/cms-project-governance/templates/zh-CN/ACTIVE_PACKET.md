@@ -22,6 +22,7 @@ outside_write_policy: "Deny"
 authority_fingerprint: "sha256:REPLACE_WITH_COMPUTED_HASH"
 updated_at: "YYYY-MM-DDTHH:mm:ssZ"
 ---
+<!-- 这是 ACTIVE_PACKET 的治理子集版本。含多 Agent 字段的完整版在 agent-loop-engineering，本版省略的五个字段是 agent_strategy、max_parallel_agents、context_return_policy、shared_authority_mode、single_writer。 -->
 
 # Active Packet / 当前执行包
 

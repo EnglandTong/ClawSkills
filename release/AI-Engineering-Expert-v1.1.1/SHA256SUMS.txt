@@ -1,2 +1,0 @@
-250638d853cb3597eef9cc72bae2d76b4aceb1c2e250564a226e7f625e056c39  ai-engineering-expert-v1.1.1-qoder.zip
-384e8f892b99b9ea745815581e31ad281bec9fcd5bd200fdbaaec4806384da1b  RELEASE_NOTES.md

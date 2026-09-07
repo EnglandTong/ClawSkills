@@ -4,6 +4,39 @@ All changes in this release are additive and backward compatible. No `name` fiel
 
 Release date: 2026-09-07
 
+## Fourth Pass: Positioning Split Between CMS And Navigator (2026-09-07)
+
+A cross-skill duplicate scan (paragraph hashing, 6-gram Jaccard, term distribution, heading overlap) found that the six Skills are **not** largely duplicated. Only one file pair is materially redundant. What looked like duplication was **semantic crowding**: three Skills all speak the language of project governance, so their listing cards read like the same product.
+
+**Constraint that shaped the fix.** `SKILL.md` is a cross-platform standard, so every Skill must be self-contained. A user may install exactly one Skill into any of 35+ products. Extracting shared files into a common directory is therefore not an option; it would break standalone installs instantly. Deduplication is limited to removing true duplicates, merging Skills, or repositioning copy. This pass takes the third route.
+
+### What the scan actually found
+
+| Layer | Finding | Verdict |
+| --- | --- | --- |
+| File level | `templates/{en,zh-CN}/ACTIVE_PACKET.md` exists in both `agent-loop-engineering` and `cms-project-governance`, Jaccard **1.00** after normalisation | 96% redundant, but the 5-line difference is deliberate |
+| Boilerplate | `skill-card.md` `## Publisher` and `## Ethical Considerations` identical across all 6 Skills | Low value, no risk |
+| Semantic | `cms` vs `navigator` share rebaseline 62/28, acceptance 53/34, scope 29/32, 101 KB vs 100 KB | **Only 1 shared H2 heading**, and navigator already defines an explicit boundary |
+
+The 5 lines present only in the agent-loop copy are `agent_strategy`, `max_parallel_agents`, `context_return_policy`, `shared_authority_mode`, `single_writer`. The cms copy is a deliberate subset, because cms does not orchestrate multiple agents. Both copies are kept for self-containment, with a note recording the relationship.
+
+### Changes
+
+- `cms-project-governance` **2.2.0 -> 2.2.1** — opening sentence of `description` rewritten from a feature list to an outcome sentence. ClawHub derives the card summary from this sentence, so this is a listing copy change, not just a text edit. Ends with an explicit route to `project-lifecycle-navigator` for one-time read-only verdicts. `## Relationship To Agent Loop Engineering` gains the same routing rule in both English and Chinese.
+- `project-lifecycle-navigator` **2.1.0 -> 2.1.1** — opening sentence rewritten to make the read-only audit role unmistakable. Ends with an explicit route to `cms-project-governance` for ongoing governance, Work Orders, Milestones and formal QA acceptance.
+- Both copies of `ACTIVE_PACKET.md` in cms now carry an inline note naming the omitted fields and pointing to the full template.
+- `scripts/publish-clawhub.sh` versions updated to match, so the next publish cannot ship a stale version number.
+- Plugin `ai-engineering-expert` **1.1.2 -> 1.1.3** across all four manifests, because it embeds the cms copy.
+
+Before / after opening sentences:
+
+| Skill | Was | Now |
+| --- | --- | --- |
+| `cms-project-governance` | Turn vague or changing goals and legacy CMS project records into one compact, conflict-checked delivery state with clear outcomes, right-sized scope, bounded autonomy, alignment checks, delivery-class-aware evidence, and independent QA control. | Keep a drifting or half-finished project under control with one compact, conflict-checked delivery state, right-sized scope, bounded autonomy, and independent QA acceptance. |
+| `project-lifecycle-navigator` | Navigate software and AI projects through evidence-based discovery, MVP definition, mid-project realignment, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline. | Audit a project you are unsure about and get a go, narrow, pivot, archive or stop recommendation, without writing code or changing governance state. |
+
+Deliberately unchanged: the six-Skill split, all slugs, all directory layouts, and the two `-en` listings whose ownership cannot be confirmed from the public API.
+
 ## Third Pass: Repository Hygiene And Cross-Platform Readiness (2026-09-07)
 
 Triggered by a full local-vs-remote audit of `EnglandTong/ClawSkills`. Remote `main` was confirmed identical to local `HEAD` at `094efe2` by per-blob SHA comparison, so every change below is repository hygiene and release safety, not a behaviour change to any Skill. All changes remain additive and backward compatible.

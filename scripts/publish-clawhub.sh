@@ -79,7 +79,7 @@ publish_one "daily-workflow" "daily-workflow" "4.1.0" \
   "Rewrite the opening line to lead with the trigger phrase. Add QUICKSTART.md covering the four phrases and the two-file lightweight profile. Add memory-bloat control and backup-before-restructure rules."
 
 # ---- 3. coding-management-system（cms-project-governance，进阶/依赖）----
-publish_one "coding-management-system" "cms-project-governance" "2.2.0" \
+publish_one "coding-management-system" "cms-project-governance" "2.2.1" \
   "Project Governance,Project Management,Requirements,QA Acceptance,项目治理" \
   "latest,project-governance,requirements-analysis,goal-alignment,qa-acceptance,token-efficiency,scope-control,rebaseline,project-management,ai-coding-agent,milestone,work-order,legacy-bootstrap,drift-recovery,bilingual,chinese,english,zh-cn,en" \
   "Add anti-involution controls, active-document budget, rebaseline-by-append rule and unlock conditions for Accepted With Risk. Add QUICKSTART.md. Restore the full tag set that was lost to the default latest-only publish."
@@ -97,7 +97,7 @@ publish_one "ai-workflow-os" "ai-workflow-os" "2.1.0" \
   "Add scope collapse guard. Add QUICKSTART.md."
 
 # ---- 6. project-lifecycle-navigator ----
-publish_one "project-lifecycle-navigator" "project-lifecycle-navigator" "2.1.0" \
+publish_one "project-lifecycle-navigator" "project-lifecycle-navigator" "2.1.1" \
   "Code Review,MVP,Project Management,项目" \
   "latest,project-management,product-management,mvp,code-review,ai-coding-agent,project-audit,rebaseline,scope-control,bilingual,chinese,english,zh-cn,en" \
   "Add startup gates, go/no-go score, pre-commit stop-loss and a repository structural-defect checklist. Add QUICKSTART.md."

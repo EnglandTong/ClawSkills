@@ -1,6 +1,6 @@
 # Security / 安全规则
 
-Version: 2.1.0
+Version: 2.1.1
 
 - This skill advises and routes. It does not implement changes, does not self-authorize work, does not change governance state, and never claims QA acceptance.
 - Health review and delivery alignment modes are read-only by default. Do not edit, move, or delete repository files during an audit without a separate explicit instruction.

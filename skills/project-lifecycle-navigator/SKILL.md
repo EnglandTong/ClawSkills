@@ -1,11 +1,11 @@
 ---
 name: project-lifecycle-navigator
-description: Navigate software and AI projects through evidence-based discovery, MVP definition, mid-project realignment, repository-wide health review, latest-delivery alignment review, and Owner-led target rebaseline. Use when a non-technical user needs structured project guidance, a project is drifting, existing code needs a read-only audit, a recent delivery needs comparison with its current target, or new requirements may change scope. Typical triggers include 项目做了一半要不要继续, 我是不是该重开一个, 范围蔓延, 想加个新功能, I have too many projects, should I kill this one, 帮我看看这个仓库还能不能救, audit my codebase, is this project over-engineered, 定义一下 MVP, 怎样算做完, 止损, 归档, 这个项目还有价值吗, define MVP scope, scope creep, project drift, startup checklist, go or no-go, portfolio cleanup, and repository health audit. Also use for duplicate-copy detection, missing version control, hardcoded secrets in shipped artifacts, god-module and entrypoint-sprawl findings, and pre-commitment stop-loss rules. Produces bounded recommendations and handoffs without coding, self-authorizing work, changing governance state, or claiming QA acceptance.
+description: Audit a project you are unsure about and get a go, narrow, pivot, archive or stop recommendation, without writing code or changing governance state. Use when a non-technical user needs structured project guidance, a project is drifting, existing code needs a read-only audit, a recent delivery needs comparison with its current target, or new requirements may change scope. Typical triggers include 项目做了一半要不要继续, 我是不是该重开一个, 范围蔓延, 想加个新功能, I have too many projects, should I kill this one, 帮我看看这个仓库还能不能救, audit my codebase, is this project over-engineered, 定义一下 MVP, 怎样算做完, 止损, 归档, 这个项目还有价值吗, define MVP scope, scope creep, project drift, startup checklist, go or no-go, portfolio cleanup, and repository health audit. Also use for duplicate-copy detection, missing version control, hardcoded secrets in shipped artifacts, god-module and entrypoint-sprawl findings, and pre-commitment stop-loss rules. Produces bounded recommendations and handoffs without coding, self-authorizing work, changing governance state, or claiming QA acceptance. For ongoing governance with Work Orders, Milestones, and formal QA acceptance, use cms-project-governance.
 ---
 
 # Project Lifecycle Navigator / 项目生命周期导航
 
-Version: 2.1.0
+Version: 2.1.1
 
 Use this skill as a project advisory and routing layer. Diagnose the current lifecycle decision, gather only missing evidence, and produce a bounded plan or handoff. Do not implement changes unless the user separately asks for implementation and an execution skill takes over.
 

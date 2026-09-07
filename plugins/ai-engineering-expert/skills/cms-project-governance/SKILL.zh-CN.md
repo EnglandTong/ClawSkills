@@ -1,6 +1,6 @@
 # CMS Project Governance 中文治理协议
 
-版本：2.2.0
+版本：2.2.1
 
 本 Skill 是 AI 软件交付的控制层。它把模糊意图、变化中的目标和大量旧 CMS 记录收敛成一个当前授权，让执行 Agent 在边界内主动推进，并确保完成声明不超过证据强度。
 
@@ -35,6 +35,7 @@
 - 两者通过一份 `Docs/ACTIVE_PACKET.md` 交接。
 - 本 Skill 拥有目标和最终 QA 权限；执行 Skill 拥有实现与阶段证据。
 - 单 Agent 提示词中的 `QC` 代表 Stage Reviewer，Standard / Full 终验仍须独立。
+- 若用户只要一次性的只读结论（继续 / 收窄 / 转向 / 归档 / 停止），且不需要持续治理状态，改用 `project-lifecycle-navigator`。
 - **独立安装。** 本 Skill 不依赖 `agent-loop-engineering` 也能运行。文档中出现的 `{baseDir}/../agent-loop-engineering/...` 路径或 `node <agent-loop-engineering>/scripts/...` 命令，只是「两者同时安装」时的快捷写法。若未安装该同级 Skill，用一行说明情况，并改用等价的内置动作：跳过 Active Packet 引导脚本，直接用本包模板写 `Docs/ACTIVE_PACKET.md`；用手工阶段证据检查替代校验脚本；用上文「最多三个 worker」规则替代 `isolated-delegation.md`。不得仅因缺少同级 Skill 就中断流程。
 
 创建或审核 Packet 前读取 `{baseDir}/references/zh-CN/execution-contract.md`。
