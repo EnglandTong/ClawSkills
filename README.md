@@ -7,10 +7,10 @@ This repository contains public AI workflow Skills and Plugins by England Tong.
 | Skill | Version | Description |
 | --- | --- | --- |
 | `agent-loop-engineering` | 2.2.0 | Execution plane for low-context Bounded Autopilot, proactive failure repair, focused and functional evidence, real-path write boundaries, stage review, and independent final acceptance. |
-| `cms-project-governance` | 2.2.0 | Control plane for non-technical goal guidance, compact legacy CMS bootstrap, sizing, alignment, delivery-class evidence, anti-involution controls, and independent QA governance. |
+| `cms-project-governance` | 2.2.1 | Control plane for non-technical goal guidance, compact legacy CMS bootstrap, sizing, alignment, delivery-class evidence, anti-involution controls, and independent QA governance. |
 | `web-search-rules` | 4.1.0 | Evidence-backed web research, claim verification, untrusted-metadata handling, single-source cross-checking, source rules, staging, archive safeguards, and audit. |
 | `ai-workflow-os` | 2.1.0 | Router across lifecycle, governance, coding, memory, research, and synthesis without competing state, with a subtraction-first scope guard. |
-| `project-lifecycle-navigator` | 2.1.0 | Lifecycle advisory for intake, MVP scoping, startup gates, realignment, whole-system audit, delivery review, stop-loss, and Owner rebaseline. |
+| `project-lifecycle-navigator` | 2.1.1 | Lifecycle advisory for intake, MVP scoping, startup gates, realignment, whole-system audit, delivery review, stop-loss, and Owner rebaseline. |
 | `daily-workflow` | 4.1.0 | Evidence-backed project orientation, checkpoint, wrap-up, memory-bloat control, and self-contained handoff memory. |
 
 Versions above are the authoritative source. Each Skill's `SKILL.md`, `_meta.json`, and (where present) `skill.json` carry the same number; see `CHANGELOG.md` for the change record.
