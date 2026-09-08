@@ -1,11 +1,11 @@
 # AI Engineering Expert
 
-Version: 1.1.1
+Version: 1.1.3
 
 AI Engineering Expert is a bilingual ClawHub bundle Plugin and Qoder Expert Kit for governed, proactive AI-assisted software delivery. It packages two independently usable Skills:
 
-- `cms-project-governance` 2.1.1: goal discovery, Legacy Bootstrap, sizing, alignment, isolated-worker authorization, rebaseline, and independent QA control.
-- `agent-loop-engineering` 2.1.1: low-context Bounded Autopilot, isolated subagent delegation, focused verification, proactive repair, and layered stage review.
+- `cms-project-governance` 2.2.1: keep a drifting or half-finished project under control — one current delivery state, right-sized scope, and independent QA acceptance.
+- `agent-loop-engineering` 2.2.0: run an authorized coding goal in loops with persistent state, real evidence, stage review, and a stop before the same agent signs final acceptance.
 
 The expert role routes work between them without collapsing governance and execution authority.
 
@@ -44,17 +44,36 @@ ClawHub publishes a bundle Plugin from this folder or from its committed GitHub 
 
 Validate and preview from the repository root:
 
+```bash
+npx --yes clawhub@latest package validate "./plugins/ai-engineering-expert" \
+  --out "./work/clawhub-plugin-validation-1.1.3"
+
+npx --yes clawhub@latest package publish "./plugins/ai-engineering-expert" \
+  --family bundle-plugin \
+  --name "@englandtong/ai-engineering-expert" \
+  --display-name "AI Engineering Expert" \
+  --owner englandtong \
+  --version 1.1.3 \
+  --changelog "Bundles cms-project-governance 2.2.1 and agent-loop-engineering 2.2.0. Compact CMS bootstrap, bounded coding loops, layered acceptance, independent QA." \
+  --tags latest \
+  --categories context,tools \
+  --topics ai-coding,autonomous-agents,project-governance,context-management,quality-assurance \
+  --bundle-format claude \
+  --dry-run \
+  --json
+```
+
 ```powershell
 npx.cmd --yes clawhub@latest package validate ".\plugins\ai-engineering-expert" `
-  --out ".\work\clawhub-plugin-validation-1.1.1"
+  --out ".\work\clawhub-plugin-validation-1.1.3"
 
 npx.cmd --yes clawhub@latest package publish ".\plugins\ai-engineering-expert" `
   --family bundle-plugin `
   --name "@englandtong/ai-engineering-expert" `
   --display-name "AI Engineering Expert" `
   --owner englandtong `
-  --version 1.1.1 `
-  --changelog "Adds bounded-autonomous execution, compact legacy CMS bootstrap, proactive repair, layered acceptance, and low-context validation." `
+  --version 1.1.3 `
+  --changelog "Bundles cms-project-governance 2.2.1 and agent-loop-engineering 2.2.0. Compact CMS bootstrap, bounded coding loops, layered acceptance, independent QA." `
   --tags latest `
   --categories context,tools `
   --topics ai-coding,autonomous-agents,project-governance,context-management,quality-assurance `

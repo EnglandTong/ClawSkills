@@ -4,6 +4,18 @@ All changes in this release are additive and backward compatible. No `name` fiel
 
 Release date: 2026-09-07
 
+## README Public Copy And Version Table (2026-09-08)
+
+Documentation only. No Skill runtime, slug, or contract change.
+
+- Root `README.md` opening rewritten as a short What / Who / Why. The Who/Why angle is England Tong's years in quality control (品管) and production-floor process, applied to agent project work.
+- Skill table blurbs rewritten as plain result sentences. Dropped listing jargon from the public summary (`Bounded Autopilot`, `anti-involution`, `delivery-class evidence`, `control plane` / `execution plane` as table leads).
+- Version table aligned to on-disk `SKILL.md` / `_meta.json` / `skill.json`: `cms-project-governance` **2.2.1**, `project-lifecycle-navigator` **2.1.1**, `agent-loop-engineering` 2.2.0, `ai-workflow-os` 2.1.0, `web-search-rules` 4.1.0, `daily-workflow` 4.1.0. Plugin called out as **1.1.3**.
+- Removed the `## Version 2.1` heading and the stale `release/ClawHub-v2.1` / `AI-Engineering-Expert-v1.1.0` zip list (those artifacts are not in the tree). Kept the still-true coding-Skill rules under a version-free heading.
+- Recommended-entry diagram now uses current Skill versions. Packet `contract_version: "2.0"` is unchanged.
+- Local `node` commands documented for bash and PowerShell. ClawHub slug note for `coding-management-system` added next to install.
+- Plugin `README.md` version header, bundled Skill versions, and `clawhub` `--version` examples updated from 1.1.1 / 2.1.1 to **1.1.3** / **2.2.1** / **2.2.0**, with a bash equivalent next to the PowerShell block.
+
 ## Fourth Pass: Positioning Split Between CMS And Navigator (2026-09-07)
 
 A cross-skill duplicate scan (paragraph hashing, 6-gram Jaccard, term distribution, heading overlap) found that the six Skills are **not** largely duplicated. Only one file pair is materially redundant. What looked like duplication was **semantic crowding**: three Skills all speak the language of project governance, so their listing cards read like the same product.
